@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+@import ".";
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	position: relative;
+	-ms-overflow-style: none;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: $color01;
+	font-family: "Roboto", sans-serif;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+::selection {
+	background-color: rgba($color02, 0.6);
+	color: $color11;
+}
+
+.MuiBackdrop-root {
+	background-color: rgba(243, 123, 33, 0.2) !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	margin: 0;
+}

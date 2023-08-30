@@ -1,0 +1,32 @@
+@import "styles";
+
+.otp-input {
+	gap: 1.75rem;
+	margin-top: 1rem;
+
+	@include mobile {
+		justify-content: center;
+	}
+
+	&:focus {
+		border-color: rgb(199, 39, 39);
+	}
+
+	.otp {
+		width: 3.5rem !important;
+		font-size: 2rem;
+		border-width: 0;
+		border-bottom-width: 1px;
+		outline: none;
+
+		/* Change background color to grey */
+		background-color: #e9e9e9;
+		border: 1px solid rgb(138, 138, 138);
+		border-radius: 6px;
+
+		@include mobile {
+			width: 2rem !important;
+			font-size: 1.5rem;
+		}
+	}
+}

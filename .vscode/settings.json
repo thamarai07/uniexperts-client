@@ -1,0 +1,40 @@
+{
+	"editor.wrappingIndent": "indent",
+	"editor.formatOnSave": true,
+
+	"git.confirmSync": false,
+	"git.autofetch": true,
+
+	"gitlens.hovers.currentLine.over": "line",
+
+	"reactSnippets.settings.importReactOnTop": false,
+
+	"emmet.includeLanguages": {},
+
+	"diffEditor.ignoreTrimWhitespace": false,
+
+	"javascript.updateImportsOnFileMove.enabled": "always",
+
+	"[javascript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[scss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"cSpell.words": ["Formik", "Muhlenberg", "signup"]
+}

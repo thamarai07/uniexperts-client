@@ -1,0 +1,110 @@
+@import "styles";
+
+.custom-tooltip {
+	background-color: $color02;
+	color: $color11;
+	min-width: 12rem;
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+
+	.month {
+		font-size: 0.875rem;
+		font-weight: 500;
+	}
+
+	.payload {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 0.5rem;
+
+		.name-conatiner {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+
+			.color {
+				height: 0.5rem;
+				width: 0.5rem;
+				border-radius: 50%;
+			}
+
+			.name {
+				font-size: 0.875rem;
+				opacity: 0.6;
+			}
+		}
+
+		.value {
+			font-size: 0.875rem;
+			font-weight: 700;
+		}
+	}
+}
+
+.performance-wrapper {
+	background-color: $color11;
+	border-radius: 0.625rem;
+	padding: 1.25rem 0;
+
+	h1 {
+		color: $color02;
+		font-size: 1.2rem;
+		font-weight: 500;
+		padding: 0 1.125rem 1rem;
+
+		border-bottom: 1px solid $color27;
+	}
+
+	.body {
+		padding: 1rem 1.125rem;
+
+		.selection-wrapper {
+			margin-bottom: 2rem;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			@include mobile {
+				flex-direction: column-reverse;
+				align-items: flex-end;
+				gap: 1.5rem;
+			}
+
+			.tabs {
+				min-height: unset;
+
+				button {
+					font-size: 0.625rem;
+					color: $color28;
+					padding: 0.125rem 0.75rem;
+					min-width: unset;
+					min-height: unset;
+
+					&[aria-selected="true"] {
+						color: $color02;
+						border-bottom: 2px solid $color02;
+					}
+				}
+			}
+
+			.year {
+				min-height: unset;
+
+				button {
+					font-size: 0.625rem;
+					color: $color02;
+					padding: 0.125rem 0.75rem;
+					border-radius: 0.25rem;
+					min-width: unset;
+					min-height: unset;
+
+					&[aria-selected="true"] {
+						color: $color11;
+						background-color: $color02;
+					}
+				}
+			}
+		}
+	}
+}

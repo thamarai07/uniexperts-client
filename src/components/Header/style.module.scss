@@ -1,0 +1,64 @@
+@import "styles";
+
+.sidebar {
+	display: grid;
+	gap: 2rem;
+	background-color: $color11;
+	padding: 1.25rem 0.75rem;
+	border-radius: 0.75rem;
+
+	.item {
+		display: flex;
+		place-items: center;
+		gap: 1rem;
+		max-width: 10rem;
+		cursor: pointer;
+
+		&.disabled {
+			pointer-events: none;
+
+			.icon-container {
+				.img {
+					path {
+						fill: #696969;
+					}
+				}
+			}
+		}
+
+		&.selected {
+			.icon-container {
+				background-color: $color02;
+
+				.img {
+					path {
+						fill: $color11;
+					}
+				}
+			}
+		}
+
+		.icon-container {
+			overflow: hidden;
+			background-color: $color12;
+			padding: 0.75rem;
+			height: 2.5rem;
+			width: 2.5rem;
+			border-radius: 0.625rem;
+
+			.img {
+				display: block;
+				height: 100%;
+				width: 100%;
+				object-fit: contain;
+			}
+		}
+
+		.label {
+			color: $color13;
+			font-size: 0.75rem;
+			font-weight: 500;
+			// text-align: center;
+		}
+	}
+}

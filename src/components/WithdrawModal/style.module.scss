@@ -1,0 +1,24 @@
+@import "styles";
+
+.otp-input {
+	gap: 1.75rem;
+	margin-top: 2rem;
+
+	@include mobile {
+		justify-content: center;
+		gap: 1.4rem;
+	}
+
+	.otp {
+		width: 5rem !important;
+		font-size: 2rem;
+		border-width: 0;
+		border-bottom-width: 1px;
+		outline: none;
+
+		@include mobile {
+			width: 2rem !important;
+			font-size: 1.2rem;
+		}
+	}
+}
