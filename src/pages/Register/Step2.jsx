@@ -16,9 +16,12 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 		condition2: false,
 		condition3: false,
 		condition4: false,
+		condition5: false,
 	});
 
-	const calculateConditions = password => {
+	const [confPasswordError, setConfirmpasswordError] = useState("");
+
+	const calculateConditions = (password) => {
 		setConditions({
 			condition1: password.length >= 12,
 			condition2: /[!@#$%^&*]/.test(password),
@@ -34,16 +37,24 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 
 	// Define a custom function to handle form submission
 	const handleSubmit = values => {
-		console.log("button click");
-		nextStep();
-		// dispatch(setLoader(true));
-		// signup({ ...data, password: values.password })
-		// 	.then(userDetails => {
-		// 		// console.log(data);
-		// 		dispatch(setUser(userDetails));
-		// 		// history.push(RouteNames.upload_documents);
-		// 	})
-		// 	.finally(() => dispatch(setLoader(false)));
+
+		if(values.password!==values.confirmPassword) {
+			setConfirmpasswordError("Password and confirm password are not the same");
+			return;
+		}
+		
+		if (conditions.condition1 && conditions.condition2 && conditions.condition3 && conditions.condition4) {
+			setData({ ...data, password: values.password })
+
+			const reqData = { ...data, password: values.password };
+			signup(reqData).then(res => {
+				console.log("res", res)
+				
+			})
+
+			nextStep();
+			
+		}
 	};
 
 	return (
@@ -115,6 +126,7 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 								A mixture of letters and numbers
 							</Typography>
 						</Box>
+						
 						<FieldInput
 							type='password'
 							name='password'
@@ -133,6 +145,8 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 							type='password'
 							name='confirmPassword'
 							placeholder='Re-enter your password here'
+							error={Boolean(confPasswordError)}
+							helperText={confPasswordError}
 						/>
 						{errors.confirmPassword && (
 							<Typography variant='caption' color='error'>

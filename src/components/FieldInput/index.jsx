@@ -8,7 +8,10 @@ const FieldInput = ({
 	placeholder,
 	disabled,
 	isMultiline,
+	error=false,
+	helperText,
 	...restProps
+
 }) => {
 	return (
 		<Field name={name}>
@@ -18,10 +21,13 @@ const FieldInput = ({
 				const fieldProps = {
 					type: type,
 					placeholder: placeholder ?? label,
-					error: meta.touched && meta.error ? true : false,
-					helperText: meta.touched && meta.error ? meta.error : null,
+					// error: meta.touched && meta.error ? true : false,
+					// helperText: meta.touched && meta.error ? meta.error : null,
 					disabled: disabled,
+					error,
+					helperText,
 					...field,
+
 					...restProps,
 				};
 

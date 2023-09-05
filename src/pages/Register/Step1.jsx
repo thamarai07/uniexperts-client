@@ -7,6 +7,7 @@ import DropdownWithSearch from "components/DropdownWithSearch";
 import FieldInput from "components/FieldInput";
 import { EntityType } from "constants";
 import { Field, Form, Formik } from "formik";
+import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -21,7 +22,7 @@ const initialValues = {
 		countryCode: null,
 		phone: "",
 		jobTitle: "",
-		timezone: null,
+		timezone: ""
 	},
 
 	company: {
@@ -48,7 +49,7 @@ const initialValues = {
 		accountNumber: "",
 		confirmNumber: "",
 		swiftCode: "",
-		extraField: "",
+		ifsc: ""
 	},
 };
 
@@ -59,6 +60,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 	const [bankField, setBankField] = useState({});
 	const [selectedCountry, setSelectedCountry] = useState("");
+
+	const [errors, setErrors] = useState();
 
 	const form = useRef(null);
 
@@ -131,8 +134,64 @@ const Step1 = ({ data, setData, nextStep }) => {
 		}),
 	});
 
+	const validateForm = (values) => {
+		const errors = {};
+		// Check if all fields are required
+
+		const pd ={ ...values.personalDetails, countryCode: "+91"}
+		Object.keys(pd).forEach((key) => {
+		  if (!pd[key]) {
+			errors[key] = `${key} is required`;
+		  }
+		});
+
+		Object.keys(values.company).forEach((key) => {
+			if (!values.company[key] ) {
+			  errors[key] = `${key} is required`;
+			}
+		  });
+
+		  Object.keys(values.address).forEach((key) => {
+			if (!values.address[key] ) {
+			  errors[key] = `${key} is required`;
+			}
+		  });
+
+		  Object.keys(values.bank).forEach((key) => {
+			if (!values.bank[key] ) {
+			  errors[key] = `${key} is required`;
+			}
+		  });
+
+		  console.log("bank: ", values.bank);
+	  
+		// Check if email is valid
+		if (values.personalDetails.email) {
+		  if (!/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(values.personalDetails.email)) {
+			errors.email = "Please enter a valid email address";
+		  }
+		}
+
+		// Check if phone number valid
+		if (values.personalDetails.phone) {
+			const regex = /^\d{10}$/;
+			if (regex.test(values.personalDetails.phone)) {
+			  errors.phone = "Please enter a valid phone number";
+			}
+		  }
+
+		// Check if password is valid
+		// if (values.personalDetails.password) {
+		//   if (values.personalDetails.password.length < 8) {
+		// 	errors.personalDetails.password = `Password must be at least 8 characters long`;
+		//   }
+		// }
+
+		setErrors(errors);
+		return errors;
+	  };
+
 	const onSubmit = values => {
-		nextStep();
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -180,38 +239,42 @@ const Step1 = ({ data, setData, nextStep }) => {
 			}
 		});
 
-		let requestData = {
-			...data,
-			...values,
-			password: values.personalDetails.password,
-			personalDetails: {
-				...values.personalDetails,
-				countryCode: "+91",
-				timezone: {
-					time_zone: "sunt",
-					utc_offset: "est ea Lorem",
-					name: "ut"
-				  },
-			},
-			bank: {
-				name: values?.bank?.name,
-				bankName: values?.bank?.bankName,
-				accountNumber: values?.bank?.accountNumber,
-				confirmNumber: values?.bank?.confirmNumber,
-				swiftCode: values?.bank?.swiftCode,
-				extraField: {
-					"key": "ifsc",
-					"value": "IFSC Code",
-					"data": values?.bank?.ifsc
-				  }
-			},
-		};
+		console.log("validate form ", validateForm(values))
 
-		signup(requestData).then(res=> {
-			console.log("res", res)
-		})
+		if(_.isEmpty(validateForm(values))){
+			let requestData = {
+				...data,
+				...values,
+				personalDetails: {
+					...values.personalDetails,
+					countryCode: "+91",
+					timezone: {
+						time_zone: "sunt",
+						utc_offset: "est ea Lorem",
+						name: "ut"
+					  },
+				},
+				bank: {
+					name: values?.bank?.name,
+					bankName: values?.bank?.bankName,
+					accountNumber: values?.bank?.accountNumber,
+					confirmNumber: values?.bank?.confirmNumber,
+					swiftCode: values?.bank?.swiftCode,
+					extraField: {
+						"key": "ifsc",
+						"value": "IFSC Code",
+						"data": values?.bank?.ifsc
+					  }
+				},
+			};
 
-		nextStep();
+			setData(requestData);
+			nextStep();
+			
+		}
+
+		
+		
 	};
 
 	return (
@@ -234,6 +297,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FieldInput
 										name='personalDetails.firstName'
 										label='First Name'
+										error={Boolean(errors?.firstName)}
+										helperText={errors?.firstName}
 									/>
 								</Grid>
 
@@ -241,6 +306,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FieldInput
 										name='personalDetails.lastName'
 										label='Last Name'
+										error={Boolean(errors?.lastName)}
+										helperText={errors?.lastName}
 									/>
 								</Grid>
 
@@ -249,6 +316,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										name='personalDetails.email'
 										label='Work Email'
 										type='email'
+										error={Boolean(errors?.email)}
+										helperText={errors?.email}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
 
@@ -256,14 +325,14 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 											if (!value) return;
 
-											if (debounceTimer) clearTimeout(debounceTimer);
-											debounceTimer = setTimeout(() => {
-												debounceTimer = null;
+											// if (debounceTimer) clearTimeout(debounceTimer);
+											// debounceTimer = setTimeout(() => {
+											// 	debounceTimer = null;
 
-												verifyEmail(value).then(res => {
-													if (res) toast.error("Email Already Exists");
-												});
-											}, 2000);
+											// 	verifyEmail(value).then(res => {
+											// 		if (res) toast.error("Email Already Exists");
+											// 	});
+											// }, 2000);
 										}}
 									/>
 								</Grid>
@@ -302,6 +371,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 														label='Contact Number'
 														style={{ marginLeft: "23px" }}
 														type='tel'
+														error={Boolean(errors?.phone)}
+														helperText={errors?.phone}
 													/>
 												</div>
 											);
@@ -314,6 +385,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										name='personalDetails.jobTitle'
 										label='Job Title'
 										// style={{ marginLeft: "23px" }}
+										error={Boolean(errors?.jobTitle)}
+										helperText={errors?.jobTitle}
 									/>
 								</Grid>
 
@@ -321,14 +394,16 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FieldInput
 										name='personalDetails.timezone'
 										label='Time Zone'
+										error={Boolean(errors?.timezone)}
+										helperText={errors?.timezone}
 									/>
 								</Grid>
-								<Grid item md={6} sm={6} xs={12}>
+								{/* <Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										name='personalDetails.password'
 										label='Password'
 									/>
-								</Grid>
+								</Grid> */}
 							</Grid>
 						</Box>
 
@@ -339,7 +414,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 							<Grid container spacing={1} mt={0}>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput name='company.companyName' label='Company Name' />
+									<FieldInput 
+										name='company.companyName' 
+										label='Company Name' 
+										error={Boolean(errors?.companyName)}
+										helperText={errors?.companyName}
+										/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
@@ -347,6 +427,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='number'
 										name='company.yearFounded'
 										label='Year Founded'
+										error={Boolean(errors?.yearFounded)}
+										helperText={errors?.yearFounded}
 									/>
 								</Grid>
 
@@ -355,6 +437,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='number'
 										name='company.employeeCount'
 										label='Employee Count'
+										error={Boolean(errors?.employeeCount)}
+										helperText={errors?.employeeCount}
 									/>
 								</Grid>
 
@@ -363,6 +447,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='number'
 										name='company.studentPerYear'
 										label='Students per Year'
+										error={Boolean(errors?.studentPerYear)}
+										helperText={errors?.studentPerYear}
 									/>
 								</Grid>
 
@@ -371,6 +457,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='text'
 										name='company.entityType'
 										label='Entity Type'
+										error={Boolean(errors?.entityType)}
+										helperText={errors?.entityType}
 									/>
 								</Grid>
 
@@ -378,6 +466,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FieldInput
 										name='company.taxNumber'
 										label='Tax Number or VAT'
+										error={Boolean(errors?.taxNumber)}
+										helperText={errors?.taxNumber}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
 
@@ -391,6 +481,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='text'
 										name='company.country'
 										label='Registered Country'
+										error={Boolean(errors?.country)}
+										helperText={errors?.country}
 									/>
 								</Grid>
 							</Grid>
@@ -403,13 +495,20 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 							<Grid container spacing={1} mt={0}>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput name='address.address' label='Address' />
+									<FieldInput 
+										name='address.address' 
+										label='Address' 
+										error={Boolean(errors?.address)}
+										helperText={errors?.address}
+										/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										type='number'
 										name='address.zipCode'
+										error={Boolean(errors?.zipCode)}
+										helperText={errors?.zipCode}
 										placeholder='Postal Code'
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
@@ -418,31 +517,46 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 											if (!value) return;
 
-											if (debounceTimer) clearTimeout(debounceTimer);
-											debounceTimer = setTimeout(() => {
-												debounceTimer = null;
-												getPincodeData(value).then(
-													({ city, state, country }) => {
-														setFieldValue("address.city", city);
-														setFieldValue("address.state", state);
-														setFieldValue("address.country", country);
-													}
-												);
-											}, 2000);
+											// if (debounceTimer) clearTimeout(debounceTimer);
+											// debounceTimer = setTimeout(() => {
+											// 	debounceTimer = null;
+											// 	getPincodeData(value).then(
+											// 		({ city, state, country }) => {
+											// 			setFieldValue("address.city", city);
+											// 			setFieldValue("address.state", state);
+											// 			setFieldValue("address.country", country);
+											// 		}
+											// 	);
+											// }, 2000);
 										}}
 									/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
-									<FieldInput name='address.city' label='City' />
+									<FieldInput 
+										name='address.city' 
+										label='City'
+										error={Boolean(errors?.city)}
+										helperText={errors?.city} 
+										/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
-									<FieldInput name='address.state' label='State' />
+									<FieldInput 
+										name='address.state' 
+										label='State' 
+										error={Boolean(errors?.state)}
+										helperText={errors?.state}
+										/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
-									<FieldInput name='address.country' label='Country' />
+									<FieldInput 
+										name='address.country' 
+										label='Country' 
+										error={Boolean(errors?.country)}
+										helperText={errors?.country}
+										/>
 								</Grid>
 							</Grid>
 						</Box>
@@ -454,17 +568,29 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 							<Grid container spacing={1} mt={0}>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput name='bank.name' label='Account Holder Name' />
+									<FieldInput 
+										name='bank.name' 
+										label='Account Holder Name' 
+										error={Boolean(errors?.name)}
+										helperText={errors?.name}
+										/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput name='bank.bankName' label='Bank Name' />
+									<FieldInput 
+										name='bank.bankName' 
+										label='Bank Name' 
+										error={Boolean(errors?.bankName)}
+										helperText={errors?.bankName}
+										/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										name='bank.accountNumber'
 										label='Account Number'
+										error={Boolean(errors?.accountNumber)}
+										helperText={errors?.accountNumber}
 									/>
 								</Grid>
 
@@ -472,16 +598,25 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FieldInput
 										name='bank.confirmNumber'
 										label='Confirm Account Number'
+										error={Boolean(errors?.confirmNumber)}
+										helperText={errors?.confirmNumber}
 									/>
 								</Grid>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput name='bank.ifsc' label='IFSC Code' />
+									<FieldInput 
+										name='bank.ifsc' 
+										label='IFSC Code' 
+										error={Boolean(errors?.ifsc)}
+										helperText={errors?.ifsc}
+										/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										name='bank.swiftCode'
 										label='Swift Code'
+										error={Boolean(errors?.swiftCode)}
+										helperText={errors?.swiftCode}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
 
@@ -493,12 +628,14 @@ const Step1 = ({ data, setData, nextStep }) => {
 								{bankField?.key && (
 									<Grid item md={6} sm={6} xs={12}>
 										<FieldInput
-											name='bank.extraField'
+											name='bank.ifsc'
+											error={Boolean(errors?.ifsc)}
+											helperText={errors?.ifsc}
 											label={`${bankField.value}`}
 											onChange={({ target: { value } }) => {
 												const { current: { setFieldValue } = {} } = form || {};
 
-												setFieldValue("bank.extraField", value?.toUpperCase());
+												setFieldValue("bank.ifsc", value?.toUpperCase());
 											}}
 										/>
 									</Grid>

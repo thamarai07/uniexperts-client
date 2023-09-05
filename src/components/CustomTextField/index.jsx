@@ -15,6 +15,8 @@ const CustomTextField = ({
 	disabled = false,
 	disablePast = false,
 	disableFuture = false,
+	error=false,
+	helperText,
 	...restProps
 }) => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -43,6 +45,8 @@ const CustomTextField = ({
 		},
 		InputLabelProps: { sx: { fontSize: "0.825rem" }, ...InputLabelProps },
 		...restProps,
+		error,
+		helperText
 	};
 
 	if (type === "number") {
@@ -139,8 +143,8 @@ const CustomTextField = ({
 							sx: { fontSize: "0.825rem" },
 							...InputLabelProps,
 						}}
-						error={restProps?.error}
-						helperText={restProps?.helperText}
+						error={error}
+						helperText={helperText}
 						InputProps={{
 							...params?.InputProps,
 							endAdornment: (

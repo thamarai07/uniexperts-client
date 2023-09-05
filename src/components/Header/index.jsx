@@ -52,7 +52,7 @@ const Header = () => {
 	const [notificationIsUnread, setNotificationIsUnread] = useState(false);
 
 	useEffect(() => {
-		_fetchNotifications();
+		//_fetchNotifications();
 	}, [notificationIsUnread]);
 
 	const _fetchNotifications = () => {

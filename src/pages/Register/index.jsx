@@ -14,7 +14,7 @@ const Register = () => {
 	const [step, setStep] = useState(0);
 	const [data, setData] = useState({});
 
-	console.log(step);
+	console.log("step", step);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);

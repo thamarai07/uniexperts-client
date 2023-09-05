@@ -26,17 +26,17 @@ const App = () => {
 	// eslint-disable-next-line no-undef
 	LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
-	useEffect(() => {
-		if (!Object.keys(user).length && _getToken()) {
-			getProfileData().then(userDetails => dispatch(setUser(userDetails)));
-		}
+	// useEffect(() => {
+	// 	if (!Object.keys(user).length && _getToken()) {
+	// 		getProfileData().then(userDetails => dispatch(setUser(userDetails)));
+	// 	}
 
-		if (!countries.length)
-			getCountries().then(countries => dispatch(setCountries(countries)));
+	// 	if (!countries.length)
+	// 		getCountries().then(countries => dispatch(setCountries(countries)));
 
-		if (!timezone.length)
-			getTimezone().then(timezone => dispatch(setTimezone(timezone)));
-	});
+	// 	if (!timezone.length)
+	// 		getTimezone().then(timezone => dispatch(setTimezone(timezone)));
+	// });
 
 	useEffect(() => {
 		if (!Object.keys(user).length) return;

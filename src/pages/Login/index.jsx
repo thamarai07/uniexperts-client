@@ -32,12 +32,12 @@ const Login = () => {
 	const [bgImage, setBgImage] = useState({});
 
 	// @gets background image
-	useEffect(() => {
-		dispatch(setLoader(true));
-		getBackgroundImage()
-			.then(setBgImage)
-			.finally(() => dispatch(setLoader(false)));
-	}, []);
+	// useEffect(() => {
+	// 	dispatch(setLoader(true));
+	// 	getBackgroundImage()
+	// 		.then(setBgImage)
+	// 		.finally(() => dispatch(setLoader(false)));
+	// }, []);
 
 	const onSubmit = values => {
 		dispatch(setLoader(true));
