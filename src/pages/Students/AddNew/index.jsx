@@ -24,6 +24,8 @@ const AddNewStudent = () => {
 	const [intakes, setIntakes] = useState([]);
 	const [preferredCountries, setPreferredCountries] = useState([]);
 
+	console.log("hello student", activeStep);
+
 	useEffect(() => {
 		Promise.all([getStaff(), getIntakes(), getPreferredCountries()]).then(
 			([staffs, intakes, preferredCountries]) => {
@@ -52,7 +54,7 @@ const AddNewStudent = () => {
 
 	const nextStep = () => setActiveStep(activeStep + 1);
 
-	if (!staff?.length) return null;
+	/* if (!staff?.length) return null; */
 
 	return (
 		<>

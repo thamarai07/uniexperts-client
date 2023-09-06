@@ -2,14 +2,17 @@ import { borderRadius } from "@mui/system";
 import React, { useState } from "react";
 import { Box, Button } from "@mui/material";
 
-
 const Step3 = ({ data = {}, setData, nextStep }) => {
-	const [selectedFile, setSelectedFile] = useState(null);
+	const [selectedFile, setSelectedFile] = useState([]);
 
 	const handleFileChange = event => {
 		const file = event.target.files[0];
+		let fileArr = [];
+		fileArr.push(file);
+		console.log("file", fileArr);
+		//setSelectedFile([...file]);
 
-		setSelectedFile(file);
+		//setSelectedFile(fileArr);
 	};
 	const handleSubmit = values => {
 		console.log("button click");

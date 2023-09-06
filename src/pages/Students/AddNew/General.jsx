@@ -399,6 +399,7 @@ const General = ({
 								<Field name='studentInformation.countryOfInterest'>
 									{props => {
 										const { field, meta } = props || {};
+										console.log("field", field);
 
 										return (
 											<DropdownWithSearch
