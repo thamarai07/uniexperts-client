@@ -1,65 +1,254 @@
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl } from "@mui/material";
 import { Box } from "@mui/system";
 import { config, signup, verifyEmail } from "apis/auth";
-import { getPincodeData } from "apis/geography";
 import DropdownWithSearch from "components/DropdownWithSearch";
 import FieldInput from "components/FieldInput";
-import { EntityType } from "constants";
 import { Field, Form, Formik } from "formik";
 import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { phoneRegExp } from "utils/validations";
+import TimezoneSelect from 'react-timezone-select'
 import * as Yup from "yup";
 
-const initialValues = {
-	personalDetails: {
-		firstName: "",
-		lastName: "",
-		email: "",
-		countryCode: null,
-		phone: "",
-		jobTitle: "",
-		timezone: ""
-	},
-
-	company: {
-		yearFounded: "",
-		companyName: "",
-		employeeCount: "",
-		studentPerYear: "",
-		entityType: null,
-		taxNumber: "",
-		country: null,
-	},
-
-	address: {
-		address: "",
-		city: "",
-		state: "",
-		zipCode: "",
-		country: null,
-	},
-
-	bank: {
-		name: "",
-		bankName: "",
-		accountNumber: "",
-		confirmNumber: "",
-		swiftCode: "",
-		ifsc: ""
-	},
-};
 
 const Step1 = ({ data, setData, nextStep }) => {
 	const { app: { countries = [], timezone = [] } = {} } = useSelector(
 		state => state
 	);
 
+	const enityTypeOption = ["Private", "Partnership", "Trust", "Proprietor", "Individual"];
+	const countryList = [
+		"Afghanistan",
+		"Albania",
+		"Algeria",
+		"Andorra",
+		"Angola",
+		"Antigua and Barbuda",
+		"Argentina",
+		"Armenia",
+		"Australia",
+		"Austria",
+		"Azerbaijan",
+		"Bahamas",
+		"Bahrain",
+		"Bangladesh",
+		"Barbados",
+		"Belarus",
+		"Belgium",
+		"Belize",
+		"Benin",
+		"Bhutan",
+		"Bolivia",
+		"Bosnia and Herzegovina",
+		"Botswana",
+		"Brazil",
+		"Brunei",
+		"Bulgaria",
+		"Burkina Faso",
+		"Burundi",
+		"Côte d'Ivoire",
+		"Cabo Verde",
+		"Cambodia",
+		"Cameroon",
+		"Canada",
+		"Central African Republic",
+		"Chad",
+		"Chile",
+		"China",
+		"Colombia",
+		"Comoros",
+		"Congo (Congo-Brazzaville)",
+		"Costa Rica",
+		"Croatia",
+		"Cuba",
+		"Cyprus",
+		"Czechia (Czech Republic)",
+		"Democratic Republic of the Congo",
+		"Denmark",
+		"Djibouti",
+		"Dominica",
+		"Dominican Republic",
+		"Ecuador",
+		"Egypt",
+		"El Salvador",
+		"Equatorial Guinea",
+		"Eritrea",
+		"Estonia",
+		"Eswatini (fmr. 'Swaziland')",
+		"Ethiopia",
+		"Fiji",
+		"Finland",
+		"France",
+		"Gabon",
+		"Gambia",
+		"Georgia",
+		"Germany",
+		"Ghana",
+		"Greece",
+		"Grenada",
+		"Guatemala",
+		"Guinea",
+		"Guinea-Bissau",
+		"Guyana",
+		"Haiti",
+		"Holy See",
+		"Honduras",
+		"Hungary",
+		"Iceland",
+		"India",
+		"Indonesia",
+		"Iran",
+		"Iraq",
+		"Ireland",
+		"Israel",
+		"Italy",
+		"Jamaica",
+		"Japan",
+		"Jordan",
+		"Kazakhstan",
+		"Kenya",
+		"Kiribati",
+		"Kuwait",
+		"Kyrgyzstan",
+		"Laos",
+		"Latvia",
+		"Lebanon",
+		"Lesotho",
+		"Liberia",
+		"Libya",
+		"Liechtenstein",
+		"Lithuania",
+		"Luxembourg",
+		"Madagascar",
+		"Malawi",
+		"Malaysia",
+		"Maldives",
+		"Mali",
+		"Malta",
+		"Marshall Islands",
+		"Mauritania",
+		"Mauritius",
+		"Mexico",
+		"Micronesia",
+		"Moldova",
+		"Monaco",
+		"Mongolia",
+		"Montenegro",
+		"Morocco",
+		"Mozambique",
+		"Myanmar (formerly Burma)",
+		"Namibia",
+		"Nauru",
+		"Nepal",
+		"Netherlands",
+		"New Zealand",
+		"Nicaragua",
+		"Niger",
+		"Nigeria",
+		"North Korea",
+		"North Macedonia",
+		"Norway",
+		"Oman",
+		"Pakistan",
+		"Palau",
+		"Palestine State",
+		"Panama",
+		"Papua New Guinea",
+		"Paraguay",
+		"Peru",
+		"Philippines",
+		"Poland",
+		"Portugal",
+		"Qatar",
+		"Romania",
+		"Russia",
+		"Rwanda",
+		"Saint Kitts and Nevis",
+		"Saint Lucia",
+		"Saint Vincent and the Grenadines",
+		"Samoa",
+		"San Marino",
+		"Sao Tome and Principe",
+		"Saudi Arabia",
+		"Senegal",
+		"Serbia",
+		"Seychelles",
+		"Sierra Leone",
+		"Singapore",
+		"Slovakia",
+		"Slovenia",
+		"Solomon Islands",
+		"Somalia",
+		"South Africa",
+		"South Korea",
+		"South Sudan",
+		"Spain",
+		"Sri Lanka",
+		"Sudan",
+		"Suriname",
+		"Sweden",
+		"Switzerland",
+		"Syria",
+		"Tajikistan",
+		"Tanzania",
+		"Thailand",
+		"Timor-Leste",
+		"Togo",
+		"Tonga",
+		"Trinidad and Tobago",
+		"Tunisia",
+		"Turkey",
+		"Turkmenistan",
+		"Tuvalu",
+		"Uganda",
+		"Ukraine",
+		"United Arab Emirates",
+		"United Kingdom",
+		"United States of America",
+		"Uruguay",
+		"Uzbekistan",
+		"Vanuatu",
+		"Venezuela",
+		"Vietnam",
+		"Yemen",
+		"Zambia",
+		"Zimbabwe"
+	  ];	 
+	  const countryDialingCodes = [
+		"+93", "+355", "+213", "+376", "+244", "+1", "+54", "+374", "+61", "+43",
+		"+994", "+1", "+973", "+880", "+1", "+375", "+32", "+501", "+229", "+975",
+		"+591", "+387", "+267", "+55", "+673", "+359", "+226", "+257", "+225",
+		"+238", "+855", "+237", "+1", "+236", "+235", "+56", "+86", "+57", "+269",
+		"+242", "+506", "+385", "+53", "+357", "+420", "+243", "+45", "+253", "+1",
+		"+1", "+593", "+20", "+503", "+240", "+291", "+372", "+268", "+251", "+679",
+		"+358", "+33", "+241", "+220", "+995", "+49", "+233", "+30", "+1", "+502",
+		"+224", "+245", "+592", "+509", "+379", "+504", "+36", "+354", "+91", "+62",
+		"+98", "+964", "+353", "+972", "+39", "+1", "+81", "+962", "+7", "+254",
+		"+686", "+965", "+996", "+856", "+371", "+961", "+266", "+231", "+218",
+		"+423", "+370", "+352", "+261", "+265", "+60", "+960", "+223", "+356",
+		"+692", "+222", "+230", "+52", "+691", "+373", "+377", "+976", "+382",
+		"+212", "+258", "+95", "+264", "+674", "+977", "+31", "+64", "+505", "+227",
+		"+234", "+850", "+389", "+47", "+968", "+92", "+680", "+970", "+507", "+675",
+		"+595", "+51", "+63", "+48", "+351", "+974", "+40", "+7", "+250", "+1", "+1",
+		"+1", "+685", "+378", "+239", "+966", "+221", "+381", "+248", "+232", "+65",
+		"+421", "+386", "+677", "+252", "+27", "+82", "+211", "+34", "+94", "+249",
+		"+597", "+268", "+46", "+41", "+963", "+992", "+255", "+66", "+670", "+228",
+		"+676", "+1", "+216", "+90", "+993", "+688", "+256", "+380", "+971", "+44",
+		"+1", "+598", "+998", "+678", "+58", "+84", "+967", "+260", "+263"
+	  ];
+	   
+
 	const [bankField, setBankField] = useState({});
 	const [selectedCountry, setSelectedCountry] = useState("");
+	const [entityTypeValue, setEntityTypeValue] = useState("");
+	const [country, setCountry] = useState("");
+	const [countryDialingCode, setCountryDialingCode] = useState("");
+	const [selectedTimezone, setSelectedTimezone] =useState(
+		Intl.DateTimeFormat().resolvedOptions().timeZone
+	  )
 
 	const [errors, setErrors] = useState();
 
@@ -134,36 +323,74 @@ const Step1 = ({ data, setData, nextStep }) => {
 		}),
 	});
 
+
+	const initialValues = {
+		personalDetails: {
+			firstName: "",
+			lastName: "",
+			email: "",
+			countryCode: countryDialingCode,
+			phone: "",
+			jobTitle: "",
+			timezone: ""
+		},
+	
+		company: {
+			yearFounded: "",
+			companyName: "",
+			employeeCount: "",
+			studentPerYear: "",
+			entityType: entityTypeValue,
+			taxNumber: "",
+			country: country,
+			entityRegistrationNumber: ""
+		},
+	
+		address: {
+			address: "",
+			city: "",
+			state: "",
+			zipCode: "",
+			country: null,
+		},
+	
+		bank: {
+			name: "",
+			bankName: "",
+			accountNumber: "",
+			confirmNumber: "",
+			swiftCode: "",
+			ifsc: ""
+		},
+	};
 	const validateForm = (values) => {
 		const errors = {};
 		// Check if all fields are required
 
-		const pd ={ ...values.personalDetails, countryCode: "+91"}
+		const pd ={ ...values.personalDetails}
 		Object.keys(pd).forEach((key) => {
 		  if (!pd[key]) {
-			errors[key] = `${key} is required`;
+			errors[key] = `${_.startCase(key)} is required`;
 		  }
 		});
 
 		Object.keys(values.company).forEach((key) => {
 			if (!values.company[key] ) {
-			  errors[key] = `${key} is required`;
+			  errors[key] = `${_.startCase(key)} is required`;
 			}
 		  });
 
 		  Object.keys(values.address).forEach((key) => {
 			if (!values.address[key] ) {
-			  errors[key] = `${key} is required`;
+			  errors[key] = `${_.startCase(key)} is required`;
 			}
 		  });
 
 		  Object.keys(values.bank).forEach((key) => {
 			if (!values.bank[key] ) {
-			  errors[key] = `${key} is required`;
+			  errors[key] = `${_.startCase(key)} is required`;
 			}
 		  });
-
-		  console.log("bank: ", values.bank);
 	  
 		// Check if email is valid
 		if (values.personalDetails.email) {
@@ -172,12 +399,35 @@ const Step1 = ({ data, setData, nextStep }) => {
 		  }
 		}
 
+		
+
+		// Check if ifsc code is valid
+		const ifscReg = "^[A-Z]{4}[0][A-Z0-9]{6}$";
+		if (values.bank?.ifsc) {
+			if (!ifscReg.test(values.bank.ifsc)) {
+			  errors.ifsc = "Please enter a valid ifsc code";
+			}
+		  }
+
+		  // Check if swift code is valid
+		const swiftReg ="^[A-Z]{4}[-]{0,1}[A-Z]{2}[-]{0,1}[A-Z0-9]{2}[-]{0,1}[0-9]{3}$";
+		if (values.bank?.swiftCode) {
+			if (!swiftReg.test(values.bank.swiftCode)) {
+			  errors.swiftCode = "Please enter a valid swift code";
+			}
+		  }
+
 		// Check if phone number valid
 		if (values.personalDetails.phone) {
 			const regex = /^\d{10}$/;
 			if (regex.test(values.personalDetails.phone)) {
 			  errors.phone = "Please enter a valid phone number";
 			}
+		  }
+
+		  // check if bank account number matches
+		  if(values.bank.accountNumber!==values.bank.confirmNumber){
+			errors.confirmNumber = "Account number and confirm number must be similar";
 		  }
 
 		// Check if password is valid
@@ -239,7 +489,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			}
 		});
 
-		console.log("validate form ", validateForm(values))
+		console.log("validate form ", values)
 
 		if(_.isEmpty(validateForm(values))){
 			let requestData = {
@@ -247,7 +497,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 				...values,
 				personalDetails: {
 					...values.personalDetails,
-					countryCode: "+91",
 					timezone: {
 						time_zone: "sunt",
 						utc_offset: "est ea Lorem",
@@ -272,9 +521,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 			nextStep();
 			
 		}
-
-		
-		
 	};
 
 	return (
@@ -338,21 +584,36 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-									{/* <FieldInput
-										name='personalDetails.jobTitle'
-										label='Job Title'
-									/> */}
+									
 									<Field name='personalDetails.countryCode'>
 										{props => {
 											const { field, meta } = props || {};
 											return (
 												<div style={{ display: "flex" }}>
-													<DropdownWithSearch
+													<FormControl sx={{width: "90px"}}>
+														<InputLabel id="entity-label">Code</InputLabel>
+														<Select
+															sx={{width: "90px"}}
+															name='company.countryCode'
+															labelId="entity-label"
+															label="Code"
+															error={Boolean(errors?.countryCode)}
+															helperText={errors?.countryCode}
+															size="small"
+															value={countryDialingCode ?? null}
+															onChange={(e) => setCountryDialingCode(e.target.value)}
+														>
+															{countryDialingCodes.map(code =>
+																<MenuItem value={code} >{code}</MenuItem>
+															)}
+														</Select>
+													</FormControl>
+													{/* <DropdownWithSearch
 														style={{ width: "70px" }}
 														name={field.name}
 														placeholder='Country Code'
-														options={countries?.map(
-															({ phonecode, name }) => `${name} (${phonecode})`
+														options={countryDialingCodes?.map(
+															(code) => `${code}`
 														)}
 														value={field.value}
 														handleOnChange={({ key, value }) => {
@@ -364,7 +625,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 															error: meta.touched && meta.error ? true : false,
 															helperText:
 																meta.touched && meta.error ? meta.error : null,
-														}}></DropdownWithSearch>
+														}}></DropdownWithSearch> */}
 
 													<FieldInput
 														name='personalDetails.phone'
@@ -391,19 +652,21 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput
+									<TimezoneSelect
+										name='personalDetails.timezone'
+										label='Time Zone'
+										value={selectedTimezone}
+										onChange={setSelectedTimezone}
+										error={Boolean(errors?.timezone)}
+										helperText={errors?.timezone}
+									/>
+									{/* <FieldInput
 										name='personalDetails.timezone'
 										label='Time Zone'
 										error={Boolean(errors?.timezone)}
 										helperText={errors?.timezone}
-									/>
+									/> */}
 								</Grid>
-								{/* <Grid item md={6} sm={6} xs={12}>
-									<FieldInput
-										name='personalDetails.password'
-										label='Password'
-									/>
-								</Grid> */}
 							</Grid>
 						</Box>
 
@@ -453,19 +716,37 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput
+									<FormControl fullWidth>
+										<InputLabel id="entity-label">Entity Type</InputLabel>
+										<Select
+											name='company.entityType'
+											labelId="entity-label"
+											label="Entity Type"
+											error={Boolean(errors?.entityType)}
+											helperText={errors?.entityType}
+											fullWidth
+											size="small"
+											value={entityTypeValue ?? null}
+											onChange={(e) => setEntityTypeValue(e.target.value)}
+										>
+											{enityTypeOption.map(entityType =>
+												<MenuItem value={entityType} >{entityType}</MenuItem>
+											)}
+										</Select>
+									</FormControl>
+									{/* <FieldInput
 										type='text'
 										name='company.entityType'
 										label='Entity Type'
 										error={Boolean(errors?.entityType)}
 										helperText={errors?.entityType}
-									/>
+									/> */}
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										name='company.taxNumber'
-										label='Tax Number or VAT'
+										label='GST/ VAT/ Tax Number'
 										error={Boolean(errors?.taxNumber)}
 										helperText={errors?.taxNumber}
 										onChange={({ target: { value } }) => {
@@ -478,12 +759,44 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
+										name='company.entityRegistrationNumber'
+										label='Entity Registration Number'
+										error={Boolean(errors?.entityRegistrationNumber)}
+										helperText={errors?.entityRegistrationNumber}
+										onChange={({ target: { value } }) => {
+											const { current: { setFieldValue } = {} } = form || {};
+
+											setFieldValue("company.entityRegistrationNumber", value?.toUpperCase());
+										}}
+									/>
+								</Grid>
+
+								<Grid item md={6} sm={6} xs={12}>
+								<FormControl fullWidth>
+										<InputLabel id="entity-label">Registered Country</InputLabel>
+										<Select
+											labelId="entity-label"
+											name='company.country'
+											label='Registered Country' 
+											error={Boolean(errors?.country)}
+											helperText={errors?.country}
+											fullWidth
+											size="small"
+											value={country ?? null}
+											onChange={(e) => setCountry(e.target.value)}
+										>
+											{countryList.map(country =>
+												<MenuItem value={country} >{country}</MenuItem>
+											)}
+										</Select>
+									</FormControl>
+									{/* <FieldInput
 										type='text'
 										name='company.country'
 										label='Registered Country'
 										error={Boolean(errors?.country)}
 										helperText={errors?.country}
-									/>
+									/> */}
 								</Grid>
 							</Grid>
 						</Box>
@@ -551,6 +864,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
+								
 									<FieldInput 
 										name='address.country' 
 										label='Country' 
