@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { phoneRegExp } from "utils/validations";
 import TimezoneSelect from 'react-timezone-select'
 import * as Yup from "yup";
+import { PersistFormikValues } from 'formik-persist-values';
 
 
 const Step1 = ({ data, setData, nextStep }) => {
@@ -216,8 +217,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 		"Yemen",
 		"Zambia",
 		"Zimbabwe"
-	  ];	 
-	  const countryDialingCodes = [
+	];
+	const countryDialingCodes = [
 		"+93", "+355", "+213", "+376", "+244", "+1", "+54", "+374", "+61", "+43",
 		"+994", "+1", "+973", "+880", "+1", "+375", "+32", "+501", "+229", "+975",
 		"+591", "+387", "+267", "+55", "+673", "+359", "+226", "+257", "+225",
@@ -238,17 +239,44 @@ const Step1 = ({ data, setData, nextStep }) => {
 		"+597", "+268", "+46", "+41", "+963", "+992", "+255", "+66", "+670", "+228",
 		"+676", "+1", "+216", "+90", "+993", "+688", "+256", "+380", "+971", "+44",
 		"+1", "+598", "+998", "+678", "+58", "+84", "+967", "+260", "+263"
-	  ];
-	   
+	];
+
+
 
 	const [bankField, setBankField] = useState({});
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [entityTypeValue, setEntityTypeValue] = useState("");
 	const [country, setCountry] = useState("");
 	const [countryDialingCode, setCountryDialingCode] = useState("");
-	const [selectedTimezone, setSelectedTimezone] =useState(
+	const [selectedTimezone, setSelectedTimezone] = useState(
 		Intl.DateTimeFormat().resolvedOptions().timeZone
-	  )
+	)
+
+	const [email, setEmail] = useState('');
+	const [firstName, setFirstName] = useState('');
+	const [jobTitle, setJobTitle] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [phone, setPhone] = useState('');
+  
+	// Separate state variables for the second set of fields
+	const [companyName, setCompanyName] = useState('');
+	const [employeeCount, setEmployeeCount] = useState('');
+	const [entityRegistrationNumber, setEntityRegistrationNumber] = useState('');
+	const [entityType, setEntityType] = useState('');
+	const [studentPerYear, setStudentPerYear] = useState('');
+	const [taxNumber, setTaxNumber] = useState('');
+	const [yearFounded, setYearFounded] = useState('');
+	const [accountNumber, setAccountNumber] = useState('');
+	const [bankName, setBankName] = useState('');
+	const [confirmNumber, setConfirmNumber] = useState('');
+	const [ifsc, setIfsc] = useState('');
+	const [name, setName] = useState('');
+	const [swiftCode, setSwiftCode] = useState('');
+	const [address, setAddress] = useState('');
+	const [city, setCity] = useState('');
+	const [state, setState] = useState('');
+	const [zipCode, setZipCode] = useState('');
+	const [adddressCountry, setAddressCountry] = useState('');
 
 	const [errors, setErrors] = useState();
 
@@ -334,7 +362,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			jobTitle: "",
 			timezone: ""
 		},
-	
+
 		company: {
 			yearFounded: "",
 			companyName: "",
@@ -345,7 +373,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			country: country,
 			entityRegistrationNumber: ""
 		},
-	
+
 		address: {
 			address: "",
 			city: "",
@@ -353,7 +381,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			zipCode: "",
 			country: null,
 		},
-	
+
 		bank: {
 			name: "",
 			bankName: "",
@@ -367,68 +395,68 @@ const Step1 = ({ data, setData, nextStep }) => {
 		const errors = {};
 		// Check if all fields are required
 
-		const pd ={ ...values.personalDetails}
+		const pd = { ...values.personalDetails }
 		Object.keys(pd).forEach((key) => {
-		  if (!pd[key]) {
-			errors[key] = `${_.startCase(key)} is required`;
-		  }
+			if (!pd[key]) {
+				errors[key] = `${_.startCase(key)} is required`;
+			}
 		});
 
 		Object.keys(values.company).forEach((key) => {
-			if (!values.company[key] ) {
-			  errors[key] = `${_.startCase(key)} is required`;
+			if (!values.company[key]) {
+				errors[key] = `${_.startCase(key)} is required`;
 			}
-		  });
+		});
 
-		  Object.keys(values.address).forEach((key) => {
-			if (!values.address[key] ) {
-			  errors[key] = `${_.startCase(key)} is required`;
+		Object.keys(values.address).forEach((key) => {
+			if (!values.address[key]) {
+				errors[key] = `${_.startCase(key)} is required`;
 			}
-		  });
+		});
 
-		  Object.keys(values.bank).forEach((key) => {
-			if (!values.bank[key] ) {
-			  errors[key] = `${_.startCase(key)} is required`;
+		Object.keys(values.bank).forEach((key) => {
+			if (!values.bank[key]) {
+				errors[key] = `${_.startCase(key)} is required`;
 			}
-		  });
-	  
+		});
+
 		// Check if email is valid
 		if (values.personalDetails.email) {
-		  if (!/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(values.personalDetails.email)) {
-			errors.email = "Please enter a valid email address";
-		  }
+			if (!/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(values.personalDetails.email)) {
+				errors.email = "Please enter a valid email address";
+			}
 		}
 
-		
+
 
 		// Check if ifsc code is valid
-		const ifscReg = "^[A-Z]{4}[0][A-Z0-9]{6}$";
+		const ifscReg = /^[A-Z]{4}[0][A-Z0-9]{6}$/;
 		if (values.bank?.ifsc) {
 			if (!ifscReg.test(values.bank.ifsc)) {
-			  errors.ifsc = "Please enter a valid ifsc code";
+				errors.ifsc = "Please enter a valid ifsc code";
 			}
-		  }
+		}
 
-		  // Check if swift code is valid
-		const swiftReg ="^[A-Z]{4}[-]{0,1}[A-Z]{2}[-]{0,1}[A-Z0-9]{2}[-]{0,1}[0-9]{3}$";
+		// Check if swift code is valid
+		const swiftReg = /^[A-Z]{4}[-]?[A-Z]{2}[-]?[A-Z0-9]{2}[-]?[0-9]{3}$/;
 		if (values.bank?.swiftCode) {
 			if (!swiftReg.test(values.bank.swiftCode)) {
-			  errors.swiftCode = "Please enter a valid swift code";
+				errors.swiftCode = "Please enter a valid swift code";
 			}
-		  }
+		}
 
 		// Check if phone number valid
 		if (values.personalDetails.phone) {
 			const regex = /^\d{10}$/;
-			if (regex.test(values.personalDetails.phone)) {
-			  errors.phone = "Please enter a valid phone number";
+			if (!regex.test(values.personalDetails.phone)) {
+				errors.phone = "Please enter a valid phone number";
 			}
-		  }
+		}
 
-		  // check if bank account number matches
-		  if(values.bank.accountNumber!==values.bank.confirmNumber){
+		// check if bank account number matches
+		if (values.bank.accountNumber !== values.bank.confirmNumber) {
 			errors.confirmNumber = "Account number and confirm number must be similar";
-		  }
+		}
 
 		// Check if password is valid
 		// if (values.personalDetails.password) {
@@ -439,9 +467,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 		setErrors(errors);
 		return errors;
-	  };
+	};
 
 	const onSubmit = values => {
+		
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -483,43 +512,85 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 				setData(requestData);
 
-				
+
 			} else {
 				toast.error("Email Already Exists");
 			}
 		});
 
-		console.log("validate form ", values)
+		const dataValues = {
+			personalDetails: {
+				firstName,
+				lastName,
+				email,
+				countryCode: countryDialingCode,
+				phone,
+				jobTitle,
+				timezone
+			},
+	
+			company: {
+				yearFounded,
+				companyName,
+				employeeCount,
+				studentPerYear,
+				entityType: entityTypeValue,
+				taxNumber,
+				country: country,
+				entityRegistrationNumber
+			},
+	
+			address: {
+				address,
+				city,
+				state,
+				zipCode,
+				country: adddressCountry,
+			},
+	
+			bank: {
+				name,
+				bankName,
+				accountNumber,
+				confirmNumber,
+				swiftCode,
+				ifsc
+			},
+		};
 
-		if(_.isEmpty(validateForm(values))){
+		
+		console.log("validate form ", validateForm(dataValues))
+		console.log("onSubmit called" )
+
+		if (_.isEmpty(validateForm(dataValues))) {
 			let requestData = {
 				...data,
-				...values,
+				...dataValues,
 				personalDetails: {
-					...values.personalDetails,
+					...dataValues.personalDetails,
 					timezone: {
 						time_zone: "sunt",
 						utc_offset: "est ea Lorem",
 						name: "ut"
-					  },
+					},
 				},
 				bank: {
-					name: values?.bank?.name,
-					bankName: values?.bank?.bankName,
-					accountNumber: values?.bank?.accountNumber,
-					confirmNumber: values?.bank?.confirmNumber,
-					swiftCode: values?.bank?.swiftCode,
+					name: dataValues?.bank?.name,
+					bankName: dataValues?.bank?.bankName,
+					accountNumber: dataValues?.bank?.accountNumber,
+					confirmNumber: dataValues?.bank?.confirmNumber,
+					swiftCode: dataValues?.bank?.swiftCode,
 					extraField: {
 						"key": "ifsc",
 						"value": "IFSC Code",
-						"data": values?.bank?.ifsc
-					  }
+						"data": dataValues?.bank?.ifsc
+					}
 				},
 			};
 
 			setData(requestData);
 			nextStep();
-			
+
 		}
 	};
 
@@ -545,6 +616,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='First Name'
 										error={Boolean(errors?.firstName)}
 										helperText={errors?.firstName}
+										value={firstName}
+										onChange={(e)=> setFirstName(e.target.value)}
 									/>
 								</Grid>
 
@@ -554,6 +627,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Last Name'
 										error={Boolean(errors?.lastName)}
 										helperText={errors?.lastName}
+										value={lastName}
+										onChange={(e)=> setLastName(e.target.value)}
 									/>
 								</Grid>
 
@@ -564,10 +639,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='email'
 										error={Boolean(errors?.email)}
 										helperText={errors?.email}
+										value={email}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
 
 											setFieldValue("personalDetails.email", value);
+											setEmail(value);
 
 											if (!value) return;
 
@@ -584,16 +661,16 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-									
+
 									<Field name='personalDetails.countryCode'>
 										{props => {
 											const { field, meta } = props || {};
 											return (
 												<div style={{ display: "flex" }}>
-													<FormControl sx={{width: "90px"}}>
+													<FormControl sx={{ width: "90px" }}>
 														<InputLabel id="entity-label">Code</InputLabel>
 														<Select
-															sx={{width: "90px"}}
+															sx={{ width: "90px" }}
 															name='company.countryCode'
 															labelId="entity-label"
 															label="Code"
@@ -634,6 +711,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 														type='tel'
 														error={Boolean(errors?.phone)}
 														helperText={errors?.phone}
+														value={phone}
+														onChange={(e)=> setPhone(e.target.value)}
 													/>
 												</div>
 											);
@@ -648,6 +727,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										// style={{ marginLeft: "23px" }}
 										error={Boolean(errors?.jobTitle)}
 										helperText={errors?.jobTitle}
+										value={jobTitle}
+										onChange={(e)=> setJobTitle(e.target.value)}
 									/>
 								</Grid>
 
@@ -677,12 +758,14 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 							<Grid container spacing={1} mt={0}>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput 
-										name='company.companyName' 
-										label='Company Name' 
+									<FieldInput
+										name='company.companyName'
+										label='Company Name'
 										error={Boolean(errors?.companyName)}
 										helperText={errors?.companyName}
-										/>
+										value={companyName}
+										onChange={(e)=> setCompanyName(e.target.value)}
+									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
@@ -692,6 +775,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Year Founded'
 										error={Boolean(errors?.yearFounded)}
 										helperText={errors?.yearFounded}
+										value={yearFounded}
+										onChange={(e)=> setYearFounded(e.target.value)}
 									/>
 								</Grid>
 
@@ -702,6 +787,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Employee Count'
 										error={Boolean(errors?.employeeCount)}
 										helperText={errors?.employeeCount}
+										value={employeeCount}
+										onChange={(e)=> setEmployeeCount(e.target.value)}
 									/>
 								</Grid>
 
@@ -712,6 +799,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Students per Year'
 										error={Boolean(errors?.studentPerYear)}
 										helperText={errors?.studentPerYear}
+										value={studentPerYear}
+										onChange={(e)=> setStudentPerYear(e.target.value)}
 									/>
 								</Grid>
 
@@ -749,9 +838,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='GST/ VAT/ Tax Number'
 										error={Boolean(errors?.taxNumber)}
 										helperText={errors?.taxNumber}
+										value={taxNumber}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
-
+											setTaxNumber(value)
 											setFieldValue("company.taxNumber", value?.toUpperCase());
 										}}
 									/>
@@ -763,21 +853,22 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Entity Registration Number'
 										error={Boolean(errors?.entityRegistrationNumber)}
 										helperText={errors?.entityRegistrationNumber}
+										value={entityRegistrationNumber}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
-
+											setEntityRegistrationNumber(value);
 											setFieldValue("company.entityRegistrationNumber", value?.toUpperCase());
 										}}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-								<FormControl fullWidth>
+									<FormControl fullWidth>
 										<InputLabel id="entity-label">Registered Country</InputLabel>
 										<Select
 											labelId="entity-label"
 											name='company.country'
-											label='Registered Country' 
+											label='Registered Country'
 											error={Boolean(errors?.country)}
 											helperText={errors?.country}
 											fullWidth
@@ -808,12 +899,14 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 							<Grid container spacing={1} mt={0}>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput 
-										name='address.address' 
-										label='Address' 
+									<FieldInput
+										name='address.address'
+										label='Address'
 										error={Boolean(errors?.address)}
 										helperText={errors?.address}
-										/>
+										value={address}
+										onChange={(e)=> setAddress(e.target.value)}
+									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
@@ -823,9 +916,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.zipCode)}
 										helperText={errors?.zipCode}
 										placeholder='Postal Code'
+										value={zipCode}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
-
+											setZipCode(value)
 											setFieldValue("address.zipCode", value);
 
 											if (!value) return;
@@ -846,31 +940,37 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
-									<FieldInput 
-										name='address.city' 
+									<FieldInput
+										name='address.city'
 										label='City'
 										error={Boolean(errors?.city)}
-										helperText={errors?.city} 
-										/>
+										helperText={errors?.city}
+										value={city}
+										onChange={(e)=> setCity(e.target.value)}
+									/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
-									<FieldInput 
-										name='address.state' 
-										label='State' 
+									<FieldInput
+										name='address.state'
+										label='State'
 										error={Boolean(errors?.state)}
 										helperText={errors?.state}
-										/>
+										value={state}
+										onChange={(e)=> setState(e.target.value)}
+									/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
-								
-									<FieldInput 
-										name='address.country' 
-										label='Country' 
+
+									<FieldInput
+										name='address.country'
+										label='Country'
 										error={Boolean(errors?.country)}
 										helperText={errors?.country}
-										/>
+										value={adddressCountry}
+										onChange={(e)=> setAddressCountry(e.target.value)}
+									/>
 								</Grid>
 							</Grid>
 						</Box>
@@ -882,21 +982,25 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 							<Grid container spacing={1} mt={0}>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput 
-										name='bank.name' 
-										label='Account Holder Name' 
+									<FieldInput
+										name='bank.name'
+										label='Account Holder Name'
 										error={Boolean(errors?.name)}
 										helperText={errors?.name}
-										/>
+										value={name}
+										onChange={(e)=> setName(e.target.value)}
+									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput 
-										name='bank.bankName' 
-										label='Bank Name' 
+									<FieldInput
+										name='bank.bankName'
+										label='Bank Name'
 										error={Boolean(errors?.bankName)}
 										helperText={errors?.bankName}
-										/>
+										value={bankName}
+										onChange={(e)=> setBankName(e.target.value)}
+									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
@@ -905,6 +1009,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Account Number'
 										error={Boolean(errors?.accountNumber)}
 										helperText={errors?.accountNumber}
+										value={accountNumber}
+										onChange={(e)=> setAccountNumber(e.target.value)}
 									/>
 								</Grid>
 
@@ -914,15 +1020,19 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Confirm Account Number'
 										error={Boolean(errors?.confirmNumber)}
 										helperText={errors?.confirmNumber}
+										value={confirmNumber}
+										onChange={(e)=> setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
 								<Grid item md={6} sm={6} xs={12}>
-									<FieldInput 
-										name='bank.ifsc' 
-										label='IFSC Code' 
+									<FieldInput
+										name='bank.ifsc'
+										label='IFSC Code'
 										error={Boolean(errors?.ifsc)}
 										helperText={errors?.ifsc}
-										/>
+										value={ifsc}
+										onChange={(e)=> setIfsc(e.target.value)}
+									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
@@ -931,9 +1041,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 										label='Swift Code'
 										error={Boolean(errors?.swiftCode)}
 										helperText={errors?.swiftCode}
+										value={swiftCode}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
-
+											setSwiftCode(value);
 											setFieldValue("bank.swiftCode", value?.toUpperCase());
 										}}
 									/>
