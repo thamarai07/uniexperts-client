@@ -1,25 +1,30 @@
-public class Sol {
-
-    public static int countOccur(String parent, String sub) {
-        int answer = 0;
-        int lastIndex = 0;
-
-        while (lastIndex != -1) {
-            lastIndex = parent.indexOf(sub, lastIndex);
-            if (lastIndex != -1) {
-                answer++;
-                lastIndex += sub.length();
-            }
-        }
-
-        return answer;
+public class Sol{
+    public static void main(String[] args){
+        int nums[] = {4,5,6,7,0,1,2};
+        int p = binarySearch(nums, 0, nums.length, nums.length/2);
+        System.out.println("P: "+p);
     }
 
-    public static void main(String[] args) {
-        String parent = "hello world, hello universe, hello hello";
-        String sub = "hello";
+    public static int binarySearch(int arr[], int start, int end, int index){
+        
+        if(arr[index+1]>arr[index] && arr[index-1]>arr[index]){
+            return index;
+        }
 
-        int occurrenceCount = countOccur(parent, sub);
-        System.out.println("Occurrences of '" + sub + "': " + occurrenceCount);
+        binarySearch(arr, start, index, (start+index)/2);
+        binarySearch(arr, index, end, (index+end)/2);
+        return -1;
+        
+    }
+}
+
+public class SingletonClass{
+    private SingletonClass singletonClass;
+    public static SingletonClass createInstance(){
+        if(singletonClass!=null){
+            singletonClass = new SingletonClass();
+        }
+
+        return singletonClass;
     }
 }

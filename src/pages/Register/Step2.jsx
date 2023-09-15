@@ -49,7 +49,7 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 			const reqData = { ...data, password: values.password };
 			signup(reqData).then(res => {
 				console.log("res", res)
-				
+				localStorage.setItem("token", res.data.data.token);
 			})
 
 			nextStep();

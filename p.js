@@ -1,6 +1,7 @@
 // Online Javascript Editor for free
 // Write, Edit and Run your Javascript code using JS Online Compiler
 
+const { combineReducers } = require("@reduxjs/toolkit")
 const { useEffect } = require("react")
 
 // const data = {
@@ -51,3 +52,7 @@ const useCheckOnline = () => {
     return isOnline;
 
 }
+
+
+
+

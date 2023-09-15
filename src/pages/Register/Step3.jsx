@@ -1,9 +1,13 @@
 import { borderRadius } from "@mui/system";
 import React, { useState } from "react";
 import { Box, Button } from "@mui/material";
+import S3 from './aws';
+import { uploadAgentDocuments } from "apis/agent";
+// import axios from 'axios';
 
 const Step3 = ({ data = {}, setData, nextStep }) => {
-	const [selectedFile, setSelectedFile] = useState([]);
+	const [selectedFile, setSelectedFile] = useState({});
+	const [files, setFiles] = useState({});
 
 	const handleFileChange = event => {
 		const file = event.target.files[0];
@@ -15,8 +19,54 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 		//setSelectedFile(fileArr);
 	};
 	const handleSubmit = values => {
-		console.log("button click");
-		nextStep();
+		const requiredKeys = [
+			'personal_identification',
+			'tax_registration_certificate',
+			'bank_statement',
+			'address_proof',
+			'company_registration_certificate'
+		];
+
+
+		console.log("files: ", files);
+
+		if (requiredKeys.every(key => files.hasOwnProperty(key))) {
+			const data = {
+				"documents": [
+					{
+						"url": files['personal_identification'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['tax_registration_certificate'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['bank_statement'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['address_proof'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['company_registration_certificate'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+				]
+			}
+
+			uploadAgentDocuments(data).then(res => {
+				console.log("res", res);
+				nextStep();
+			})
+
+		} else {
+			alert("Please upload all the files");
+		}
+
+
+
 		// dispatch(setLoader(true));
 		// signup({ ...data, password: values.password })
 		// 	.then(userDetails => {
@@ -25,6 +75,24 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 		// 		// history.push(RouteNames.upload_documents);
 		// 	})
 		// 	.finally(() => dispatch(setLoader(false)));
+	};
+
+	const handleFileUpload = async (event) => {
+		const file = event.target.files[0];
+		const fileName = file.name;
+
+		const params = {
+			Bucket: 'uniexpert',
+			Key: fileName, // Name of the file in your S3 bucket
+			Body: file,
+		};
+
+		try {
+			const uploadedFile = await S3.upload(params).promise();
+			setFiles({ ...files, [event.target.name]: uploadedFile.Location })
+		} catch (error) {
+			console.error('Error uploading file:', error);
+		}
 	};
 
 	const handleUpload = () => {
@@ -50,8 +118,9 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					Personal Identification
 				</label>
 				<input
+					name="personal_identification"
 					type='file'
-					onChange={handleFileChange}
+					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
 						height: "40px",
@@ -85,8 +154,9 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					Tax Registration Certificate
 				</label>
 				<input
+					name="tax_registration_certificate"
 					type='file'
-					onChange={handleFileChange}
+					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
 						height: "40px",
@@ -120,7 +190,8 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 				</label>
 				<input
 					type='file'
-					onChange={handleFileChange}
+					name="bank_statement"
+					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
 						height: "40px",
@@ -155,7 +226,8 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 				</label>
 				<input
 					type='file'
-					onChange={handleFileChange}
+					onChange={handleFileUpload}
+					name="address_proof"
 					style={{
 						border: "2px solid gray",
 						height: "40px",
@@ -186,10 +258,12 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						marginTop: "9px",
 					}}>
 					Company registration Certificate
+
 				</label>
 				<input
 					type='file'
-					onChange={handleFileChange}
+					name="company_registration_certificate"
+					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
 						height: "40px",

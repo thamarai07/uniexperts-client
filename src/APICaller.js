@@ -10,7 +10,7 @@ const APICaller = ({ url, method, data, params }) => {
 	console.log(`url: ${url}`)
 	let updatedUrl = createURL(url);
 
-	const token = _getToken();
+	const token = _getToken() | localStorage.getItem('token');
 
 	const requestParams = {
 		method,
