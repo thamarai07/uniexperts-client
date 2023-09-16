@@ -39,7 +39,7 @@ export const signup = data =>
 		APICaller({ url: "/auth/signup", method: "POST", data })
 			.then(({ token, ...restDetails }) => {
 				_setToken(token);
-				resolve(restDetails);
+				resolve({ token, ...restDetails });
 			})
 			.catch(error => {
 				console.log(error);

@@ -56,10 +56,13 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 				]
 			}
 
-			uploadAgentDocuments(data).then(res => {
+			uploadAgentDocuments(data)
+			.then(res => {
 				console.log("res", res);
 				nextStep();
 			})
+			.catch(err=> console.log("error", err))
+			.finally(()=> localStorage.clear());
 
 		} else {
 			alert("Please upload all the files");

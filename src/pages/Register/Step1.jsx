@@ -510,8 +510,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 					};
 				}
 
-				setData(requestData);
-
 
 			} else {
 				toast.error("Email Already Exists");

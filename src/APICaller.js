@@ -7,10 +7,10 @@ const createURL = url => "http://65.0.131.213/api" + url;
 
 
 const APICaller = ({ url, method, data, params }) => {
-	console.log(`url: ${url}`)
+	
 	let updatedUrl = createURL(url);
 
-	const token = _getToken() | localStorage.getItem('token');
+	let token = _getToken() 
 
 	const requestParams = {
 		method,
@@ -54,7 +54,6 @@ const APICaller = ({ url, method, data, params }) => {
 			if (res.meta) {
 				return { data: res.data, meta: res.meta };
 			}
-
 			return res.data;
 		});
 };

@@ -48,11 +48,12 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 
 			const reqData = { ...data, password: values.password };
 			signup(reqData).then(res => {
-				console.log("res", res)
-				localStorage.setItem("token", res.data.data.token);
+				console.log("res: ", res)
+				console.log("res token: ", res.token)
+				localStorage.setItem("token", res.token);
 			})
 
-			nextStep();
+			//nextStep();
 			
 		}
 	};
