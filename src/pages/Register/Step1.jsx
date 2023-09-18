@@ -257,7 +257,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const [jobTitle, setJobTitle] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [phone, setPhone] = useState('');
-  
+
 	// Separate state variables for the second set of fields
 	const [companyName, setCompanyName] = useState('');
 	const [employeeCount, setEmployeeCount] = useState('');
@@ -379,7 +379,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			city: "",
 			state: "",
 			zipCode: "",
-			country: null,
+			country: adddressCountry,
 		},
 
 		bank: {
@@ -470,7 +470,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	};
 
 	const onSubmit = values => {
-		
+
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -526,7 +526,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				jobTitle,
 				timezone
 			},
-	
+
 			company: {
 				yearFounded,
 				companyName,
@@ -537,7 +537,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				country: country,
 				entityRegistrationNumber
 			},
-	
+
 			address: {
 				address,
 				city,
@@ -545,7 +545,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				zipCode,
 				country: adddressCountry,
 			},
-	
+
 			bank: {
 				name,
 				bankName,
@@ -556,9 +556,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 			},
 		};
 
-		
+
 		console.log("validate form ", validateForm(dataValues))
-		console.log("onSubmit called" )
+		console.log("onSubmit called")
 
 		if (_.isEmpty(validateForm(dataValues))) {
 			let requestData = {
@@ -615,7 +615,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.firstName)}
 										helperText={errors?.firstName}
 										value={firstName}
-										onChange={(e)=> setFirstName(e.target.value)}
+										onChange={(e) => setFirstName(e.target.value)}
 									/>
 								</Grid>
 
@@ -626,7 +626,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.lastName)}
 										helperText={errors?.lastName}
 										value={lastName}
-										onChange={(e)=> setLastName(e.target.value)}
+										onChange={(e) => setLastName(e.target.value)}
 									/>
 								</Grid>
 
@@ -710,7 +710,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 														error={Boolean(errors?.phone)}
 														helperText={errors?.phone}
 														value={phone}
-														onChange={(e)=> setPhone(e.target.value)}
+														onChange={(e) => setPhone(e.target.value)}
 													/>
 												</div>
 											);
@@ -726,7 +726,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.jobTitle)}
 										helperText={errors?.jobTitle}
 										value={jobTitle}
-										onChange={(e)=> setJobTitle(e.target.value)}
+										onChange={(e) => setJobTitle(e.target.value)}
 									/>
 								</Grid>
 
@@ -762,7 +762,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.companyName)}
 										helperText={errors?.companyName}
 										value={companyName}
-										onChange={(e)=> setCompanyName(e.target.value)}
+										onChange={(e) => setCompanyName(e.target.value)}
 									/>
 								</Grid>
 
@@ -774,7 +774,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.yearFounded)}
 										helperText={errors?.yearFounded}
 										value={yearFounded}
-										onChange={(e)=> setYearFounded(e.target.value)}
+										onChange={(e) => setYearFounded(e.target.value)}
 									/>
 								</Grid>
 
@@ -786,7 +786,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.employeeCount)}
 										helperText={errors?.employeeCount}
 										value={employeeCount}
-										onChange={(e)=> setEmployeeCount(e.target.value)}
+										onChange={(e) => setEmployeeCount(e.target.value)}
 									/>
 								</Grid>
 
@@ -798,7 +798,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.studentPerYear)}
 										helperText={errors?.studentPerYear}
 										value={studentPerYear}
-										onChange={(e)=> setStudentPerYear(e.target.value)}
+										onChange={(e) => setStudentPerYear(e.target.value)}
 									/>
 								</Grid>
 
@@ -903,7 +903,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.address)}
 										helperText={errors?.address}
 										value={address}
-										onChange={(e)=> setAddress(e.target.value)}
+										onChange={(e) => setAddress(e.target.value)}
 									/>
 								</Grid>
 
@@ -944,7 +944,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.city)}
 										helperText={errors?.city}
 										value={city}
-										onChange={(e)=> setCity(e.target.value)}
+										onChange={(e) => setCity(e.target.value)}
 									/>
 								</Grid>
 
@@ -955,20 +955,38 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.state)}
 										helperText={errors?.state}
 										value={state}
-										onChange={(e)=> setState(e.target.value)}
+										onChange={(e) => setState(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
+									<FormControl fullWidth>
+										<InputLabel id="entity-label"> Country</InputLabel>
+										<Select
+											labelId="entity-label"
+											name='address.addressCountry'
+											label='Country'
+											error={Boolean(errors?.country)}
+											helperText={errors?.country}
+											fullWidth
+											size="small"
+											value={adddressCountry ?? null}
+											onChange={(e) => setAddressCountry(e.target.value)}
+										>
+											{countryList.map(country =>
+												<MenuItem value={country} >{country}</MenuItem>
+											)}
+										</Select>
+									</FormControl>
 
-									<FieldInput
+									{/* <FieldInput
 										name='address.country'
 										label='Country'
 										error={Boolean(errors?.country)}
 										helperText={errors?.country}
 										value={adddressCountry}
 										onChange={(e)=> setAddressCountry(e.target.value)}
-									/>
+									/> */}
 								</Grid>
 							</Grid>
 						</Box>
@@ -986,7 +1004,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.name)}
 										helperText={errors?.name}
 										value={name}
-										onChange={(e)=> setName(e.target.value)}
+										onChange={(e) => setName(e.target.value)}
 									/>
 								</Grid>
 
@@ -997,7 +1015,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.bankName)}
 										helperText={errors?.bankName}
 										value={bankName}
-										onChange={(e)=> setBankName(e.target.value)}
+										onChange={(e) => setBankName(e.target.value)}
 									/>
 								</Grid>
 
@@ -1008,7 +1026,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.accountNumber)}
 										helperText={errors?.accountNumber}
 										value={accountNumber}
-										onChange={(e)=> setAccountNumber(e.target.value)}
+										onChange={(e) => setAccountNumber(e.target.value)}
 									/>
 								</Grid>
 
@@ -1019,7 +1037,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.confirmNumber)}
 										helperText={errors?.confirmNumber}
 										value={confirmNumber}
-										onChange={(e)=> setConfirmNumber(e.target.value)}
+										onChange={(e) => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
 								<Grid item md={6} sm={6} xs={12}>
@@ -1029,7 +1047,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										error={Boolean(errors?.ifsc)}
 										helperText={errors?.ifsc}
 										value={ifsc}
-										onChange={(e)=> setIfsc(e.target.value)}
+										onChange={(e) => setIfsc(e.target.value)}
 									/>
 								</Grid>
 

@@ -50,10 +50,10 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 			signup(reqData).then(res => {
 				console.log("res: ", res)
 				console.log("res token: ", res.token)
-				localStorage.setItem("token", res.token);
+				//localStorage.setItem("token", res.token);
 			})
 
-			//nextStep();
+			nextStep();
 			
 		}
 	};
