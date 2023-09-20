@@ -556,10 +556,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 			},
 		};
 
-
-		console.log("validate form ", validateForm(dataValues))
-		console.log("onSubmit called")
-
 		if (_.isEmpty(validateForm(dataValues))) {
 			let requestData = {
 				...data,
@@ -664,11 +660,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 										{props => {
 											const { field, meta } = props || {};
 											return (
-												<div style={{ display: "flex" }}>
+												<div style={{ display: "flex", justifyContent:"center", alignItems:"center" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel id="entity-label">Code</InputLabel>
+														<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Code</InputLabel>
 														<Select
-															sx={{ width: "90px" }}
+															sx={{ width: "90px", height:"37px" }}
 															name='company.countryCode'
 															labelId="entity-label"
 															label="Code"
@@ -804,8 +800,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel id="entity-label">Entity Type</InputLabel>
+										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Entity Type</InputLabel>
 										<Select
+											sx={{height:"37px" }}
 											name='company.entityType'
 											labelId="entity-label"
 											label="Entity Type"
@@ -862,8 +859,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel id="entity-label">Registered Country</InputLabel>
+										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Registered Country</InputLabel>
 										<Select
+											sx={{height:"37px" }}
 											labelId="entity-label"
 											name='company.country'
 											label='Registered Country'
@@ -961,8 +959,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={4} sm={4} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel id="entity-label"> Country</InputLabel>
+										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label"> Country</InputLabel>
 										<Select
+											sx={{height:"37px" }}
 											labelId="entity-label"
 											name='address.addressCountry'
 											label='Country'
