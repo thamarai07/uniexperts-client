@@ -2,7 +2,6 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl } from "@mui/material";
 import { Box } from "@mui/system";
 import { config, signup, verifyEmail } from "apis/auth";
-import DropdownWithSearch from "components/DropdownWithSearch";
 import FieldInput from "components/FieldInput";
 import { Field, Form, Formik } from "formik";
 import _ from "lodash";
@@ -10,9 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { phoneRegExp } from "utils/validations";
-import TimezoneSelect from 'react-timezone-select'
+import TimezoneSelect, { allTimezones } from 'react-timezone-select'
 import * as Yup from "yup";
-import { PersistFormikValues } from 'formik-persist-values';
 
 
 const Step1 = ({ data, setData, nextStep }) => {
@@ -728,12 +726,19 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<TimezoneSelect
+										labelStyle="altName"
 										name='personalDetails.timezone'
 										label='Time Zone'
 										value={selectedTimezone}
 										onChange={setSelectedTimezone}
 										error={Boolean(errors?.timezone)}
 										helperText={errors?.timezone}
+										style={{background: "red"}}
+										timezones={{
+											...allTimezones,
+											"America/Lima": "Pittsburgh",
+											"Europe/Berlin": "Frankfurt"
+										  }}
 									/>
 									{/* <FieldInput
 										name='personalDetails.timezone'
