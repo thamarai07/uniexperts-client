@@ -1,4 +1,3 @@
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl } from "@mui/material";
 import { Box } from "@mui/system";
 import { config, signup, verifyEmail } from "apis/auth";
@@ -9,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { phoneRegExp } from "utils/validations";
-import TimezoneSelect, { allTimezones } from 'react-timezone-select'
+import TimezoneSelect, { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import * as Yup from "yup";
 
 
@@ -17,7 +16,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const { app: { countries = [], timezone = [] } = {} } = useSelector(
 		state => state
 	);
-
+	const labelStyle = 'original'
+	const timezones={
+		...allTimezones,
+		"America/Lima": "Pittsburgh",
+		"Europe/Berlin": "Frankfurt"
+	  }
 	const enityTypeOption = ["Private", "Partnership", "Trust", "Proprietor", "Individual"];
 	const countryList = [
 		"Afghanistan",
@@ -240,15 +244,14 @@ const Step1 = ({ data, setData, nextStep }) => {
 	];
 
 
+	const { options, parseTimezone } = useTimezoneSelect({ labelStyle, timezones })
 
 	const [bankField, setBankField] = useState({});
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [entityTypeValue, setEntityTypeValue] = useState("");
 	const [country, setCountry] = useState("");
 	const [countryDialingCode, setCountryDialingCode] = useState("");
-	const [selectedTimezone, setSelectedTimezone] = useState(
-		Intl.DateTimeFormat().resolvedOptions().timeZone
-	)
+	const [selectedTimezone, setSelectedTimezone] = useState("")
 
 	const [email, setEmail] = useState('');
 	const [firstName, setFirstName] = useState('');
@@ -467,6 +470,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 		return errors;
 	};
 
+	useEffect(()=> {
+		if(adddressCountry!=="India"){
+			setIfsc("HDFC0000128");
+		}
+	},[adddressCountry])
+
 	const onSubmit = values => {
 
 		const countryCode = values?.personalDetails?.countryCode
@@ -582,12 +591,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 			setData(requestData);
 			nextStep();
-
 		}
 	};
 
 	return (
-		<Box width={{ xs: "unset", sm: "60vw" }} maxHeight='80vh' overflow='auto'>
+		<Box width={{ xs: "unset", sm: "60vw", overflowY: "auto", }} maxHeight='80vh' >
 			<Formik
 				enableReinitialize
 				initialValues={initialValues}
@@ -725,7 +733,21 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12}>
-									<TimezoneSelect
+									<FormControl fullWidth>
+										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Time Zone</InputLabel>
+										<Select
+											size="small"
+											onChange={e => setSelectedTimezone(e.target.value)}
+											value={selectedTimezone?? null}
+											error={Boolean(errors?.timezone)}
+											helperText={errors?.timezone}
+										>
+											{options.map(option => (
+												<MenuItem value={option.value}>{option.label}</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+									{/* <TimezoneSelect
 										labelStyle="altName"
 										name='personalDetails.timezone'
 										label='Time Zone'
@@ -739,7 +761,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											"America/Lima": "Pittsburgh",
 											"Europe/Berlin": "Frankfurt"
 										  }}
-									/>
+									/> */}
 									{/* <FieldInput
 										name='personalDetails.timezone'
 										label='Time Zone'
@@ -1044,7 +1066,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
-								<Grid item md={6} sm={6} xs={12}>
+								{adddressCountry === "India" &&<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										name='bank.ifsc'
 										label='IFSC Code'
@@ -1053,7 +1075,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										value={ifsc}
 										onChange={(e) => setIfsc(e.target.value)}
 									/>
-								</Grid>
+								</Grid>}
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
