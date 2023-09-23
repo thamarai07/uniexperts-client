@@ -25,11 +25,11 @@ import { generalValidation } from "utils/validations";
 
 const General = ({
 	studentId,
-	setStudentId = () => {},
+	setStudentId = () => { },
 	staff = [],
 	intakes = [],
 	preferredCountries = [],
-	nextStep = () => {},
+	nextStep = () => { },
 }) => {
 	const {
 		user: { staff: { id: userStaffId } = {} },
@@ -47,14 +47,14 @@ const General = ({
 			passportNumber: "",
 			mobile: "",
 			whatsappNumber: "",
-			countryOfInterest: [],
+			preferredCountry: [],
 			intakePreferred: null,
-			email: "",
+			// email: "",
 		},
 
 		demographicInformation: {
 			haveMedicalHistory: null,
-			medicalHistoryDetails: "",
+			medicalHistoryDetails: "NIL",
 			maritalStatus: null,
 			country: null,
 			firstLanguage: "",
@@ -110,6 +110,7 @@ const General = ({
 	}, []);
 
 	const onSubmit = values => {
+		console.log({ values })
 		const applicantAge = differenceInYears(
 			new Date(),
 			values.demographicInformation.dateOfBirth
@@ -342,14 +343,54 @@ const General = ({
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={6}>
+							{/* <Grid item xs={12} sm={6}>
 								<FieldInput
 									name='studentInformation.email'
 									label='Email'
 									type='email'
 								/>
-							</Grid>
+							</Grid> */}
 
+							<Grid item xs={6}>
+								<Field name='studentInformation.preferredCountry'>
+									{props => {
+										const { field, meta } = props || {};
+
+										return (
+											<DropdownWithSearch
+												multiple
+												disableCloseOnSelect
+												name={field.name}
+												value={field.value}
+												placeholder='Preferred Country'
+												options={preferredCountries}
+												renderTags={(value, getTagProps) =>
+													value.map((option, index) => {
+														return (
+															<Chip
+																key={index}
+																variant='filled'
+																size='small'
+																label={option}
+																sx={{ fontSize: "0.75rem" }}
+																{...getTagProps({ index })}
+															/>
+														);
+													})
+												}
+												handleOnChange={({ key, value }) => {
+													field.onChange({ target: { name: key, value } });
+												}}
+												inputProps={{
+													error: meta.touched && meta.error ? true : false,
+													helperText:
+														meta.touched && meta.error ? meta.error : null,
+												}}
+											/>
+										);
+									}}
+								</Field>
+							</Grid>
 							<Grid item xs={12} sm={6}>
 								<Field name='studentInformation.intakePreferred'>
 									{props => {
@@ -395,47 +436,6 @@ const General = ({
 								</Field>
 							</Grid>
 
-							<Grid item xs={12}>
-								<Field name='studentInformation.countryOfInterest'>
-									{props => {
-										const { field, meta } = props || {};
-										console.log("field", field);
-
-										return (
-											<DropdownWithSearch
-												multiple
-												disableCloseOnSelect
-												name={field.name}
-												value={field.value}
-												placeholder='Country of Interest'
-												options={preferredCountries}
-												renderTags={(value, getTagProps) =>
-													value.map((option, index) => {
-														return (
-															<Chip
-																key={index}
-																variant='filled'
-																size='small'
-																label={option}
-																sx={{ fontSize: "0.75rem" }}
-																{...getTagProps({ index })}
-															/>
-														);
-													})
-												}
-												handleOnChange={({ key, value }) => {
-													field.onChange({ target: { name: key, value } });
-												}}
-												inputProps={{
-													error: meta.touched && meta.error ? true : false,
-													helperText:
-														meta.touched && meta.error ? meta.error : null,
-												}}
-											/>
-										);
-									}}
-								</Field>
-							</Grid>
 						</Grid>
 					</Box>
 
@@ -450,7 +450,13 @@ const General = ({
 						</Typography>
 
 						<Grid container spacing={1} mt={0}>
-							<Grid item xs={12}>
+							<Grid item xs={6}>
+								<FieldInput
+									name='demographicInformation.medicalHistoryDetails'
+									label='Medical History Details'
+								/>
+							</Grid>
+							<Grid item xs={6}>
 								<Field name='demographicInformation.haveMedicalHistory'>
 									{props => {
 										const { field, meta } = props || {};
@@ -487,14 +493,14 @@ const General = ({
 								</Field>
 							</Grid>
 
-							{props?.values?.demographicInformation?.haveMedicalHistory ? (
+							{/* {props?.values?.demographicInformation?.haveMedicalHistory ? (
 								<Grid item xs={12}>
 									<FieldInput
 										name='demographicInformation.medicalHistoryDetails'
 										label='Medical History Details'
 									/>
 								</Grid>
-							) : null}
+							) : null} */}
 
 							<Grid item xs={12} sm={6}>
 								<Field name='demographicInformation.maritalStatus'>
@@ -571,7 +577,7 @@ const General = ({
 												name={field.name}
 												value={field.value}
 												placeholder='Country of Citizenship'
-												options={countries?.map(({ name }) => name)}
+												options={preferredCountries?.map((name) => name)}
 												handleOnChange={({ key, value }) => {
 													field.onChange({ target: { name: key, value } });
 												}}
@@ -644,7 +650,7 @@ const General = ({
 												name={field.name}
 												value={field.value}
 												placeholder='Country'
-												options={countries?.map(({ name }) => name)}
+												options={preferredCountries?.map((name) => name)}
 												handleOnChange={({ key, value }) => {
 													field.onChange({ target: { name: key, value } });
 												}}
@@ -731,7 +737,7 @@ const General = ({
 												name={field.name}
 												value={field.value}
 												placeholder='Country'
-												options={countries?.map(({ name }) => name)}
+												options={preferredCountries?.map((name) => name)}
 												handleOnChange={({ key, value }) => {
 													field.onChange({ target: { name: key, value } });
 												}}
@@ -760,7 +766,7 @@ const General = ({
 
 						<Grid container spacing={1} mt={0}>
 							<Grid item xs={6}>
-								<Field name='backgroundInformation.isRefusedVisa'>
+								<Field name='backgroundInformation.isRefusedVisa' mb={2}>
 									{props => {
 										const { field, meta } = props || {};
 
@@ -794,19 +800,13 @@ const General = ({
 										);
 									}}
 								</Field>
-							</Grid>
-
-							{props?.values?.backgroundInformation?.isRefusedVisa ? (
-								<Grid item xs={6}>
+								{props?.values?.backgroundInformation?.isRefusedVisa ? (
 									<FieldInput
 										name='backgroundInformation.visaRefusalInformation'
 										label='Visa Refusal Reason'
 									/>
-								</Grid>
-							) : null}
-
-							<Grid item xs={6}>
-								<Field name='backgroundInformation.haveStudyPermit'>
+								) : null}
+								<Field name='backgroundInformation.haveStudyPermit' mb={2}>
 									{props => {
 										const { field, meta } = props || {};
 
@@ -828,10 +828,7 @@ const General = ({
 										);
 									}}
 								</Field>
-							</Grid>
-
-							<Grid item xs={6}>
-								<Field name='backgroundInformation.studyPermitDetails'>
+								<Field name='backgroundInformation.studyPermitDetails' mb={2}>
 									{props => {
 										const { field, meta } = props || {};
 
@@ -866,6 +863,77 @@ const General = ({
 									}}
 								</Field>
 							</Grid>
+
+							{/* {props?.values?.backgroundInformation?.isRefusedVisa ? (
+								<Grid item xs={6}>
+									<FieldInput
+										name='backgroundInformation.visaRefusalInformation'
+										label='Visa Refusal Reason'
+									/>
+								</Grid>
+							) : null} */}
+
+							{/* <Grid item xs={6}>
+								<Field name='backgroundInformation.haveStudyPermit'>
+									{props => {
+										const { field, meta } = props || {};
+
+										return (
+											<DropdownWithSearch
+												name={field.name}
+												value={field.value}
+												placeholder='Study Permit/ VISA Details'
+												options={VisaOptions}
+												handleOnChange={({ key, value }) => {
+													field.onChange({ target: { name: key, value } });
+												}}
+												inputProps={{
+													error: meta.touched && meta.error ? true : false,
+													helperText:
+														meta.touched && meta.error ? meta.error : null,
+												}}
+											/>
+										);
+									}}
+								</Field>
+							</Grid> */}
+
+							{/* <Grid item xs={6}>
+								<Field name='backgroundInformation.studyPermitDetails'>
+									{props => {
+										const { field, meta } = props || {};
+
+										return (
+											<DropdownWithSearch
+												name={field.name}
+												value={field.value}
+												placeholder='Do you have a valid Study Permit/ VISA Details'
+												options={[true, false]}
+												renderOption={(props, option) => {
+													return (
+														<li {...props}>
+															<Typography fontSize='0.75rem'>
+																{option ? "Yes" : "No"}
+															</Typography>
+														</li>
+													);
+												}}
+												getOptionLabel={option => {
+													return option ? "Yes" : "No";
+												}}
+												handleOnChange={({ key, value }) => {
+													field.onChange({ target: { name: key, value } });
+												}}
+												inputProps={{
+													error: meta.touched && meta.error ? true : false,
+													helperText:
+														meta.touched && meta.error ? meta.error : null,
+												}}
+											/>
+										);
+									}}
+								</Field>
+							</Grid> */}
 						</Grid>
 					</Box>
 
