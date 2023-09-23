@@ -5,9 +5,12 @@ export const getStudents = params =>
 		APICaller({
 			url: `/student`,
 			method: "GET",
-			params,
+			// params,
 		})
-			.then(response => resolve(response))
+			.then((response) => {
+				// console.log(response, 'frpm api call==========');
+				resolve(response)
+			})
 			.catch(error => reject(error));
 	});
 

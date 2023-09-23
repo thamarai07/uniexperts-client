@@ -1,7 +1,8 @@
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl } from "@mui/material";
+import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl, FormHelperText } from "@mui/material";
 import { Box } from "@mui/system";
 import { config, signup, verifyEmail } from "apis/auth";
+import DropdownWithSearch from "components/DropdownWithSearch";
 import FieldInput from "components/FieldInput";
 import { Field, Form, Formik } from "formik";
 import _ from "lodash";
@@ -9,8 +10,9 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { phoneRegExp } from "utils/validations";
-import TimezoneSelect, { allTimezones } from 'react-timezone-select'
+import TimezoneSelect from 'react-timezone-select'
 import * as Yup from "yup";
+import { PersistFormikValues } from 'formik-persist-values';
 
 
 const Step1 = ({ data, setData, nextStep }) => {
@@ -278,6 +280,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 	const [errors, setErrors] = useState();
 
+
+	//New variable added
+	const [selectvalues, setSelectValues] = useState({ country: '', field2: '' });
+
+
 	const form = useRef(null);
 
 	useEffect(() => {
@@ -377,7 +384,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			city: "",
 			state: "",
 			zipCode: "",
-			country: adddressCountry,
+			country: null,
 		},
 
 		bank: {
@@ -420,7 +427,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 		// Check if email is valid
 		if (values.personalDetails.email) {
-			if (!/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(values.personalDetails.email)) {
+			if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(values.personalDetails.email)) {
 				errors.email = "Please enter a valid email address";
 			}
 		}
@@ -466,6 +473,30 @@ const Step1 = ({ data, setData, nextStep }) => {
 		setErrors(errors);
 		return errors;
 	};
+
+	const handleChange = (fieldName) => (event) => {
+		const selectedValue = event.target.value;
+
+		// Update field value
+		setSelectValues((prevValues) => ({
+			...prevValues,
+			[fieldName]: selectedValue,
+		}));
+
+		// Validate the selected value
+		if (selectedValue === "") {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				[fieldName]: "This field is required!",
+			}));
+		} else {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				[fieldName]: "",
+			}));
+		}
+	}
+
 
 	const onSubmit = values => {
 
@@ -553,6 +584,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 				ifsc
 			},
 		};
+
+
+		console.log("validate form ", validateForm(dataValues))
+		console.log("onSubmit called")
 
 		if (_.isEmpty(validateForm(dataValues))) {
 			let requestData = {
@@ -658,11 +693,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 										{props => {
 											const { field, meta } = props || {};
 											return (
-												<div style={{ display: "flex", justifyContent:"center", alignItems:"center" }}>
+												<div style={{ display: "flex" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Code</InputLabel>
+														<InputLabel id="entity-label">Code</InputLabel>
 														<Select
-															sx={{ width: "90px", height:"37px" }}
+															sx={{ width: "90px" }}
 															name='company.countryCode'
 															labelId="entity-label"
 															label="Code"
@@ -673,7 +708,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 															onChange={(e) => setCountryDialingCode(e.target.value)}
 														>
 															{countryDialingCodes.map(code =>
-																<MenuItem value={code} >{code}</MenuItem>
+																<MenuItem value={code} key={code} >{code}</MenuItem>
 															)}
 														</Select>
 													</FormControl>
@@ -726,19 +761,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<TimezoneSelect
-										labelStyle="altName"
 										name='personalDetails.timezone'
 										label='Time Zone'
 										value={selectedTimezone}
 										onChange={setSelectedTimezone}
 										error={Boolean(errors?.timezone)}
 										helperText={errors?.timezone}
-										style={{background: "red"}}
-										timezones={{
-											...allTimezones,
-											"America/Lima": "Pittsburgh",
-											"Europe/Berlin": "Frankfurt"
-										  }}
 									/>
 									{/* <FieldInput
 										name='personalDetails.timezone'
@@ -805,9 +833,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Entity Type</InputLabel>
+										<InputLabel id="entity-label">Entity Type</InputLabel>
 										<Select
-											sx={{height:"37px" }}
 											name='company.entityType'
 											labelId="entity-label"
 											label="Entity Type"
@@ -819,7 +846,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											onChange={(e) => setEntityTypeValue(e.target.value)}
 										>
 											{enityTypeOption.map(entityType =>
-												<MenuItem value={entityType} >{entityType}</MenuItem>
+												<MenuItem value={entityType} key={entityType} >{entityType}</MenuItem>
 											)}
 										</Select>
 									</FormControl>
@@ -864,9 +891,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Registered Country</InputLabel>
+										<InputLabel id="entity-label">Registered Country</InputLabel>
 										<Select
-											sx={{height:"37px" }}
 											labelId="entity-label"
 											name='company.country'
 											label='Registered Country'
@@ -878,7 +904,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											onChange={(e) => setCountry(e.target.value)}
 										>
 											{countryList.map(country =>
-												<MenuItem value={country} >{country}</MenuItem>
+												<MenuItem value={country} key={country} >{country}</MenuItem>
 											)}
 										</Select>
 									</FormControl>
@@ -963,26 +989,22 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12}>
-									<FormControl fullWidth>
-										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label"> Country</InputLabel>
+									<FormControl error={!!errors?.country} fullWidth size="small" >
+										<InputLabel id='country-label'>country</InputLabel>
 										<Select
-											sx={{height:"37px" }}
-											labelId="entity-label"
-											name='address.addressCountry'
-											label='Country'
-											error={Boolean(errors?.country)}
-											helperText={errors?.country}
-											fullWidth
-											size="small"
-											value={adddressCountry ?? null}
-											onChange={(e) => setAddressCountry(e.target.value)}
+											labelId='country-label'
+											id='country'
+											value={selectvalues.country}
+											onChange={handleChange("country")}
+											label="country"
+											name='address.country'
 										>
-											{countryList.map(country =>
-												<MenuItem value={country} >{country}</MenuItem>
+											{countryList.map(addCountry =>
+												<MenuItem value={addCountry} key={addCountry} >{addCountry}</MenuItem>
 											)}
 										</Select>
+										<FormHelperText>{errors?.country}</FormHelperText>
 									</FormControl>
-
 									{/* <FieldInput
 										name='address.country'
 										label='Country'

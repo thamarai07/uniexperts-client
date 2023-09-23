@@ -3,13 +3,11 @@ import React, { useState } from "react";
 import { Box, Button } from "@mui/material";
 import S3 from './aws';
 import { uploadAgentDocuments } from "apis/agent";
-import CircularProgress from '@mui/material/CircularProgress';
 // import axios from 'axios';
 
 const Step3 = ({ data = {}, setData, nextStep }) => {
 	const [selectedFile, setSelectedFile] = useState({});
 	const [files, setFiles] = useState({});
-	const [filesUploading, setFilesUploading] = useState({});
 
 	const handleFileChange = event => {
 		const file = event.target.files[0];
@@ -32,7 +30,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 
 		console.log("files: ", files);
 
-		if (requiredKeys.every(key => files.hasOwnProperty(key))) {
+		if (requiredKeys.every(key => Object.prototype.hasOwnProperty.call(files, key))) {
 			const data = {
 				"documents": [
 					{
@@ -59,12 +57,12 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 			}
 
 			uploadAgentDocuments(data)
-			.then(res => {
-				console.log("res", res);
-				nextStep();
-			})
-			.catch(err=> console.log("error", err))
-			.finally(()=> localStorage.clear());
+				.then(res => {
+					console.log("res", res);
+					nextStep();
+				})
+				.catch(err => console.log("error", err))
+				.finally(() => localStorage.clear());
 
 		} else {
 			alert("Please upload all the files");
@@ -85,7 +83,6 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 	const handleFileUpload = async (event) => {
 		const file = event.target.files[0];
 		const fileName = file.name;
-		setFilesUploading({ ...filesUploading, [event.target.name]: true })
 
 		const params = {
 			Bucket: 'uniexpert',
@@ -96,14 +93,10 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 		try {
 			const uploadedFile = await S3.upload(params).promise();
 			setFiles({ ...files, [event.target.name]: uploadedFile.Location })
-			setFilesUploading({ ...filesUploading, [event.target.name]: false })
 		} catch (error) {
 			console.error('Error uploading file:', error);
-			setFilesUploading({ ...filesUploading, [event.target.name]: false })
 		}
 	};
-
-	console.log("files: ", files)
 
 	const handleUpload = () => {
 		// You can perform the file upload here using APIs, like Axios or Fetch.
@@ -135,9 +128,10 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "2px solid gray",
 						height: "40px",
 						borderRadius: "5px",
+						padding: "8px 9px 8px 6px"
 					}}
 				/>
-				{filesUploading.personal_identification ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				<button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -149,8 +143,8 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "0.5px solid gray",
 						backgroundColor: "#e5e5e5",
 					}}>
-					{files.personal_identification ? "Uploaded" : "Upload"}
-				</button>}
+					Upload
+				</button>
 			</div>
 
 			<div style={{ display: "flex", marginTop: "30px" }}>
@@ -171,9 +165,10 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "2px solid gray",
 						height: "40px",
 						borderRadius: "5px",
+						padding: "8px 9px 8px 6px"
 					}}
 				/>
-				{filesUploading.tax_registration_certificate ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				<button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -185,8 +180,8 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "0.5px solid gray",
 						backgroundColor: "#e5e5e5",
 					}}>
-					{files.tax_registration_certificate ? "Uploaded" : "Upload"}
-				</button>}
+					Upload
+				</button>
 			</div>
 			<div style={{ display: "flex", marginTop: "30px" }}>
 				<label
@@ -206,9 +201,10 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "2px solid gray",
 						height: "40px",
 						borderRadius: "5px",
+						padding: "8px 9px 8px 6px"
 					}}
 				/>
-				{filesUploading.bank_statement ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				<button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -220,8 +216,8 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "0.5px solid gray",
 						backgroundColor: "#e5e5e5",
 					}}>
-					{files.bank_statement ? "Uploaded" : "Upload"}
-				</button>}
+					Upload
+				</button>
 			</div>
 
 			<div style={{ display: "flex", marginTop: "30px" }}>
@@ -242,9 +238,10 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "2px solid gray",
 						height: "40px",
 						borderRadius: "5px",
+						padding: "8px 9px 8px 6px"
 					}}
 				/>
-				{filesUploading.address_proof ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>: <button
+				<button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -256,8 +253,8 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "0.5px solid gray",
 						backgroundColor: "#e5e5e5",
 					}}>
-					{files.address_proof ? "Uploaded" : "Upload"}
-				</button>}
+					Upload
+				</button>
 			</div>
 			<div style={{ display: "flex", marginTop: "30px" }}>
 				<label
@@ -278,9 +275,10 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "2px solid gray",
 						height: "40px",
 						borderRadius: "5px",
+						padding: "8px 9px 8px 6px"
 					}}
 				/>
-				{filesUploading.company_registration_certificate ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				<button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -292,8 +290,8 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "0.5px solid gray",
 						backgroundColor: "#e5e5e5",
 					}}>
-					{files.company_registration_certificate ? "Uploaded" : "Upload"}
-				</button>}
+					Upload
+				</button>
 			</div>
 			<Box display='flex' justifyContent='center' m='1rem 0'>
 				<Button

@@ -7,10 +7,10 @@ const createURL = url => "http://65.0.131.213/api" + url;
 
 
 const APICaller = ({ url, method, data, params }) => {
-	
+
 	let updatedUrl = createURL(url);
 
-	let token = _getToken() 
+	let token = _getToken()
 
 	const requestParams = {
 		method,
@@ -41,7 +41,7 @@ const APICaller = ({ url, method, data, params }) => {
 	return fetch(updatedUrl, requestParams)
 		.then(response => {
 			statusCode = response.status;
-			return response.json();
+			return response ? response.json() : response;
 		})
 		.then(res => {
 			if (statusCode >= 400) {
@@ -54,7 +54,8 @@ const APICaller = ({ url, method, data, params }) => {
 			if (res.meta) {
 				return { data: res.data, meta: res.meta };
 			}
-			return res.data;
+			console.log(res)
+			return res.data ? res.data : res;
 		});
 };
 

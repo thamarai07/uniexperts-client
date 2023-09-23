@@ -9,13 +9,13 @@ const CustomTextField = ({
 	value,
 	placeholder,
 	sx = {},
-	handleOnChange = () => {},
+	handleOnChange = () => { },
 	type = "text",
 	InputLabelProps = {},
 	disabled = false,
 	disablePast = false,
 	disableFuture = false,
-	error=false,
+	error = false,
 	helperText,
 	...restProps
 }) => {

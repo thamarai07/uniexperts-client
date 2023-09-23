@@ -42,58 +42,59 @@ export const resetValidation = Yup.object({
 
 export const generalValidation = Yup.object({
 	studentInformation: Yup.object({
-		salutation: Yup.string().nullable().required("Required"),
-		firstName: Yup.string().required("Required"),
-		lastName: Yup.string().required("Required"),
+		salutation: Yup.string().nullable().required("Salutation Required"),
+		firstName: Yup.string().required("First Name is Required"),
+		lastName: Yup.string().required("Last Name is Required"),
 		staffId: Yup.string().nullable().required("Required"),
-		counsellorId: Yup.string().nullable().required("Required"),
-		source: Yup.string().nullable().required("Required"),
-		passportNumber: Yup.string().required("Required"),
-		mobile: Yup.string().required("Required"),
-		whatsappNumber: Yup.string().required("Required"),
-		countryOfInterest: Yup.array().min(1, "Required"),
-		intakePreferred: Yup.string().nullable().required("Required"),
-		email: emailValidation,
+		counsellorId: Yup.string().nullable().required("Counsellor is Required"),
+		source: Yup.string().nullable().required("Source is Required"),
+		passportNumber: Yup.string().required("Passport Number is Required"),
+		mobile: Yup.string().required("Contact Number is Required"),
+		whatsappNumber: Yup.string().required("Whatsapp Number is Required"),
+		countryOfInterest: Yup.array().min(1, "Country of Interest is Required"),
+		intakePreferred: Yup.string().nullable().required("Intake preferred is Required"),
+		preferredCountry: Yup.array().min(1, "Preferred Country is Required"),
+		// email: emailValidation,
 	}),
 
 	demographicInformation: Yup.object({
-		haveMedicalHistory: Yup.boolean().nullable().required("Required"),
+		haveMedicalHistory: Yup.boolean().nullable().required("Please Select Yes or No"),
 		medicalHistoryDetails: Yup.string().nullable(),
-		maritalStatus: Yup.string().nullable().required("Required"),
-		country: Yup.string().nullable().required("Required"),
-		firstLanguage: Yup.string().required("Required"),
-		dateOfBirth: Yup.string().required("Required"),
-		gender: Yup.string().nullable().required("Required"),
+		maritalStatus: Yup.string().nullable().required("Select Marital Status"),
+		country: Yup.string().nullable().required("Country is Required"),
+		firstLanguage: Yup.string().required("First Language is Required"),
+		dateOfBirth: Yup.string().required("Date of Birth is Required"),
+		gender: Yup.string().nullable().required("Select Gender Required"),
 	}),
 
 	address: Yup.object({
-		address: Yup.string().nullable().required("Required"),
-		city: Yup.string().required("Required"),
-		state: Yup.string().required("Required"),
-		zipCode: Yup.string().required("Required"),
-		country: Yup.string().nullable().required("Required"),
+		address: Yup.string().nullable().required("Address is Required"),
+		city: Yup.string().required("City is Required"),
+		state: Yup.string().required("State is Required"),
+		// zipCode: Yup.string().required("ZipCode is Required"),
+		country: Yup.string().nullable().required("Country is Required"),
 	}),
 
 	emergencyContact: Yup.object({
-		name: Yup.string().required("Required"),
-		relationship: Yup.string().nullable().required("Required"),
+		name: Yup.string().required("Name is Required"),
+		relationship: Yup.string().nullable().required("Relationship is Required"),
 		email: Yup.string()
 			.email("Please enter a valid email")
 			.notOneOf(
 				[Yup.ref("studentInformation.email")],
 				"Student Email and Emergency should not be same."
 			)
-			.required("Required"),
-		phoneNumber: Yup.string().required("Required"),
-		address: Yup.string().required("Required"),
-		country: Yup.string().nullable().required("Required"),
+			.required("Email is Required"),
+		phoneNumber: Yup.string().required("Phone Number is Required"),
+		address: Yup.string().required("Address is Required"),
+		country: Yup.string().nullable().required("Country is Required"),
 	}),
 
 	backgroundInformation: Yup.object({
-		isRefusedVisa: Yup.boolean().nullable().required("Required"),
+		isRefusedVisa: Yup.boolean().nullable().required("Select Yes or No "),
 		visaRefusalInformation: Yup.string().nullable(),
-		haveStudyPermit: Yup.string().nullable().required("Required"),
-		studyPermitDetails: Yup.boolean().nullable().required("Required"),
+		haveStudyPermit: Yup.string().nullable().required("Study Permit Required"),
+		studyPermitDetails: Yup.boolean().nullable().required("Study Permit Details Required"),
 	}),
 });
 

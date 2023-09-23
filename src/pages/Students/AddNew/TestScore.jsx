@@ -46,8 +46,8 @@ const tableHead = [
 	"Certification ID",
 	"Exam Type",
 	"Date of Exam",
-	"Percentile",
-	"Action",
+	"Total Score",
+	"Result",
 ];
 
 const TestScore = ({ studentId }) => {
@@ -163,7 +163,7 @@ const TestScore = ({ studentId }) => {
 						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
 						onClick={() => setOpen(true)}
 						startIcon={<AddIcon />}>
-						Add Test Score
+						Add
 					</Button>
 				</Box>
 
@@ -197,16 +197,8 @@ const TestScore = ({ studentId }) => {
 											)[0]?.value || "N/A"}
 										</TableCell>
 
-										<TableCell>
-											<IconButton
-												sx={{ p: 0 }}
-												onClick={() => {
-													setSelectedTest(row);
-													setOpen(true);
-												}}>
-												<Edit />
-											</IconButton>
-										</TableCell>
+										<TableCell>{row?.examType}</TableCell>
+
 									</TableRow>
 								))
 							) : (

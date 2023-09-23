@@ -45,16 +45,16 @@ const initialValues = {
 
 const tableHead = [
 	"",
-	"Employer Name",
+	"Company",
+	"Country",
 	"Designation",
 	"Date of Joining",
 	"Date of Relieving",
-	"Contact Info",
-	"Email",
-	"Action",
+	"Company Email",
+	"Contact number",
 ];
 
-const WorkHistory = ({ studentId, nextStep = () => {} }) => {
+const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 	const [workHistory, setWorkHistory] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [selectedWork, setSelectedWork] = useState(null);
@@ -115,17 +115,7 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 				display='flex'
 				flexDirection='column'
 				gap='1rem'>
-				<Box display='flex' justifyContent='flex-end'>
-					<Button
-						variant='contained'
-						size='small'
-						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
-						onClick={() => setOpen(true)}
-						startIcon={<AddIcon />}>
-						Add Work History
-					</Button>
-				</Box>
+
 
 				<TableContainer component={Paper}>
 					<Table sx={{ minWidth: 700 }}>
@@ -183,6 +173,17 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 						</TableBody>
 					</Table>
 				</TableContainer>
+				<Box display='flex' justifyContent='flex-end'>
+					<Button
+						variant='contained'
+						size='small'
+						type='button'
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
+						onClick={() => setOpen(true)}
+						startIcon={<AddIcon />}>
+						Add
+					</Button>
+				</Box>
 			</Box>
 
 			<Box display='flex' justifyContent='flex-end'>
@@ -244,17 +245,7 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 											Work History
 										</Typography>
 
-										<Button
-											type='submit'
-											sx={{
-												bgcolor: "#F37B21 !important",
-												textTransform: "none",
-											}}
-											variant='contained'
-											size='small'
-											startIcon={<SaveIcon />}>
-											Save
-										</Button>
+
 									</Box>
 
 									<IconButton
@@ -300,7 +291,7 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 										<FieldInput name='email' label='Email' />
 									</Grid>
 
-									<Grid item xs={12} sm={6}>
+									{/* <Grid item xs={12} sm={6}>
 										<FieldInput
 											name='signingAuthority.email'
 											label='Signing Authority Email'
@@ -319,8 +310,19 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 											name='signingAuthority.phone'
 											label='Signing Authority Phone'
 										/>
-									</Grid>
+									</Grid> */}
 								</Grid>
+								<Button
+									type='submit'
+									sx={{
+										bgcolor: "#F37B21 !important",
+										textTransform: "none",
+									}}
+									variant='contained'
+									size='small'
+									startIcon={<SaveIcon />}>
+									Save
+								</Button>
 							</Box>
 						</Form>
 					</Formik>
