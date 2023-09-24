@@ -90,7 +90,7 @@ const AddNewStudent = () => {
 			)}
 
 			{activeStep === 1 && (
-				<Education studentId={studentId} nextStep={nextStep} />
+				<Education studentId={studentId} nextStep={nextStep} preferredCountries={preferredCountries} />
 			)}
 			{activeStep === 2 && (
 				<TestScore studentId={studentId} setStudentId={setStudentId} />

@@ -22,12 +22,12 @@ import {
 	getStudentWorkHistory,
 	updateStudentWorkHistory,
 } from "apis/student";
-import FieldInput from "components/FieldInput";
+import FieldInput from "../components/FieldInput/index";
 import { format } from "date-fns";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { workValidation } from "utils/validations";
+import { workValidation } from "../Validations/validations";
 
 const initialValues = {
 	employerName: "",
@@ -36,17 +36,17 @@ const initialValues = {
 	dor: "",
 	contactInfo: "",
 	email: "",
-	signingAuthority: {
-		name: "",
-		email: "",
-		phone: "",
-	},
+	// signingAuthority: {
+	// 	name: "",
+	// 	email: "",
+	// 	phone: "",
+	// },
 };
 
 const tableHead = [
 	"",
 	"Company",
-	"Country",
+	// "Country",
 	"Designation",
 	"Date of Joining",
 	"Date of Relieving",
@@ -137,17 +137,19 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 
 										<TableCell>{row.employerName}</TableCell>
 
+										{/* <TableCell>{row.designation}</TableCell> */}
 										<TableCell>{row.designation}</TableCell>
+
 
 										<TableCell>{format(new Date(row.doj), "PP")}</TableCell>
 
 										<TableCell>{format(new Date(row.dor), "PP")}</TableCell>
 
+										<TableCell>{row.email}</TableCell>
 										<TableCell>{row.contactInfo}</TableCell>
 
-										<TableCell>{row.email}</TableCell>
 
-										<TableCell>
+										{/* <TableCell>
 											<IconButton
 												sx={{ p: 0 }}
 												onClick={() => {
@@ -156,7 +158,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 												}}>
 												<Edit />
 											</IconButton>
-										</TableCell>
+										</TableCell> */}
 									</TableRow>
 								))
 							) : (

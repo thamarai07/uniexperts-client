@@ -19,10 +19,11 @@ import {
 	TableHead,
 	TableRow,
 	Typography,
+	Divider
 } from "@mui/material";
 import { addTestScore, getTestScore, updateTestScore } from "apis/student";
 import { getExamFields, getExamTypes } from "apis/testScore";
-import FieldInput from "components/FieldInput";
+import FieldInput from "../components/FieldInput/index";
 import { format } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
@@ -87,9 +88,11 @@ const TestScore = ({ studentId }) => {
 
 	const _fetchExamTypes = () => {
 		getExamTypes().then(setExamTypes);
+		// setExamTypes(["Duolingo", "12th Standard English Mark", "GMAT", "GRE", "TOFL / IELTS / PTE"])
 	};
 
 	const getFields = () => {
+		setShowFields(true);
 		getExamFields(selectedExamType).then(fields => {
 			setFieldList(fields);
 			setShowFields(true);
@@ -270,17 +273,20 @@ const TestScore = ({ studentId }) => {
 										fontSize='1.2rem'
 										fontWeight={500}
 										color='#f37b21'>
-										Test Score
+										{showFields && selectedExamType}
 									</Typography>
 
 									<IconButton onClick={onClose} sx={{ p: 0 }}>
 										<CloseIcon />
 									</IconButton>
 								</Box>
-
 								<Grid container spacing={1} mt={0}>
 									{showFields ? (
 										<>
+											<Grid item xs={12} sm={12}>
+												INFORMATION
+											</Grid>
+
 											<Grid item xs={12} sm={6}>
 												<FieldInput name='name' label='Student Name' />
 											</Grid>
@@ -319,6 +325,10 @@ const TestScore = ({ studentId }) => {
 													name='password'
 													label='Verification Portal Password'
 												/>
+											</Grid>
+											<Divider />
+											<Grid item xs={12} sm={12}>
+												SCORE INFORMATION
 											</Grid>
 
 											{fieldList?.map(field => (
@@ -368,7 +378,6 @@ const TestScore = ({ studentId }) => {
 										</Grid>
 									)}
 								</Grid>
-
 								<Box display='flex' justifyContent='flex-end'>
 									{showFields ? (
 										<Button

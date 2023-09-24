@@ -7,7 +7,7 @@ import {
 	updateStudentGeneralInformation,
 } from "apis/student";
 import DropdownWithSearch from "components/DropdownWithSearch";
-import FieldInput from "components/FieldInput";
+import FieldInput from "../components/FieldInput/index";
 import {
 	Gender,
 	MaritalStatus,
@@ -21,7 +21,7 @@ import { Field, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { generalValidation } from "utils/validations";
+import { generalValidation } from "../Validations/validations";
 
 const General = ({
 	studentId,
@@ -49,7 +49,7 @@ const General = ({
 			whatsappNumber: "",
 			preferredCountry: [],
 			intakePreferred: null,
-			// email: "",
+			email: "",
 		},
 
 		demographicInformation: {
@@ -343,13 +343,13 @@ const General = ({
 								/>
 							</Grid>
 
-							{/* <Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={6}>
 								<FieldInput
 									name='studentInformation.email'
 									label='Email'
 									type='email'
 								/>
-							</Grid> */}
+							</Grid>
 
 							<Grid item xs={6}>
 								<Field name='studentInformation.preferredCountry'>
@@ -614,23 +614,7 @@ const General = ({
 									type='number'
 									name='address.zipCode'
 									placeholder='Postal Code'
-									onChange={({ target: { value } }) => {
-										const { current: { setFieldValue } = {} } = form || {};
-
-										setFieldValue("address.zipCode", value);
-
-										if (!value) return;
-
-										if (debounceTimer) clearTimeout(debounceTimer);
-										debounceTimer = setTimeout(() => {
-											debounceTimer = null;
-											getPincodeData(value).then(({ city, state, country }) => {
-												setFieldValue("address.city", city);
-												setFieldValue("address.state", state);
-												setFieldValue("address.country", country);
-											});
-										}, 2000);
-									}}
+									label='Postal Code'
 								/>
 							</Grid>
 							<Grid item xs={6}>
@@ -765,8 +749,8 @@ const General = ({
 						</Typography>
 
 						<Grid container spacing={1} mt={0}>
-							<Grid item xs={6}>
-								<Field name='backgroundInformation.isRefusedVisa' mb={2}>
+							<Grid item xs={6} sm={6}>
+								<Field name='backgroundInformation.isRefusedVisa'>
 									{props => {
 										const { field, meta } = props || {};
 
@@ -806,62 +790,6 @@ const General = ({
 										label='Visa Refusal Reason'
 									/>
 								) : null}
-								<Field name='backgroundInformation.haveStudyPermit' mb={2}>
-									{props => {
-										const { field, meta } = props || {};
-
-										return (
-											<DropdownWithSearch
-												name={field.name}
-												value={field.value}
-												placeholder='Study Permit/ VISA Details'
-												options={VisaOptions}
-												handleOnChange={({ key, value }) => {
-													field.onChange({ target: { name: key, value } });
-												}}
-												inputProps={{
-													error: meta.touched && meta.error ? true : false,
-													helperText:
-														meta.touched && meta.error ? meta.error : null,
-												}}
-											/>
-										);
-									}}
-								</Field>
-								<Field name='backgroundInformation.studyPermitDetails' mb={2}>
-									{props => {
-										const { field, meta } = props || {};
-
-										return (
-											<DropdownWithSearch
-												name={field.name}
-												value={field.value}
-												placeholder='Do you have a valid Study Permit/ VISA Details'
-												options={[true, false]}
-												renderOption={(props, option) => {
-													return (
-														<li {...props}>
-															<Typography fontSize='0.75rem'>
-																{option ? "Yes" : "No"}
-															</Typography>
-														</li>
-													);
-												}}
-												getOptionLabel={option => {
-													return option ? "Yes" : "No";
-												}}
-												handleOnChange={({ key, value }) => {
-													field.onChange({ target: { name: key, value } });
-												}}
-												inputProps={{
-													error: meta.touched && meta.error ? true : false,
-													helperText:
-														meta.touched && meta.error ? meta.error : null,
-												}}
-											/>
-										);
-									}}
-								</Field>
 							</Grid>
 
 							{/* {props?.values?.backgroundInformation?.isRefusedVisa ? (
@@ -873,7 +801,7 @@ const General = ({
 								</Grid>
 							) : null} */}
 
-							{/* <Grid item xs={6}>
+							<Grid item xs={6} sm={6}>
 								<Field name='backgroundInformation.haveStudyPermit'>
 									{props => {
 										const { field, meta } = props || {};
@@ -896,9 +824,9 @@ const General = ({
 										);
 									}}
 								</Field>
-							</Grid> */}
+							</Grid>
 
-							{/* <Grid item xs={6}>
+							<Grid item xs={6} sm={6}>
 								<Field name='backgroundInformation.studyPermitDetails'>
 									{props => {
 										const { field, meta } = props || {};
@@ -933,7 +861,7 @@ const General = ({
 										);
 									}}
 								</Field>
-							</Grid> */}
+							</Grid>
 						</Grid>
 					</Box>
 

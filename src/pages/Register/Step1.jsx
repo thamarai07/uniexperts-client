@@ -599,7 +599,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			<Formik
 				enableReinitialize
 				initialValues={initialValues}
-				validationSchema={validationSchema}
+				// validationSchema={validationSchema}
 				onSubmit={onSubmit}
 				innerRef={form}>
 				<Form>

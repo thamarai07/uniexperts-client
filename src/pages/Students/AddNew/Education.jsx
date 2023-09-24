@@ -23,14 +23,14 @@ import {
 	updateStudentEducation,
 } from "apis/student";
 import DropdownWithSearch from "components/DropdownWithSearch";
-import FieldInput from "components/FieldInput";
+import FieldInput from "../components/FieldInput/index";
 import { SchoolTypes } from "constants";
 import { format } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { educationValidation } from "utils/validations";
+import { educationValidation } from "../Validations/validations";
 
 const initialValues = {
 	degree: "",
@@ -43,7 +43,7 @@ const initialValues = {
 	attendedTo: "",
 	degreeAwardedOn: "",
 	class: "",
-	cgpa: "",
+	cgpa: ""
 };
 
 const tableHead = [
@@ -56,7 +56,9 @@ const tableHead = [
 	"Grades",
 ];
 
-const Education = ({ studentId = null, nextStep = () => { } }) => {
+const Education = ({ studentId = null, nextStep = () => { },
+	preferredCountries = [],
+}) => {
 	const { app: { countries = [] } = {} } = useSelector(state => state);
 
 	const [educations, setEducations] = useState([]);
@@ -298,7 +300,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 													<DropdownWithSearch
 														name={field.name}
 														placeholder='Country of Institution'
-														options={countries?.map(({ name }) => name)}
+														options={preferredCountries?.map((name) => name)}
 														value={field.value}
 														handleOnChange={({ key, value }) => {
 															field.onChange({ target: { name: key, value } });
