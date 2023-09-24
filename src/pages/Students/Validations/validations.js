@@ -54,7 +54,7 @@ export const generalValidation = Yup.object({
 		countryOfInterest: Yup.array().min(1, "Country of Interest is Required"),
 		intakePreferred: Yup.string().nullable().required("Intake preferred is Required"),
 		preferredCountry: Yup.array().min(1, "Preferred Country is Required"),
-		// email: emailValidation,
+		email: emailValidation,
 	}),
 
 	demographicInformation: Yup.object({
@@ -119,9 +119,9 @@ export const workValidation = Yup.object({
 	dor: Yup.string().required("Required"),
 	contactInfo: Yup.string().required("Required"),
 	email: emailValidation,
-	signingAuthority: Yup.object({
-		name: Yup.string().required("Required"),
-		phone: Yup.string().required("Required"),
-		email: emailValidation,
-	}),
+	// signingAuthority: Yup.object({
+	// 	name: Yup.string().required("Required"),
+	// 	phone: Yup.string().required("Required"),
+	// 	email: emailValidation,
+	// }),
 });

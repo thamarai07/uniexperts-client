@@ -1,4 +1,4 @@
-import CustomTextField from "components/CustomTextField";
+import CustomTextField from "../CustomTextField/index";
 import { Field } from "formik";
 
 const FieldInput = ({
@@ -17,15 +17,14 @@ const FieldInput = ({
 		<Field name={name}>
 			{props => {
 				const { field, meta } = props || {};
-
 				const fieldProps = {
 					type: type,
 					placeholder: placeholder ?? label,
-					// error: meta.touched && meta.error ? true : false,
-					// helperText: meta.touched && meta.error ? meta.error : null,
+					error: meta.touched && meta.error ? true : false,
+					helperText: meta.touched && meta.error ? meta.error : null,
 					disabled: disabled,
-					error,
-					helperText,
+					// error,
+					// helperText,
 					...field,
 
 					...restProps,

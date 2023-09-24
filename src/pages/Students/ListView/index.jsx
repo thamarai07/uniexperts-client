@@ -108,19 +108,19 @@ const Students = () => {
 			pageNo: page + 1,
 		};
 
-		if (filters) {
-			for (const [key, value] of Object.entries(filters)) {
-				if (!value) continue;
-
-				requestParams[key] = value?.value ?? value;
-			}
-		}
+		// if (filters) {
+		// 	for (const [key, value] of Object.entries(filters)) {
+		// 		if (!value) continue;
+		// 		requestParams[key] = value?.value ?? value;
+		// 	}
+		// }
 
 		dispatch(setLoader(true));
 
-		getStudents(requestParams)
+		getStudents(requestParams = {})
 			.then(response => {
-				setData(response?.data);
+				console.log(response, 'in index file');
+				setData(response);
 				setTotal(response?.meta?.total);
 			})
 			.finally(() => dispatch(setLoader(false)));
@@ -150,7 +150,7 @@ const Students = () => {
 	};
 
 	const onConfirmDelete = () => {
-		removeStudent(deletingStudent?.id).then(() => {
+		removeStudent(deletingStudent?._id).then(() => {
 			toast.success("Student Deleted Successfully");
 
 			setShowWarning(false);
@@ -235,6 +235,7 @@ const Students = () => {
 						</TableHead>
 
 						<TableBody>
+							{console.log(data, 'asdjasdhjashdjhsd')}
 							{data?.length ? (
 								data.map((row, index) => (
 									<TableRow key={row?.id}>
@@ -242,24 +243,24 @@ const Students = () => {
 
 										<TableCell>
 											<Link
-												to={RouteNames.edit_student?.replace(":id", row?.id)}
+												to={RouteNames.edit_student?.replace(":id", row?._id)}
 												style={{
 													color: "inherit",
-												}}>{`${row?.firstName} ${row?.lastName}`}</Link>
+												}}>{`${row?.studentInformation.firstName} ${row?.studentInformation.lastName}`}</Link>
 										</TableCell>
 
-										<TableCell>{row?.email ?? "N/A"}</TableCell>
+										<TableCell>{row?.studentInformation.email ?? "N/A"}</TableCell>
 
-										<TableCell>{row?.mobile ?? "N/A"}</TableCell>
+										<TableCell>{row?.studentInformation.mobile ?? "N/A"}</TableCell>
 
-										<TableCell>{row?.country ?? "N/A"}</TableCell>
+										<TableCell>{row?.address.country ?? "N/A"}</TableCell>
 
 										<TableCell>{row?.createdBy ?? "N/A"}</TableCell>
 
-										<TableCell>{row?.counsellor ?? "N/A"}</TableCell>
+										<TableCell>{row?.studentInformation.counsellorId ?? "N/A"}</TableCell>
 
 										<TableCell>
-											<IconButton sx={{ p: 0 }} onClick={() => onView(row?.id)}>
+											<IconButton sx={{ p: 0 }} onClick={() => onView(row?._id)}>
 												<VisibilityIcon />
 											</IconButton>
 										</TableCell>
@@ -306,7 +307,7 @@ const Students = () => {
 					open={showWarning}
 					onCancel={onCancelDelete}
 					onConfirm={onConfirmDelete}
-					message={`${deletingStudent?.firstName} ${deletingStudent?.lastName} will be deleted!`}
+					message={`${deletingStudent?.studentInformation?.firstName} ${deletingStudent?.studentInformation?.lastName} will be deleted!`}
 				/>
 			) : null}
 		</>

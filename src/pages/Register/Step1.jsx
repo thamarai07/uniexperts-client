@@ -17,11 +17,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 		state => state
 	);
 	const labelStyle = 'original'
-	const timezones={
+	const timezones = {
 		...allTimezones,
 		"America/Lima": "Pittsburgh",
 		"Europe/Berlin": "Frankfurt"
-	  }
+	}
 	const enityTypeOption = ["Private", "Partnership", "Trust", "Proprietor", "Individual"];
 	const countryList = [
 		"Afghanistan",
@@ -470,11 +470,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 		return errors;
 	};
 
-	useEffect(()=> {
-		if(adddressCountry!=="India"){
+	useEffect(() => {
+		if (adddressCountry !== "India") {
 			setIfsc("HDFC0000128");
 		}
-	},[adddressCountry])
+	}, [adddressCountry])
 
 	const onSubmit = values => {
 
@@ -666,11 +666,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 										{props => {
 											const { field, meta } = props || {};
 											return (
-												<div style={{ display: "flex", justifyContent:"center", alignItems:"center" }}>
+												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Code</InputLabel>
+														<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Code</InputLabel>
 														<Select
-															sx={{ width: "90px", height:"37px" }}
+															sx={{ width: "90px", height: "37px" }}
 															name='company.countryCode'
 															labelId="entity-label"
 															label="Code"
@@ -738,7 +738,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										<Select
 											size="small"
 											onChange={e => setSelectedTimezone(e.target.value)}
-											value={selectedTimezone?? null}
+											value={selectedTimezone ?? null}
 											error={Boolean(errors?.timezone)}
 											helperText={errors?.timezone}
 										>
@@ -827,9 +827,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Entity Type</InputLabel>
+										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
 										<Select
-											sx={{height:"37px" }}
+											sx={{ height: "37px" }}
 											name='company.entityType'
 											labelId="entity-label"
 											label="Entity Type"
@@ -886,9 +886,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label">Registered Country</InputLabel>
+										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Registered Country</InputLabel>
 										<Select
-											sx={{height:"37px" }}
+											sx={{ height: "37px" }}
 											labelId="entity-label"
 											name='company.country'
 											label='Registered Country'
@@ -986,9 +986,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={4} sm={4} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel sx={{mt: -1, fontSize: "14px"}} id="entity-label"> Country</InputLabel>
+										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label"> Country</InputLabel>
 										<Select
-											sx={{height:"37px" }}
+											sx={{ height: "37px" }}
 											labelId="entity-label"
 											name='address.addressCountry'
 											label='Country'
@@ -1066,7 +1066,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
-								{adddressCountry === "India" &&<Grid item md={6} sm={6} xs={12}>
+								{adddressCountry === "India" && <Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										name='bank.ifsc'
 										label='IFSC Code'

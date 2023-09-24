@@ -22,12 +22,12 @@ import {
 	getStudentWorkHistory,
 	updateStudentWorkHistory,
 } from "apis/student";
-import FieldInput from "components/FieldInput";
+import FieldInput from "../components/FieldInput/index";
 import { format } from "date-fns";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { workValidation } from "utils/validations";
+import { workValidation } from "../Validations/validations";
 
 const initialValues = {
 	employerName: "",
@@ -36,25 +36,25 @@ const initialValues = {
 	dor: "",
 	contactInfo: "",
 	email: "",
-	signingAuthority: {
-		name: "",
-		email: "",
-		phone: "",
-	},
+	// signingAuthority: {
+	// 	name: "",
+	// 	email: "",
+	// 	phone: "",
+	// },
 };
 
 const tableHead = [
 	"",
-	"Employer Name",
+	"Company",
+	// "Country",
 	"Designation",
 	"Date of Joining",
 	"Date of Relieving",
-	"Contact Info",
-	"Email",
-	"Action",
+	"Company Email",
+	"Contact number",
 ];
 
-const WorkHistory = ({ studentId, nextStep = () => {} }) => {
+const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 	const [workHistory, setWorkHistory] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [selectedWork, setSelectedWork] = useState(null);
@@ -115,17 +115,7 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 				display='flex'
 				flexDirection='column'
 				gap='1rem'>
-				<Box display='flex' justifyContent='flex-end'>
-					<Button
-						variant='contained'
-						size='small'
-						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
-						onClick={() => setOpen(true)}
-						startIcon={<AddIcon />}>
-						Add Work History
-					</Button>
-				</Box>
+
 
 				<TableContainer component={Paper}>
 					<Table sx={{ minWidth: 700 }}>
@@ -147,17 +137,19 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 
 										<TableCell>{row.employerName}</TableCell>
 
+										{/* <TableCell>{row.designation}</TableCell> */}
 										<TableCell>{row.designation}</TableCell>
+
 
 										<TableCell>{format(new Date(row.doj), "PP")}</TableCell>
 
 										<TableCell>{format(new Date(row.dor), "PP")}</TableCell>
 
+										<TableCell>{row.email}</TableCell>
 										<TableCell>{row.contactInfo}</TableCell>
 
-										<TableCell>{row.email}</TableCell>
 
-										<TableCell>
+										{/* <TableCell>
 											<IconButton
 												sx={{ p: 0 }}
 												onClick={() => {
@@ -166,7 +158,7 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 												}}>
 												<Edit />
 											</IconButton>
-										</TableCell>
+										</TableCell> */}
 									</TableRow>
 								))
 							) : (
@@ -183,6 +175,17 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 						</TableBody>
 					</Table>
 				</TableContainer>
+				<Box display='flex' justifyContent='flex-end'>
+					<Button
+						variant='contained'
+						size='small'
+						type='button'
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
+						onClick={() => setOpen(true)}
+						startIcon={<AddIcon />}>
+						Add
+					</Button>
+				</Box>
 			</Box>
 
 			<Box display='flex' justifyContent='flex-end'>
@@ -244,17 +247,7 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 											Work History
 										</Typography>
 
-										<Button
-											type='submit'
-											sx={{
-												bgcolor: "#F37B21 !important",
-												textTransform: "none",
-											}}
-											variant='contained'
-											size='small'
-											startIcon={<SaveIcon />}>
-											Save
-										</Button>
+
 									</Box>
 
 									<IconButton
@@ -300,7 +293,7 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 										<FieldInput name='email' label='Email' />
 									</Grid>
 
-									<Grid item xs={12} sm={6}>
+									{/* <Grid item xs={12} sm={6}>
 										<FieldInput
 											name='signingAuthority.email'
 											label='Signing Authority Email'
@@ -319,8 +312,19 @@ const WorkHistory = ({ studentId, nextStep = () => {} }) => {
 											name='signingAuthority.phone'
 											label='Signing Authority Phone'
 										/>
-									</Grid>
+									</Grid> */}
 								</Grid>
+								<Button
+									type='submit'
+									sx={{
+										bgcolor: "#F37B21 !important",
+										textTransform: "none",
+									}}
+									variant='contained'
+									size='small'
+									startIcon={<SaveIcon />}>
+									Save
+								</Button>
 							</Box>
 						</Form>
 					</Formik>

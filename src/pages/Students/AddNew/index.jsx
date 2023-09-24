@@ -11,10 +11,10 @@ import WorkHistory from "./WorkHistory";
 
 const tabs = [
 	"GENERAL DETAILS",
-	"EDUCATION DETAILS",
-	"DOCUMENTS",
+	"EDUCATIONAL",
+	"TEST SCORES",
 	"WORK HISTORY",
-	"TEST SCORE",
+	"DOCUMENTS",
 ];
 
 const AddNewStudent = () => {
@@ -24,7 +24,6 @@ const AddNewStudent = () => {
 	const [intakes, setIntakes] = useState([]);
 	const [preferredCountries, setPreferredCountries] = useState([]);
 
-	console.log("hello student", activeStep);
 
 	useEffect(() => {
 		Promise.all([getStaff(), getIntakes(), getPreferredCountries()]).then(
@@ -32,8 +31,8 @@ const AddNewStudent = () => {
 				setPreferredCountries(Object.values(preferredCountries || {}));
 
 				setStaff(
-					staffs?.map(({ id, fullName }) => ({
-						id: id,
+					staffs?.map(({ _id, fullName }) => ({
+						id: _id,
 						name: fullName,
 					}))
 				);
@@ -91,20 +90,18 @@ const AddNewStudent = () => {
 			)}
 
 			{activeStep === 1 && (
-				<Education studentId={studentId} nextStep={nextStep} />
+				<Education studentId={studentId} nextStep={nextStep} preferredCountries={preferredCountries} />
 			)}
-
 			{activeStep === 2 && (
-				<Documents studentId={studentId} nextStep={nextStep} />
+				<TestScore studentId={studentId} setStudentId={setStudentId} />
 			)}
-
 			{activeStep === 3 && (
 				<WorkHistory studentId={studentId} nextStep={nextStep} />
 			)}
-
 			{activeStep === 4 && (
-				<TestScore studentId={studentId} setStudentId={setStudentId} />
+				<Documents studentId={studentId} nextStep={nextStep} />
 			)}
+
 		</>
 	);
 };

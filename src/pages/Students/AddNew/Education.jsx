@@ -23,14 +23,14 @@ import {
 	updateStudentEducation,
 } from "apis/student";
 import DropdownWithSearch from "components/DropdownWithSearch";
-import FieldInput from "components/FieldInput";
+import FieldInput from "../components/FieldInput/index";
 import { SchoolTypes } from "constants";
 import { format } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { educationValidation } from "utils/validations";
+import { educationValidation } from "../Validations/validations";
 
 const initialValues = {
 	degree: "",
@@ -43,7 +43,7 @@ const initialValues = {
 	attendedTo: "",
 	degreeAwardedOn: "",
 	class: "",
-	cgpa: "",
+	cgpa: ""
 };
 
 const tableHead = [
@@ -53,11 +53,12 @@ const tableHead = [
 	"Country of Institution",
 	"Institution Name",
 	"Attended Institute From",
-	"CGPA",
-	"Action",
+	"Grades",
 ];
 
-const Education = ({ studentId = null, nextStep = () => {} }) => {
+const Education = ({ studentId = null, nextStep = () => { },
+	preferredCountries = [],
+}) => {
 	const { app: { countries = [] } = {} } = useSelector(state => state);
 
 	const [educations, setEducations] = useState([]);
@@ -122,17 +123,7 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 				display='flex'
 				flexDirection='column'
 				gap='1rem'>
-				<Box display='flex' justifyContent='flex-end'>
-					<Button
-						variant='contained'
-						size='small'
-						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
-						onClick={() => setOpen(true)}
-						startIcon={<AddIcon />}>
-						Add Education Details
-					</Button>
-				</Box>
+
 
 				<TableContainer component={Paper}>
 					<Table sx={{ minWidth: 700 }}>
@@ -166,16 +157,7 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 
 										<TableCell>{row?.cgpa}</TableCell>
 
-										<TableCell>
-											<IconButton
-												sx={{ p: 0 }}
-												onClick={() => {
-													setSelectedEducation(row);
-													setOpen(true);
-												}}>
-												<Edit />
-											</IconButton>
-										</TableCell>
+
 									</TableRow>
 								))
 							) : (
@@ -192,6 +174,17 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 						</TableBody>
 					</Table>
 				</TableContainer>
+				<Box display='flex' justifyContent='flex-end'>
+					<Button
+						variant='contained'
+						size='small'
+						type='button'
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
+						onClick={() => setOpen(true)}
+						startIcon={<AddIcon />}>
+						Add More
+					</Button>
+				</Box>
 			</Box>
 
 			<Box display='flex' justifyContent='flex-end'>
@@ -255,17 +248,7 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 											Education Details
 										</Typography>
 
-										<Button
-											type='submit'
-											sx={{
-												bgcolor: "#F37B21 !important",
-												textTransform: "none",
-											}}
-											variant='contained'
-											size='small'
-											startIcon={<SaveIcon />}>
-											Save
-										</Button>
+
 									</Box>
 
 									<IconButton
@@ -317,7 +300,7 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 													<DropdownWithSearch
 														name={field.name}
 														placeholder='Country of Institution'
-														options={countries?.map(({ name }) => name)}
+														options={preferredCountries?.map((name) => name)}
 														value={field.value}
 														handleOnChange={({ key, value }) => {
 															field.onChange({ target: { name: key, value } });
@@ -336,7 +319,7 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 									<Grid item xs={12} sm={6}>
 										<FieldInput
 											name='institutionName'
-											label='Institution Name'
+											label='Name of Institution'
 										/>
 									</Grid>
 
@@ -346,39 +329,9 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 											label='Affiliated University'
 										/>
 									</Grid>
-
-									<Grid item xs={12} sm={6}>
-										<FieldInput
-											name='attendedFrom'
-											label='Attended Institute From'
-											type='date'
-										/>
-									</Grid>
-
-									<Grid item xs={12} sm={6}>
-										<FieldInput
-											name='attendedTo'
-											label='Attended Institute To'
-											type='date'
-										/>
-									</Grid>
-
-									<Grid item xs={12} sm={6}>
-										<FieldInput
-											name='degreeAwardedOn'
-											label='Degree Awarded On'
-											type='date'
-										/>
-									</Grid>
-
 									<Grid item xs={12} sm={6}>
 										<FieldInput name='class' label='Class' />
 									</Grid>
-
-									<Grid item xs={12} sm={6}>
-										<FieldInput type='number' name='cgpa' label='CGPA' />
-									</Grid>
-
 									<Grid item xs={12} sm={6}>
 										<Field name='isDegreeAwarded'>
 											{props => {
@@ -388,7 +341,7 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 													<DropdownWithSearch
 														name={field.name}
 														value={field.value}
-														placeholder='Is Degree Awarded'
+														placeholder='Degree Awarded'
 														options={[true, false]}
 														renderOption={(props, option) => {
 															return (
@@ -415,7 +368,52 @@ const Education = ({ studentId = null, nextStep = () => {} }) => {
 											}}
 										</Field>
 									</Grid>
+									<Grid item xs={12} sm={6}>
+										<FieldInput
+											name='degreeAwardedOn'
+											label='Degree Awarded On'
+											type='date'
+										/>
+									</Grid>
+
+									<Grid item xs={12} sm={6}>
+										<FieldInput
+											name='attendedFrom'
+											label='Attended Institute From'
+											type='date'
+										/>
+									</Grid>
+									<Grid item xs={12} sm={6}>
+										<FieldInput type='number' name='cgpa' label='CGPA' />
+									</Grid>
+
+									<Grid item xs={12} sm={6}>
+										<FieldInput
+											name='attendedTo'
+											label='Attended Institute To'
+											type='date'
+										/>
+									</Grid>
+
+
+
+
+
+
+
+
 								</Grid>
+								<Button
+									type='submit'
+									sx={{
+										bgcolor: "#F37B21 !important",
+										textTransform: "none",
+									}}
+									variant='contained'
+									size='small'
+									startIcon={<SaveIcon />}>
+									Save
+								</Button>
 							</Box>
 						</Form>
 					</Formik>
