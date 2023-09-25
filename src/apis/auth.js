@@ -29,8 +29,8 @@ export const login = data =>
 
 export const tnc = () =>
 	new Promise((resolve, reject) => {
-		APICaller({ url: "/auth/tnc", method: "GET" })
-			.then(({ data }) => resolve(data))
+		APICaller({ url: "/agent/tnc", method: "GET" })
+			.then(( data ) => resolve(data))
 			.catch(error => reject(error));
 	});
 
