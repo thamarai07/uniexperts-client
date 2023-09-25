@@ -27,6 +27,7 @@
 		"@testing-library/user-event": "^13.2.1",
 		"aws-sdk": "^2.1457.0",
 		"countries-list": "^2.6.1",
+		"country-codes-list": "^1.6.11",
 		"country-list": "^2.3.0",
 		"date-fns": "^2.29.3",
 		"formik": "^2.2.9",
