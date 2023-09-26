@@ -59,12 +59,12 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 			}
 
 			uploadAgentDocuments(data)
-			.then(res => {
-				console.log("res", res);
-				nextStep();
-			})
-			.catch(err=> console.log("error", err))
-			.finally(()=> localStorage.clear());
+				.then(res => {
+					console.log("res", res);
+					nextStep();
+				})
+				.catch(err => console.log("error", err))
+				.finally(() => localStorage.clear());
 
 		} else {
 			alert("Please upload all the files");
@@ -137,7 +137,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						borderRadius: "5px",
 					}}
 				/>
-				{filesUploading.personal_identification ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				{filesUploading.personal_identification ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -149,7 +149,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "0.5px solid gray",
 						backgroundColor: "#e5e5e5",
 					}}>
-					{files.personal_identification ? "Uploaded" : "Upload"}
+					{files.personal_identification ? "Reload" : "Upload"}
 				</button>}
 			</div>
 
@@ -173,7 +173,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						borderRadius: "5px",
 					}}
 				/>
-				{filesUploading.tax_registration_certificate ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				{filesUploading.tax_registration_certificate ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -208,7 +208,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						borderRadius: "5px",
 					}}
 				/>
-				{filesUploading.bank_statement ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				{filesUploading.bank_statement ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -244,7 +244,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						borderRadius: "5px",
 					}}
 				/>
-				{filesUploading.address_proof ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>: <button
+				{filesUploading.address_proof ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",
@@ -280,7 +280,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						borderRadius: "5px",
 					}}
 				/>
-				{filesUploading.company_registration_certificate ? <CircularProgress sx={{marginLeft: "32px"}} size={30}/>:<button
+				{filesUploading.company_registration_certificate ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
 						marginLeft: "32px",

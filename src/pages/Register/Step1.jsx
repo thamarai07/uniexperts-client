@@ -11,6 +11,25 @@ import { phoneRegExp } from "utils/validations";
 import TimezoneSelect, { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import * as Yup from "yup";
 
+import countryCodes from 'country-codes-list';
+const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
+
+const myCountryCodesObject = Object.keys(codesObject).map((code) => codesObject[code]);
+
+const countryCodesArr = removeDuplicates(myCountryCodesObject);
+
+function removeDuplicates(arr) {
+	let unique = [];
+	for (let i = 0; i < arr.length; i++) {
+		if (unique.indexOf(arr[i]) === -1) {
+			unique.push(arr[i]);
+		}
+	}
+	return unique.sort();
+}
+
+
+// console.log(myCountryCodesObject, countryCodes);
 
 const Step1 = ({ data, setData, nextStep }) => {
 	const { app: { countries = [], timezone = [] } = {} } = useSelector(
@@ -395,7 +414,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const validateForm = (values) => {
 		const errors = {};
 		// Check if all fields are required
-
+		values.address.country == 'India' ? delete values.bank.swiftCode : delete values.bank.ifsc
 		const pd = { ...values.personalDetails }
 		Object.keys(pd).forEach((key) => {
 			if (!pd[key]) {
@@ -459,13 +478,20 @@ const Step1 = ({ data, setData, nextStep }) => {
 			errors.confirmNumber = "Account number and confirm number must be similar";
 		}
 
+		// check if zip code matches
+		if (values.address.zipCode) {
+			const regex = /^[a-zA-Z0-9 ]*$/;
+			if (!regex.test(values.address.zipCode)) {
+				errors.zipCode = "Please enter a valid Zip Code";
+			}
+		}
+
 		// Check if password is valid
 		// if (values.personalDetails.password) {
 		//   if (values.personalDetails.password.length < 8) {
 		// 	errors.personalDetails.password = `Password must be at least 8 characters long`;
 		//   }
 		// }
-
 		setErrors(errors);
 		return errors;
 	};
@@ -523,7 +549,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			}
 		});
 
-		const dataValues = {
+		var dataValues = {
 			personalDetails: {
 				firstName,
 				lastName,
@@ -580,15 +606,18 @@ const Step1 = ({ data, setData, nextStep }) => {
 					bankName: dataValues?.bank?.bankName,
 					accountNumber: dataValues?.bank?.accountNumber,
 					confirmNumber: dataValues?.bank?.confirmNumber,
-					swiftCode: dataValues?.bank?.swiftCode,
-					extraField: {
-						"key": "ifsc",
-						"value": "IFSC Code",
-						"data": dataValues?.bank?.ifsc
-					}
+
 				},
 			};
-
+			let extraField = {
+				"key": "ifsc",
+				"value": "IFSC Code",
+				"data": dataValues?.bank?.ifsc
+			}
+			let swiftCode = dataValues?.bank?.swiftCode;
+			dataValues?.address?.country == "India" ? requestData.bank.extraField = extraField :
+				requestData.bank.swiftCode = swiftCode
+			// console.log(requestData)
 			setData(requestData);
 			nextStep();
 		}
@@ -668,7 +697,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											return (
 												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Code</InputLabel>
+														<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Code hgsdy</InputLabel>
 														<Select
 															sx={{ width: "90px", height: "37px" }}
 															name='company.countryCode'
@@ -680,7 +709,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 															value={countryDialingCode ?? null}
 															onChange={(e) => setCountryDialingCode(e.target.value)}
 														>
-															{countryDialingCodes.map(code =>
+															{countryCodesArr.map(code =>
 																<MenuItem value={code} >{code}</MenuItem>
 															)}
 														</Select>
@@ -934,7 +963,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FieldInput
-										type='number'
+										type='text'
 										name='address.zipCode'
 										error={Boolean(errors?.zipCode)}
 										helperText={errors?.zipCode}
@@ -1077,7 +1106,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>}
 
-								<Grid item md={6} sm={6} xs={12}>
+								{adddressCountry !== "India" && <Grid item md={6} sm={6} xs={12}>
 									<FieldInput
 										name='bank.swiftCode'
 										label='Swift Code'
@@ -1090,7 +1119,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											setFieldValue("bank.swiftCode", value?.toUpperCase());
 										}}
 									/>
-								</Grid>
+								</Grid>}
 
 								{bankField?.key && (
 									<Grid item md={6} sm={6} xs={12}>
