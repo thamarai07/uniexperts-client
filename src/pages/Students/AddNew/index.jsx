@@ -21,7 +21,21 @@ const AddNewStudent = () => {
 	const [activeStep, setActiveStep] = useState(0);
 	const [studentId, setStudentId] = useState(null);
 	const [staff, setStaff] = useState([]);
-	const [intakes, setIntakes] = useState([]);
+	const [intakes, setIntakes] = useState([{
+		createdBy: "User3",
+		endDate: "2023-09-30T00:00:00.000Z",
+		externalId: "DEF789",
+		id: "650e7f88570444f8b500752c",
+		month: "September",
+		name: "Document 3",
+		programId: "6480db07e566433a3ce5bd32",
+		schoolId: "6480c85c8614530be8738701333",
+		startDate: "2023-09-15T00:00:00.000Z",
+		status: "Open",
+		updatedBy: "User3",
+		year: 2023,
+		name: 'September 2023'
+	}]);
 	const [preferredCountries, setPreferredCountries] = useState([]);
 
 
@@ -37,12 +51,12 @@ const AddNewStudent = () => {
 					}))
 				);
 
-				setIntakes(
-					intakes?.map(({ id, month, year }) => ({
-						id: id,
-						name: `${month} ${year}`,
-					}))
-				);
+				// setIntakes(
+				// 	intakes?.map(({ id, month, year }) => ({
+				// 		id: id,
+				// 		name: `${month} ${year}`,
+				// 	}))
+				// );
 			}
 		);
 	}, []);
@@ -93,7 +107,7 @@ const AddNewStudent = () => {
 				<Education studentId={studentId} nextStep={nextStep} preferredCountries={preferredCountries} />
 			)}
 			{activeStep === 2 && (
-				<TestScore studentId={studentId} setStudentId={setStudentId} />
+				<TestScore studentId={studentId} nextStep={nextStep} />
 			)}
 			{activeStep === 3 && (
 				<WorkHistory studentId={studentId} nextStep={nextStep} />

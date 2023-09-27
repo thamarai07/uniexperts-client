@@ -51,7 +51,7 @@ const tableHead = [
 	"Result",
 ];
 
-const TestScore = ({ studentId }) => {
+const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	const history = useHistory();
 
 	const [tests, setTests] = useState([]);
@@ -87,8 +87,8 @@ const TestScore = ({ studentId }) => {
 	};
 
 	const _fetchExamTypes = () => {
-		getExamTypes().then(setExamTypes);
-		// setExamTypes(["Duolingo", "12th Standard English Mark", "GMAT", "GRE", "TOFL / IELTS / PTE"])
+		// getExamTypes().then(setExamTypes);
+		setExamTypes(["Duolingo", "12th Standard English Mark", "GMAT", "GRE", "TOFL / IELTS / PTE"])
 	};
 
 	const getFields = () => {
@@ -145,9 +145,9 @@ const TestScore = ({ studentId }) => {
 		setFieldList([]);
 	};
 
-	const onFinish = () => {
-		history.push(RouteNames.edit_student?.replace(":id", studentId));
-	};
+	// const onFinish = () => {
+	// 	history.push(RouteNames.edit_student?.replace(":id", studentId));
+	// };
 
 	return (
 		<>
@@ -230,8 +230,8 @@ const TestScore = ({ studentId }) => {
 						bgcolor: "#f37b21 !important",
 						"&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" },
 					}}
-					onClick={onFinish}>
-					Finish
+					onClick={nextStep}>
+					NEXT
 				</Button>
 			</Box>
 
