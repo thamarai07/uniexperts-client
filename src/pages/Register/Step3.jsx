@@ -133,7 +133,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						backgroundColor: "#e5e5e5",
 						alignSelf: "center"
 					}}>
-					{files.personal_identification ? "Re-Upload" : "Upload"}
+					{files.personal_identification ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
 

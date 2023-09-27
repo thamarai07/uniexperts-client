@@ -4,6 +4,7 @@ import { _getToken } from "utils/token";
 
 // eslint-disable-next-line no-undef
 const createURL = url => "http://65.0.131.213/api" + url;
+//const createURL = url => "http://localhost:5000/api" + url;
 
 
 const APICaller = ({ url, method, data, params }) => {
