@@ -11,7 +11,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 const steps = ["Registration", "Set Password", "file Upload", "Terms & conditions"];
 
 const Register = () => {
-	const [step, setStep] = useState(0);
+	const [step, setStep] = useState(2);
 	const [data, setData] = useState({});
 
 	console.log("step", step);

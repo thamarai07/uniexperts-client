@@ -117,180 +117,95 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 
 	return (
 		<div>
-			<div style={{ display: "flex" }}>
-				<label
-					htmlFor=''
-					style={{
-						marginRight: "100px",
-						fontSize: "13px",
-						marginTop: "9px",
-					}}>
-					Personal Identification
-				</label>
-				<input
-					name="personal_identification"
-					type='file'
-					onChange={handleFileUpload}
-					style={{
-						border: "2px solid gray",
-						height: "40px",
-						borderRadius: "5px",
-					}}
-				/>
+
+			<div style={{ display: "flex", marginTop: "20px" }} >
+				<InputComponent value={files.personal_identification} />
 				{filesUploading.personal_identification ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
-						marginLeft: "32px",
-						borderRadius: "32px",
-						width: "100px",
-						height: "40px",
-						paddingTop: "2px",
+						marginLeft: "17px",
+						borderRadius: "5px",
+						padding: "6px",
+						paddingRight: "32px",
+						paddingLeft: "32px",
 						color: "#f37b21",
-						border: "0.5px solid gray",
+						border: "0.5px solid #f37b21",
 						backgroundColor: "#e5e5e5",
+						alignSelf: "center"
 					}}>
-					{files.personal_identification ? "Reload" : "Upload"}
+					{files.personal_identification ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
 
 			<div style={{ display: "flex", marginTop: "30px" }}>
-				<label
-					htmlFor=''
-					style={{
-						marginRight: "73px",
-						fontSize: "13px",
-						marginTop: "9px",
-					}}>
-					Tax Registration Certificate
-				</label>
-				<input
-					name="tax_registration_certificate"
-					type='file'
-					onChange={handleFileUpload}
-					style={{
-						border: "2px solid gray",
-						height: "40px",
-						borderRadius: "5px",
-					}}
-				/>
+				<InputComponent value={files.tax_registration_certificate} label="Tax Registration Certificate " />
 				{filesUploading.tax_registration_certificate ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
-						marginLeft: "32px",
-						borderRadius: "32px",
-						width: "100px",
-						height: "40px",
-						paddingTop: "2px",
+						marginLeft: "17px",
+						borderRadius: "5px",
+						padding: "6px",
+						paddingRight: "32px",
+						paddingLeft: "32px",
 						color: "#f37b21",
-						border: "0.5px solid gray",
+						border: "0.5px solid #f37b21",
 						backgroundColor: "#e5e5e5",
+						alignSelf: "center"
 					}}>
 					{files.tax_registration_certificate ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
 			<div style={{ display: "flex", marginTop: "30px" }}>
-				<label
-					htmlFor=''
-					style={{
-						marginRight: "135px",
-						fontSize: "13px",
-						marginTop: "9px",
-					}}>
-					Bank Statement
-				</label>
-				<input
-					type='file'
-					name="bank_statement"
-					onChange={handleFileUpload}
-					style={{
-						border: "2px solid gray",
-						height: "40px",
-						borderRadius: "5px",
-					}}
-				/>
+				<InputComponent value={files.bank_statement} label="Bank Statement" />
 				{filesUploading.bank_statement ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
-						marginLeft: "32px",
-						borderRadius: "32px",
-						width: "100px",
-						height: "40px",
-						paddingTop: "2px",
+						marginLeft: "17px",
+						borderRadius: "5px",
+						padding: "6px",
+						paddingRight: "32px",
+						paddingLeft: "32px",
 						color: "#f37b21",
-						border: "0.5px solid gray",
+						border: "0.5px solid #f37b21",
 						backgroundColor: "#e5e5e5",
+						alignSelf: "center"
 					}}>
 					{files.bank_statement ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
 
 			<div style={{ display: "flex", marginTop: "30px" }}>
-				<label
-					htmlFor=''
-					style={{
-						marginRight: "143px",
-						fontSize: "13px",
-						marginTop: "9px",
-					}}>
-					Address Proof
-				</label>
-				<input
-					type='file'
-					onChange={handleFileUpload}
-					name="address_proof"
-					style={{
-						border: "2px solid gray",
-						height: "40px",
-						borderRadius: "5px",
-					}}
-				/>
+				<InputComponent value={files.address_proof} label="Adreess Proof" />
 				{filesUploading.address_proof ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
-						marginLeft: "32px",
-						borderRadius: "32px",
-						width: "100px",
-						height: "40px",
-						paddingTop: "2px",
+						marginLeft: "17px",
+						borderRadius: "5px",
+						padding: "6px",
+						paddingRight: "32px",
+						paddingLeft: "32px",
 						color: "#f37b21",
-						border: "0.5px solid gray",
+						border: "0.5px solid #f37b21",
 						backgroundColor: "#e5e5e5",
+						alignSelf: "center"
 					}}>
 					{files.address_proof ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
 			<div style={{ display: "flex", marginTop: "30px" }}>
-				<label
-					htmlFor=''
-					style={{
-						marginRight: "38px",
-						fontSize: "13px",
-						marginTop: "9px",
-					}}>
-					Company registration Certificate
-
-				</label>
-				<input
-					type='file'
-					name="company_registration_certificate"
-					onChange={handleFileUpload}
-					style={{
-						border: "2px solid gray",
-						height: "40px",
-						borderRadius: "5px",
-					}}
-				/>
+				<InputComponent value={files.company_registration_certificate} label="Company registration Certificate" />
 				{filesUploading.company_registration_certificate ? <CircularProgress sx={{ marginLeft: "32px" }} size={30} /> : <button
 					onClick={handleUpload}
 					style={{
-						marginLeft: "32px",
-						borderRadius: "32px",
-						width: "100px",
-						height: "40px",
-						paddingTop: "2px",
+						marginLeft: "17px",
+						borderRadius: "5px",
+						padding: "6px",
+						paddingRight: "32px",
+						paddingLeft: "32px",
 						color: "#f37b21",
-						border: "0.5px solid gray",
+						border: "0.5px solid #f37b21",
 						backgroundColor: "#e5e5e5",
+						alignSelf: "center"
 					}}>
 					{files.company_registration_certificate ? "Uploaded" : "Upload"}
 				</button>}
@@ -313,3 +228,27 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 };
 
 export default Step3;
+
+
+const InputComponent = ({ value, label = "Personal Identification" }) => {
+	return (
+		<div className="lg:flex items-center w-full">
+			<div className="text-sm text-black font-bold w-[30%]">{label}</div>
+
+			<div className="w-[100%] rounded border border-[#14213D99] flex justify-between px-4 py-1 items-center">
+				<div
+					id="FileUpload"
+					className="relative w-full cursor-pointer appearance-none  py-4 px-4 "
+				>
+					<input value={value} type="file" placeholder="value" className={`absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none`} />
+				</div>
+
+				{value && <div >
+					<img src="https://cdn-icons-png.flaticon.com/128/4436/4436481.png" className="h-3 w-3 object-contain" alt="" />
+				</div>}
+
+			</div>
+
+		</div>
+	)
+}
