@@ -18,7 +18,7 @@ const tabs = [
 ];
 
 const AddNewStudent = () => {
-	const [activeStep, setActiveStep] = useState(0);
+	const [activeStep, setActiveStep] = useState(4);
 	const [studentId, setStudentId] = useState(null);
 	const [staff, setStaff] = useState([]);
 	const [intakes, setIntakes] = useState([]);
