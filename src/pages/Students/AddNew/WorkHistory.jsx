@@ -106,9 +106,9 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 		});
 	};
 
-	const onFinish = () => {
-		history.push(RouteNames.edit_student?.replace(":id", studentId));
-	};
+	// const onFinish = () => {
+	// 	history.push(RouteNames.edit_student?.replace(":id", studentId));
+	// };
 
 	return (
 		<>
@@ -202,8 +202,8 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 						bgcolor: "#f37b21 !important",
 						"&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" },
 					}}
-					onClick={onFinish}>
-					Finish
+					onClick={nextStep}>
+					Next
 				</Button>
 			</Box>
 
