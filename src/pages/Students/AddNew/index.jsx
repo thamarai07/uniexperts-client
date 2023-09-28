@@ -18,10 +18,24 @@ const tabs = [
 ];
 
 const AddNewStudent = () => {
-	const [activeStep, setActiveStep] = useState(0);
+	const [activeStep, setActiveStep] = useState(3);
 	const [studentId, setStudentId] = useState(null);
 	const [staff, setStaff] = useState([]);
 	const [intakes, setIntakes] = useState([{
+		createdBy: "User3",
+		endDate: "2023-09-30T00:00:00.000Z",
+		externalId: "DEF789",
+		id: "650e7f88570444f8b500753c",
+		month: "September",
+		name: "Document 3",
+		programId: "6480db07e566433a3ce5bd32",
+		schoolId: "6480c85c8614530be8738701333",
+		startDate: "2023-09-15T00:00:00.000Z",
+		status: "Open",
+		updatedBy: "User3",
+		year: 2023,
+		name: 'January 2023'
+	}, {
 		createdBy: "User3",
 		endDate: "2023-09-30T00:00:00.000Z",
 		externalId: "DEF789",
@@ -34,15 +48,80 @@ const AddNewStudent = () => {
 		status: "Open",
 		updatedBy: "User3",
 		year: 2023,
+		name: 'March 2023'
+	}, {
+		createdBy: "User3",
+		endDate: "2023-09-30T00:00:00.000Z",
+		externalId: "DEF789",
+		id: "650e7f88570444f8b500751c",
+		month: "September",
+		name: "Document 3",
+		programId: "6480db07e566433a3ce5bd32",
+		schoolId: "6480c85c8614530be8738701333",
+		startDate: "2023-09-15T00:00:00.000Z",
+		status: "Open",
+		updatedBy: "User3",
+		year: 2023,
+		name: 'May 2023'
+	}, {
+		createdBy: "User3",
+		endDate: "2023-09-30T00:00:00.000Z",
+		externalId: "DEF789",
+		id: "650e7f88570444f8b500750c",
+		month: "September",
+		name: "Document 3",
+		programId: "6480db07e566433a3ce5bd32",
+		schoolId: "6480c85c8614530be8738701333",
+		startDate: "2023-09-15T00:00:00.000Z",
+		status: "Open",
+		updatedBy: "User3",
+		year: 2023,
 		name: 'September 2023'
+	}, {
+		createdBy: "User3",
+		endDate: "2023-09-30T00:00:00.000Z",
+		externalId: "DEF789",
+		id: "650e7f88570444f8b500749c",
+		month: "September",
+		name: "Document 3",
+		programId: "6480db07e566433a3ce5bd32",
+		schoolId: "6480c85c8614530be8738701333",
+		startDate: "2023-09-15T00:00:00.000Z",
+		status: "Open",
+		updatedBy: "User3",
+		year: 2023,
+		name: 'October 2023'
 	}]);
-	const [preferredCountries, setPreferredCountries] = useState([]);
-
+	const [preferredCountries, setPreferredCountries] = useState(["Australia",
+		"Austria",
+		"Belgium",
+		"Canada",
+		"Cyprus",
+		"Czech Republic",
+		"Estonia",
+		"France",
+		"Germany",
+		"Hungary",
+		"Ireland",
+		"Latvia",
+		"Lithuania",
+		"France",
+		"Germany",
+		"Hungary",
+		"Ireland",
+		"Latvia",
+		"Lithuania",
+		"France",
+		"Germany",
+		"France",
+		"Germany",
+		"Hungary",
+		"Ireland"]);
 
 	useEffect(() => {
 		Promise.all([getStaff(), getIntakes(), getPreferredCountries()]).then(
 			([staffs, intakes, preferredCountries]) => {
-				setPreferredCountries(Object.values(preferredCountries || {}));
+				// setPreferredCountries(Object.values(preferredCountries || {}));
 
 				setStaff(
 					staffs?.map(({ _id, fullName }) => ({
