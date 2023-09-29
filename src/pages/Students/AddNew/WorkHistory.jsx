@@ -106,6 +106,10 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 		});
 	};
 
+	// const onFinish = () => {
+	// 	history.push(RouteNames.edit_student?.replace(":id", studentId));
+	// };
+
 	return (
 		<>
 			<Box

@@ -149,7 +149,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						border: "0.5px solid gray",
 						backgroundColor: "#e5e5e5",
 					}}>
-					{files.personal_identification ? "Reload" : "Upload"}
+					{files.personal_identification ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
 

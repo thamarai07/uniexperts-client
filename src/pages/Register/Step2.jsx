@@ -51,9 +51,10 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 				console.log("res: ", res)
 				console.log("res token: ", res.token)
 				//localStorage.setItem("token", res.token);
+				nextStep();
 			})
 
-			nextStep();
+			
 			
 		}
 	};

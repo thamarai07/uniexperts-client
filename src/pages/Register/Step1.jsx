@@ -502,52 +502,58 @@ const Step1 = ({ data, setData, nextStep }) => {
 		}
 	}, [adddressCountry])
 
+
+	// useEffect(()=> {
+	// 	if(email){
+	// 		setTimeout(()=> {
+	// 			verifyEmail(email).then(res => {
+	// 				if (!res) {
+	// 					let requestData = {
+	// 						...data,
+	// 						...values,
+	// 						personalDetails: {
+	// 							...values.personalDetails,
+	// 							timezone: timezone?.filter(
+	// 								({ name }) => name === values.personalDetails.timezone
+	// 							)[0],
+	// 							countryCode,
+	// 						},
+	// 						bank: {
+	// 							name: values?.bank?.name,
+	// 							bankName: values?.bank?.bankName,
+	// 							accountNumber: values?.bank?.accountNumber,
+	// 							confirmNumber: values?.bank?.confirmNumber,
+	// 							swiftCode: values?.bank?.swiftCode,
+	// 						},
+	// 					};
+		
+	// 					if (bankField?.key) {
+	// 						requestData = {
+	// 							...requestData,
+	// 							bank: {
+	// 								...requestData?.bank,
+	// 								extraField: {
+	// 									key: bankField?.key,
+	// 									value: bankField?.value,
+	// 									data: values?.bank?.extraField,
+	// 								},
+	// 							},
+	// 						};
+	// 					}
+		
+	// 				} else {
+	// 					toast.error("Email Already Exists");
+	// 				}
+	// 			});
+	// 		}, 1000)
+	// 	}
+	// },[email])
+
 	const onSubmit = values => {
 
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
-
-		verifyEmail(values?.personalDetails?.email).then(res => {
-			if (!res) {
-				let requestData = {
-					...data,
-					...values,
-					personalDetails: {
-						...values.personalDetails,
-						timezone: timezone?.filter(
-							({ name }) => name === values.personalDetails.timezone
-						)[0],
-						countryCode,
-					},
-					bank: {
-						name: values?.bank?.name,
-						bankName: values?.bank?.bankName,
-						accountNumber: values?.bank?.accountNumber,
-						confirmNumber: values?.bank?.confirmNumber,
-						swiftCode: values?.bank?.swiftCode,
-					},
-				};
-
-				if (bankField?.key) {
-					requestData = {
-						...requestData,
-						bank: {
-							...requestData?.bank,
-							extraField: {
-								key: bankField?.key,
-								value: bankField?.value,
-								data: values?.bank?.extraField,
-							},
-						},
-					};
-				}
-
-
-			} else {
-				toast.error("Email Already Exists");
-			}
-		});
 
 		var dataValues = {
 			personalDetails: {
