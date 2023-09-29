@@ -18,10 +18,10 @@ const tabs = [
 ];
 
 const AddNewStudent = () => {
-	const [activeStep, setActiveStep] = useState(3);
+	const [activeStep, setActiveStep] = useState(0);
 	const [studentId, setStudentId] = useState(null);
 	const [staff, setStaff] = useState([]);
-	const [intakes, setIntakes] = useState([{
+	const intakes = [{
 		createdBy: "User3",
 		endDate: "2023-09-30T00:00:00.000Z",
 		externalId: "DEF789",
@@ -91,8 +91,8 @@ const AddNewStudent = () => {
 		updatedBy: "User3",
 		year: 2023,
 		name: 'October 2023'
-	}]);
-	const [preferredCountries, setPreferredCountries] = useState(["Australia",
+	}];
+	const preferredCountries = ["Australia",
 		"Austria",
 		"Belgium",
 		"Canada",
@@ -116,7 +116,7 @@ const AddNewStudent = () => {
 		"France",
 		"Germany",
 		"Hungary",
-		"Ireland"]);
+		"Ireland"];
 
 	useEffect(() => {
 		Promise.all([getStaff(), getIntakes(), getPreferredCountries()]).then(
