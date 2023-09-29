@@ -6,13 +6,14 @@ import { tnc } from "apis/auth";
 
 const Step4 = ({ data = {}, setData, nextStep }) => {
     const history = useHistory()
+    const [isChecked, setIsChecked] = useState(false);
     const [tncData, setTncData] = useState("");
-    useEffect(()=>{
-        tnc().then((response)=> {
+    useEffect(() => {
+        tnc().then((response) => {
             console.log("response: ", response?.records[0]?.Term_Condition__c);
             setTncData(response?.records[0]?.Term_Condition__c);
         })
-    },[])
+    }, [])
 
     const tncff = ` This Contractual Agreement is enacted with the primary objective of formalizing a collaborative partnership between Uniexperts and the Service Provider. The Service Provider shall function as an intermediary service facilitator, establishing a bridge between Uniexperts and Prospective Students across the global spectrum. The overarching purpose of this partnership is to enable Uniexperts to extend its outreach and establish connections with an extensive array of universities and educational institutions. It is to be noted that the Service Provider does not possess direct contractual affiliations with educational institutions on a global scale. By harnessing the intermediary capabilities of the Service Provider, Uniexperts aspires to amplify the scope and quality of its offerings. The ultimate goal is to enhance educational accessibility and opportunities on an international scale, thereby fostering mutually beneficial outcomes for the students, partner universities, the Service Provider, and Uniexperts.
     ARTICLE 1. SCOPE OF SERVICES
@@ -47,30 +48,36 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
         <div>
 
             <div style={{ width: "922px", border: "2px solid gray", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px" }} >
-               {tncData && <div dangerouslySetInnerHTML={{
+                {tncData && <div dangerouslySetInnerHTML={{
                     __html: tncData
                 }} />}
 
             </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-                <Checkbox />
-                <p style={{ marginTop: "12px" }}>I have read and agree to the  <span style={{ color: "#2424ff" }}>Terms and Condition and the privacy and cookie policy*</span></p>
-                <button
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
-                    size='small'
-                    style={{ backgroundColor: "#ededed", color: "#f37b21", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", marginLeft: "50px", marginTop: "10px" }}
-                    onClick={() => history.push("/auth/login")}
-                >
-                    Sign
-                </button>
-                <button
+                <div style={{ display: "flex" }} >
+                    <Checkbox onChange={() => setIsChecked(!isChecked)} />
+                    <p style={{ marginTop: "12px" }}>I have read and agree to the  <span style={{ color: "#2424ff" }}>Terms and Condition and the privacy and cookie policy*</span></p>
+                </div>
 
-                    size='small'
-                    style={{ backgroundColor: "#ededed", color: "gray", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid grey", marginLeft: "50px", marginTop: "10px" }}
-                    onClick={() => history.push("/auth/login")}
-                >
-                    Submit
-                </button>
+                <div style={{ display: "flex", columnGap: "10px" }} >
+                    <button
+
+                        size='small'
+                        style={{ backgroundColor: "#ededed", color: "#f37b21", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
+                        onClick={() => history.push("/auth/login")}
+                    >
+                        Sign
+                    </button>
+                    <button
+                        disabled={isChecked}
+                        size='small'
+                        style={{ backgroundColor: "#ededed", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid grey", color: isChecked ? "#f37b21" : "gray", paddingBlock: "8px", cursor: "pointer" }}
+                        onClick={() => history.push("/auth/login")}
+                    >
+                        Submit
+                    </button>
+                </div>
             </div>
 
 
