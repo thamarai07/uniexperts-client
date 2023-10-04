@@ -40,6 +40,8 @@ const initialValues = {
 	url: "",
 	username: "",
 	password: "",
+	englishMarks: "",
+	percentile: ""
 };
 
 const tableHead = [
@@ -62,6 +64,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	const [fieldList, setFieldList] = useState([]);
 	const [showFields, setShowFields] = useState(false);
 	const [validationSchema, setValidationSchema] = useState(null);
+
 
 	useEffect(() => {
 		_fetchTestScores();
@@ -329,6 +332,20 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 											<Divider />
 											<Grid item xs={12} sm={12}>
 												SCORE INFORMATION
+											</Grid>
+
+											<Grid item xs={12} sm={6}>
+												<FieldInput
+													name='percentile'
+													label='Percentile'
+												/>
+											</Grid>
+
+											<Grid item xs={12} sm={6}>
+												<FieldInput
+													name='englishMarks'
+													label='Total Marks of English'
+												/>
 											</Grid>
 
 											{fieldList?.map(field => (

@@ -15,6 +15,7 @@ import { Box } from "@mui/system";
 import { s3Upload } from "apis/app";
 import { getStudentDocumentsList } from "apis/document";
 import { getStudentDocuments, updateStudentDocument } from "apis/student";
+import FileUploadCard from "components/FileUploadCard";
 import { DocumentStatus } from "constants";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -87,6 +88,8 @@ const RenderRow = ({
 					onChange={handleFileAttachment}
 					style={{ display: "none" }}
 				/>
+
+
 			</TableCell>
 		</TableRow>
 	);
@@ -102,7 +105,7 @@ const tableHead = [
 	"Action",
 ];
 
-const Documents = ({ studentId, nextStep = () => {} }) => {
+const Documents = ({ studentId, nextStep = () => { } }) => {
 	const dispatch = useDispatch();
 
 	const [documents, setDocuments] = useState({});
@@ -190,11 +193,16 @@ const Documents = ({ studentId, nextStep = () => {} }) => {
 			dispatch(setLoader(false));
 		}
 	};
+	const [personal, setPersonal] = useState(null)
+	const [taxCertificate, setTaxCertificate] = useState(null)
+	const [bankStatement, setBankStatement] = useState(null)
+	const [addressProof, setAddressProof] = useState(null)
+	const [companyCertificate, setCompanyCertificate] = useState(null)
 
 	return (
 		<>
 			<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
-				<TableContainer component={Paper}>
+				{/* <TableContainer component={Paper}>
 					<Table sx={{ minWidth: 700 }}>
 						<TableHead>
 							<TableRow sx={{ backgroundColor: "#F37B21" }}>
@@ -230,7 +238,28 @@ const Documents = ({ studentId, nextStep = () => {} }) => {
 							)}
 						</TableBody>
 					</Table>
-				</TableContainer>
+				</TableContainer> */}
+
+				<span
+					style={{
+						color: '#F37B21',
+						fontSize: '16px',
+						fontStyle: 'normal',
+						fontWeight: 700,
+						textTransform: 'uppercase',
+						marginBlock: "40px",
+						display: "block"
+					}}
+				>
+					Documents
+				</span>
+
+				<FileUploadCard setSelectedFile={setPersonal} selectedFile={personal} label="Personal Identification" />
+				<FileUploadCard setSelectedFile={setTaxCertificate} selectedFile={taxCertificate} label="Tax Registration Certificate " />
+				<FileUploadCard setSelectedFile={setBankStatement} selectedFile={bankStatement} label="Bank Statement" />
+				<FileUploadCard setSelectedFile={setAddressProof} selectedFile={addressProof} label="Address Proof" />
+				<FileUploadCard setSelectedFile={setCompanyCertificate} selectedFile={companyCertificate} label="Company registration Certificate" />
+
 			</Box>
 
 			<Box display='flex' justifyContent='flex-end'>

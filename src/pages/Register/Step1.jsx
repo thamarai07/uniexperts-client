@@ -526,7 +526,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	// 							swiftCode: values?.bank?.swiftCode,
 	// 						},
 	// 					};
-		
+
 	// 					if (bankField?.key) {
 	// 						requestData = {
 	// 							...requestData,
@@ -540,7 +540,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	// 							},
 	// 						};
 	// 					}
-		
+
 	// 				} else {
 	// 					toast.error("Email Already Exists");
 	// 				}
@@ -769,7 +769,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Time Zone</InputLabel>
+										<InputLabel sx={{ mt: selectedTimezone ? 0.45 : -0.9, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Time Zone</InputLabel>
 										<Select
 											size="small"
 											onChange={e => setSelectedTimezone(e.target.value)}
@@ -921,7 +921,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Registered Country</InputLabel>
+										<InputLabel sx={{ mt: country ? 0.45 : -1, fontSize: "14px" }} id="entity-label">Registered Country</InputLabel>
 										<Select
 											sx={{ height: "37px" }}
 											labelId="entity-label"

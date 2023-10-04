@@ -36,6 +36,9 @@ const initialValues = {
 	dor: "",
 	contactInfo: "",
 	email: "",
+	signedPersonName: "",
+	signedPersonPhone: "",
+	signedPersonEmail: "",
 	// signingAuthority: {
 	// 	name: "",
 	// 	email: "",
@@ -318,6 +321,28 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 										/>
 									</Grid> */}
 								</Grid>
+
+								<Typography
+									fontSize='1.2rem'
+									fontWeight={500}
+									color='#f37b21'>
+									Verification Information
+								</Typography>
+
+
+								<Grid item xs={12} sm={6}>
+									<FieldInput name='signedPersonName' label='Name of the Signed Person' />
+								</Grid>
+
+								<Grid item xs={12} sm={6}>
+									<FieldInput name='signedPersonPhone' label='Phone Number of the Signed Person' />
+								</Grid>
+
+								<Grid item xs={12} sm={6}>
+									<FieldInput name='signedPersonEmail' label='Email ID of Signed Person' />
+								</Grid>
+
+
 								<Button
 									type='submit'
 									sx={{
