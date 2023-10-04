@@ -119,6 +119,9 @@ export const workValidation = Yup.object({
 	dor: Yup.string().required("Required"),
 	contactInfo: Yup.string().required("Required"),
 	email: emailValidation,
+	signedPersonName: Yup.string().required("Required"),
+	signedPersonPhone: Yup.string().required("Required"),
+	signedPersonEmail: emailValidation,
 	// signingAuthority: Yup.object({
 	// 	name: Yup.string().required("Required"),
 	// 	phone: Yup.string().required("Required"),
