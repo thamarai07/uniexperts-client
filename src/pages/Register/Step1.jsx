@@ -1154,6 +1154,34 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
+						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
+								SET PASSWORD
+							</Typography>
+							<Grid container spacing={1} mt={0}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+									<FieldInput
+										type='password'
+										name='password'
+										placeholder='Enter your password here'
+										onChange={e => {
+											// handleChange(e);
+											// calculateConditions(e.target.value);
+										}}
+									/>
+								</Grid>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+									<FieldInput
+										type='password'
+										name='confirmPassword'
+										placeholder='Re-enter your password here'
+									// error={Boolean(confPasswordError)}
+									// helperText={confPasswordError}
+									/>
+								</Grid>
+							</Grid>
+						</Box>
+
 						<Box display='flex' justifyContent='right' m='1rem 0'>
 							<Button
 								variant='contained'
