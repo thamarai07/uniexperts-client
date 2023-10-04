@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { phoneRegExp } from "utils/validations";
 import TimezoneSelect, { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import * as Yup from "yup";
+import { setLoader } from "store";
+import { useDispatch } from "react-redux";
 
 import countryCodes from 'country-codes-list';
 const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
@@ -35,6 +37,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const { app: { countries = [], timezone = [] } = {} } = useSelector(
 		state => state
 	);
+	const dispatch = useDispatch();
 	const labelStyle = 'original'
 	const timezones = {
 		...allTimezones,
@@ -550,7 +553,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	// },[email])
 
 	const onSubmit = values => {
-
+		dispatch(setLoader(true));
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];

@@ -18,6 +18,7 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 		condition4: false,
 		condition5: false,
 	});
+	const dispatch = useDispatch();
 
 	const [confPasswordError, setConfirmpasswordError] = useState("");
 
@@ -31,13 +32,12 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 	};
 
 	const history = useHistory();
-	const dispatch = useDispatch();
 
 	const initialValues = { password: "", confirmPassword: "" };
 
 	// Define a custom function to handle form submission
 	const handleSubmit = values => {
-
+		dispatch(setLoader(true))
 		if(values.password!==values.confirmPassword) {
 			setConfirmpasswordError("Password and confirm password are not the same");
 			return;
@@ -45,17 +45,10 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 		
 		if (conditions.condition1 && conditions.condition2 && conditions.condition3 && conditions.condition4) {
 			setData({ ...data, password: values.password })
-
 			const reqData = { ...data, password: values.password };
 			signup(reqData).then(res => {
-				console.log("res: ", res)
-				console.log("res token: ", res.token)
-				//localStorage.setItem("token", res.token);
 				nextStep();
-			})
-
-			
-			
+			}).finally(()=>  dispatch(setLoader(false)))
 		}
 	};
 

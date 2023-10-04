@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import { useHistory } from "react-router-dom";
 import { tnc } from "apis/auth";
+import CircularProgress from '@mui/material/CircularProgress';
+import { Box, Typography } from "@mui/material";
+import { setLoader } from "store";
+import { useDispatch } from "react-redux";
 
 
 const Step4 = ({ data = {}, setData, nextStep }) => {
     const history = useHistory()
     const [isChecked, setIsChecked] = useState(false);
     const [tncData, setTncData] = useState("");
+    const dispatch = useDispatch();
     useEffect(() => {
         tnc().then((response) => {
             console.log("response: ", response?.records[0]?.Term_Condition__c);
@@ -47,39 +52,60 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
     return (
         <div>
 
-            <div style={{ width: "922px", border: "2px solid gray", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px" }} >
-                {tncData && <div dangerouslySetInnerHTML={{
-                    __html: tncData
-                }} />}
+            {tncData ? <>  <Box >
+                <Typography fontSize='1.9rem' fontWeight={700}>
+                    Agreement
+                </Typography>
+                <Typography fontSize='0.8rem' fontWeight={300} marginTop={2}>
+                    Read terms and conditions
+                </Typography>
+            </Box>
+                <div style={{ width: "922px", border: "2px solid gray", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px" }} >
 
-            </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    {tncData && <div dangerouslySetInnerHTML={{
+                        __html: tncData
+                    }} />}
 
-                <div style={{ display: "flex" }} >
-                    <Checkbox onChange={() => setIsChecked(!isChecked)} />
-                    <p style={{ marginTop: "12px" }}>I have read and agree to the  <span style={{ color: "#2424ff" }}>Terms and Condition and the privacy and cookie policy*</span></p>
                 </div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
-                <div style={{ display: "flex", columnGap: "10px" }} >
-                    <button
+                    <div style={{ display: "flex" }} >
+                        <Checkbox onChange={() => setIsChecked(!isChecked)} />
+                        <p style={{ marginTop: "12px" }}>I have read and agree to the  <span style={{ color: "#2424ff" }}>Terms and Condition and the privacy and cookie policy*</span></p>
+                    </div>
 
-                        size='small'
-                        style={{ backgroundColor: "#ededed", color: "#f37b21", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
-                        onClick={() => history.push("/auth/login")}
-                    >
-                        Sign
-                    </button>
-                    <button
-                        disabled={isChecked}
-                        size='small'
-                        style={{ backgroundColor: "#ededed", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid grey", color: isChecked ? "#f37b21" : "gray", paddingBlock: "8px", cursor: "pointer" }}
-                        onClick={() => history.push("/auth/login")}
-                    >
-                        Submit
-                    </button>
+                    <div style={{ display: "flex", columnGap: "10px" }} >
+                        <button
+
+                            size='small'
+                            style={{ backgroundColor: "#ededed", color: "#f37b21", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
+                            onClick={() => {
+                                dispatch(setLoader(true));
+                                setTimeout(() =>{
+                                    dispatch(setLoader(false));
+                                    history.push("/auth/login")
+                                },1000)
+                            }}
+                        >
+                            Sign
+                        </button>
+                        <button
+                            disabled={isChecked}
+                            size='small'
+                            style={{ backgroundColor: "#ededed", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid grey", color: isChecked ? "#f37b21" : "gray", paddingBlock: "8px", cursor: "pointer" }}
+                            onClick={() => {
+                                dispatch(setLoader(true));
+                                setTimeout(() =>{
+                                    dispatch(setLoader(false));
+                                    history.push("/auth/login")
+                                },1000)
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
                 </div>
-            </div>
-
+            </> : <div style={{ width: "922px", display: "flex", justifyContent: "center", alignItems: "center",  }}> <CircularProgress /></div>}
 
         </div>
     );

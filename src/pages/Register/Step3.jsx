@@ -4,12 +4,15 @@ import { Box, Button } from "@mui/material";
 import S3 from './aws';
 import { uploadAgentDocuments } from "apis/agent";
 import CircularProgress from '@mui/material/CircularProgress';
-// import axios from 'axios';
+import { setLoader } from "store";
+import { useDispatch } from "react-redux";
 
 const Step3 = ({ data = {}, setData, nextStep }) => {
 	const [selectedFile, setSelectedFile] = useState({});
 	const [files, setFiles] = useState({});
 	const [filesUploading, setFilesUploading] = useState({});
+
+	const dispatch = useDispatch();
 
 	const handleFileChange = event => {
 		const file = event.target.files[0];
@@ -21,6 +24,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 		//setSelectedFile(fileArr);
 	};
 	const handleSubmit = values => {
+		dispatch(setLoader(true));
 		const requiredKeys = [
 			'personal_identification',
 			'tax_registration_certificate',
@@ -64,7 +68,10 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					nextStep();
 				})
 				.catch(err => console.log("error", err))
-				.finally(() => localStorage.clear());
+				.finally(() => {
+					dispatch(setLoader(false));
+					localStorage.clear()
+				});
 
 		} else {
 			alert("Please upload all the files");

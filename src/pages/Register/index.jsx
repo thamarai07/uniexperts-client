@@ -5,6 +5,8 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
+import { setLoader } from "store";
+import { useDispatch } from "react-redux";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
@@ -13,8 +15,7 @@ const steps = ["Registration", "Set Password", "file Upload", "Terms & condition
 const Register = () => {
 	const [step, setStep] = useState(0);
 	const [data, setData] = useState({});
-
-	console.log("step", step);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -70,14 +71,7 @@ const Register = () => {
 			case 3:
 				return (
 					<div>
-						<Box alignItems='center' justifyContent='space-between'>
-							<Typography fontSize='1.9rem' fontWeight={700}>
-								Agreement
-							</Typography>
-							<Typography fontSize='0.8rem' fontWeight={300} marginTop={2}>
-								read terms and conditions
-							</Typography>
-						</Box>
+						
 						<Step4 data={data} />
 					</div >
 				);
@@ -112,8 +106,9 @@ const Register = () => {
 			<Box
 				minHeight='100vh'
 				display='flex'
-				alignItems={{ xs: "unset", sm: "center" }}
-				justifyContent='center'>
+				//alignItems={{ xs: "unset", sm: "center" }}
+				justifyContent='center'
+				>
 				<Box
 					p='1rem 1.25rem'
 					borderRadius='0.625rem'
