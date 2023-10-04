@@ -12,6 +12,7 @@ import TimezoneSelect, { allTimezones, useTimezoneSelect } from 'react-timezone-
 import * as Yup from "yup";
 import { setLoader } from "store";
 import { useDispatch } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 
 import countryCodes from 'country-codes-list';
 const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
@@ -30,10 +31,15 @@ function removeDuplicates(arr) {
 	return unique.sort();
 }
 
-
+const useStyles = makeStyles({
+	gridItem: {
+		height: "60px",
+	},
+});
 // console.log(myCountryCodesObject, countryCodes);
 
 const Step1 = ({ data, setData, nextStep }) => {
+	const classes = useStyles();
 	const { app: { countries = [], timezone = [] } = {} } = useSelector(
 		state => state
 	);
@@ -648,7 +654,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='personalDetails.firstName'
 										label='First Name'
@@ -659,7 +665,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='personalDetails.lastName'
 										label='Last Name'
@@ -670,7 +676,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='personalDetails.email'
 										label='Work Email'
@@ -698,7 +704,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 
 									<Field name='personalDetails.countryCode'>
 										{props => {
@@ -758,7 +764,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									</Field>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='personalDetails.jobTitle'
 										label='Job Title'
@@ -770,11 +776,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
 										<InputLabel sx={{ mt: selectedTimezone ? 0.45 : -0.9, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Time Zone</InputLabel>
 										<Select
 											size="small"
+											sx={{ height: "37px" }}
 											onChange={e => setSelectedTimezone(e.target.value)}
 											value={selectedTimezone ?? null}
 											error={Boolean(errors?.timezone)}
@@ -816,7 +823,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='company.companyName'
 										label='Company Name'
@@ -827,7 +834,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										type='number'
 										name='company.yearFounded'
@@ -839,7 +846,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										type='number'
 										name='company.employeeCount'
@@ -851,7 +858,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										type='number'
 										name='company.studentPerYear'
@@ -863,7 +870,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
 										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
 										<Select
@@ -892,7 +899,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/> */}
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='company.taxNumber'
 										label='GST/ VAT/ Tax Number'
@@ -907,7 +914,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='company.entityRegistrationNumber'
 										label='Entity Registration Number'
@@ -922,7 +929,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
 										<InputLabel sx={{ mt: country ? 0.45 : -1, fontSize: "14px" }} id="entity-label">Registered Country</InputLabel>
 										<Select
@@ -959,7 +966,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='address.address'
 										label='Address'
@@ -970,7 +977,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										type='text'
 										name='address.zipCode'
@@ -1000,7 +1007,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={4} sm={4} xs={12}>
+								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='address.city'
 										label='City'
@@ -1011,7 +1018,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={4} sm={4} xs={12}>
+								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='address.state'
 										label='State'
@@ -1022,7 +1029,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={4} sm={4} xs={12}>
+								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
 										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label"> Country</InputLabel>
 										<Select
@@ -1061,7 +1068,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.name'
 										label='Account Holder Name'
@@ -1072,7 +1079,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.bankName'
 										label='Bank Name'
@@ -1083,7 +1090,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.accountNumber'
 										label='Account Number'
@@ -1094,7 +1101,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>
 
-								<Grid item md={6} sm={6} xs={12}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.confirmNumber'
 										label='Confirm Account Number'
@@ -1104,7 +1111,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
-								{adddressCountry === "India" && <Grid item md={6} sm={6} xs={12}>
+								{adddressCountry === "India" && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.ifsc'
 										label='IFSC Code'
@@ -1115,7 +1122,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									/>
 								</Grid>}
 
-								{adddressCountry !== "India" && <Grid item md={6} sm={6} xs={12}>
+								{adddressCountry !== "India" && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.swiftCode'
 										label='Swift Code'
@@ -1131,7 +1138,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>}
 
 								{bankField?.key && (
-									<Grid item md={6} sm={6} xs={12}>
+									<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 										<FieldInput
 											name='bank.ifsc'
 											error={Boolean(errors?.ifsc)}
@@ -1145,6 +1152,34 @@ const Step1 = ({ data, setData, nextStep }) => {
 										/>
 									</Grid>
 								)}
+							</Grid>
+						</Box>
+
+						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
+								SET PASSWORD
+							</Typography>
+							<Grid container spacing={1} mt={0}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+									<FieldInput
+										type='password'
+										name='password'
+										placeholder='Enter your password here'
+										onChange={e => {
+											// handleChange(e);
+											// calculateConditions(e.target.value);
+										}}
+									/>
+								</Grid>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+									<FieldInput
+										type='password'
+										name='confirmPassword'
+										placeholder='Re-enter your password here'
+									// error={Boolean(confPasswordError)}
+									// helperText={confPasswordError}
+									/>
+								</Grid>
 							</Grid>
 						</Box>
 
