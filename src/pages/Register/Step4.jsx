@@ -6,6 +6,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Box, Typography } from "@mui/material";
 import { setLoader } from "store";
 import { useDispatch } from "react-redux";
+import JsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 
 const Step4 = ({ data = {}, setData, nextStep }) => {
@@ -15,10 +17,42 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
     const dispatch = useDispatch();
     useEffect(() => {
         tnc().then((response) => {
-            console.log("response: ", response?.records[0]?.Term_Condition__c);
-            setTncData(response?.records[0]?.Term_Condition__c);
+            setTncData(`${response?.records[0]?.Term_Condition__c}`);
         })
     }, [])
+
+    const printDocument = async ()=> {
+        let iframe = document.createElement("iframe");
+        iframe.style.visibility = "hidden";
+        document.body.appendChild(iframe);
+        let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframedoc.body.innerHTML = tncData;
+        
+        let canvas = await html2canvas(iframedoc.body, {});
+        
+        // Convert the iframe into a PNG image using canvas.
+        let imgData = canvas.toDataURL("image/png");
+      
+        // Create a PDF document and add the image as a page.
+        const doc = new JsPDF({
+          format: "a4",
+          unit: "mm",
+        });
+        doc.addImage(imgData, "PNG", 0, 0, 210, 297);
+        
+      
+        // Get the file as blob output.
+        let blob = doc.output("blob");
+
+        var csvURL = window.URL.createObjectURL(blob);
+        var tempLink = document.createElement('a');
+        tempLink.href = csvURL;
+        tempLink.setAttribute('download', 'filename.pdf');
+        tempLink.click();
+      
+        // Remove the iframe from the document when the file is generated.
+        document.body.removeChild(iframe);
+      }
 
     const tncff = ` This Contractual Agreement is enacted with the primary objective of formalizing a collaborative partnership between Uniexperts and the Service Provider. The Service Provider shall function as an intermediary service facilitator, establishing a bridge between Uniexperts and Prospective Students across the global spectrum. The overarching purpose of this partnership is to enable Uniexperts to extend its outreach and establish connections with an extensive array of universities and educational institutions. It is to be noted that the Service Provider does not possess direct contractual affiliations with educational institutions on a global scale. By harnessing the intermediary capabilities of the Service Provider, Uniexperts aspires to amplify the scope and quality of its offerings. The ultimate goal is to enhance educational accessibility and opportunities on an international scale, thereby fostering mutually beneficial outcomes for the students, partner universities, the Service Provider, and Uniexperts.
     ARTICLE 1. SCOPE OF SERVICES
@@ -51,7 +85,6 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
     The Parties undertake to employ all reasonable measures to preserve the confidentiality and prevent any unauthorized disclosure or utilization of the confidential information. This shall include, but not be limited to, instituting appropriate security protocols, restricting access to confidential information solely to authorized personnel on a need-to-know basis, and exercising due care in managing and storing said information.`;
     return (
         <div>
-
             {tncData ? <>  <Box >
                 <Typography fontSize='1.9rem' fontWeight={700}>
                     Agreement
@@ -60,12 +93,10 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                     Read terms and conditions
                 </Typography>
             </Box>
-                <div style={{ width: "922px", border: "2px solid gray", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px" }} >
-
-                    {tncData && <div dangerouslySetInnerHTML={{
+                <div id="tnc" style={{ width: "922px", border: "2px solid gray", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px",  background: "silver",  }} >
+                    {tncData && <div style={{overflowY: "scroll", maxHeight: "100vh"}}  dangerouslySetInnerHTML={{
                         __html: tncData
                     }} />}
-
                 </div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
@@ -76,29 +107,31 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
 
                     <div style={{ display: "flex", columnGap: "10px" }} >
                         <button
-
                             size='small'
                             style={{ backgroundColor: "#ededed", color: "#f37b21", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
                             onClick={() => {
-                                dispatch(setLoader(true));
-                                setTimeout(() =>{
-                                    dispatch(setLoader(false));
-                                    history.push("/auth/login")
-                                },1000)
+                                console.log("onClick")
+                                //dispatch(setLoader(true));
+                                // setTimeout(() =>{
+                                //     dispatch(setLoader(false));
+                                //     history.push("/auth/login")
+                                // },1000)
                             }}
                         >
                             Sign
                         </button>
                         <button
-                            disabled={isChecked}
+                            //disabled={isChecked}
                             size='small'
                             style={{ backgroundColor: "#ededed", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid grey", color: isChecked ? "#f37b21" : "gray", paddingBlock: "8px", cursor: "pointer" }}
                             onClick={() => {
-                                dispatch(setLoader(true));
-                                setTimeout(() =>{
-                                    dispatch(setLoader(false));
-                                    history.push("/auth/login")
-                                },1000)
+                                //console.log("clicked");
+                               printDocument();
+                                // dispatch(setLoader(true));
+                                // setTimeout(() =>{
+                                //     dispatch(setLoader(false));
+                                //     history.push("/auth/login")
+                                // },1000)
                             }}
                         >
                             Submit
