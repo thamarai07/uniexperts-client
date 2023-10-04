@@ -46,12 +46,12 @@ const APICaller = ({ url, method, data, params }) => {
 		})
 		.then(res => {
 			if (statusCode >= 400) {
-				// toast.error(
-				// 	Array.isArray(res?.message) ? res?.message[0] : res?.message
-				// );
-				console.log(
+				toast.error(
 					Array.isArray(res?.message) ? res?.message[0] : res?.message
 				);
+				// console.log(
+				// 	Array.isArray(res?.message) ? res?.message[0] : res?.message
+				// );
 				throw new Error(res?.message);
 			}
 
