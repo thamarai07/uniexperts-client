@@ -33,7 +33,7 @@ const Register = () => {
 							<Typography fontSize='1.9rem' fontWeight={700}>
 								Register as an Agent
 							</Typography>
-							<Typography fontSize='0.8rem' fontWeight={300}>
+							<Typography fontSize='0.8rem' fontWeight={300} marginBottom={4}>
 								Fill up the form to register as an agent
 							</Typography>
 						</Box>
@@ -71,7 +71,7 @@ const Register = () => {
 			case 3:
 				return (
 					<div>
-						
+
 						<Step4 data={data} />
 					</div >
 				);
@@ -107,8 +107,7 @@ const Register = () => {
 				minHeight='100vh'
 				display='flex'
 				//alignItems={{ xs: "unset", sm: "center" }}
-				justifyContent='center'
-				>
+				justifyContent='center'>
 				<Box
 					p='1rem 1.25rem'
 					borderRadius='0.625rem'

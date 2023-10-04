@@ -16,7 +16,7 @@ html {
 }
 
 body {
-	background-color: $color01;
+	background-color: $color11;
 	font-family: "Roboto", sans-serif;
 }
 
@@ -26,7 +26,7 @@ body {
 
 ::selection {
 	background-color: rgba($color02, 0.6);
-	color: $color11;
+	color: $color01;
 }
 
 .MuiBackdrop-root {
