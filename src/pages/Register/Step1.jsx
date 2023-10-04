@@ -781,6 +781,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										<InputLabel sx={{ mt: selectedTimezone ? 0.45 : -0.9, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Time Zone</InputLabel>
 										<Select
 											size="small"
+											sx={{ height: "37px" }}
 											onChange={e => setSelectedTimezone(e.target.value)}
 											value={selectedTimezone ?? null}
 											error={Boolean(errors?.timezone)}
