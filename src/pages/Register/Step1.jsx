@@ -663,9 +663,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 			const reqData = { ...data, password: values.password };
 			signup(requestData).then(res => {
 				nextStep();
-				dispatch(setLoader(false))
+				
 			})
-			.finally(()=>dispatch(setLoader(false)))
 		}
 	};
 

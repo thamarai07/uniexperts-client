@@ -110,8 +110,7 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                             size='small'
                             style={{ backgroundColor: "#ededed", color: "#f37b21", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
                             onClick={() => {
-                                console.log("onClick")
-                                //dispatch(setLoader(true));
+                                history.push("/auth/login")
                                 // setTimeout(() =>{
                                 //     dispatch(setLoader(false));
                                 //     history.push("/auth/login")
@@ -127,6 +126,7 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                             onClick={() => {
                                 //console.log("clicked");
                                printDocument();
+                               history.push("/auth/login")
                                 // dispatch(setLoader(true));
                                 // setTimeout(() =>{
                                 //     dispatch(setLoader(false));

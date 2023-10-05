@@ -67,9 +67,6 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					console.log("res", res);
 					nextStep();
 				})
-				.catch(err => console.log("error", err))
-				.finally(
-					dispatch(setLoader(false)));
 
 		} else {
 			alert("Please upload all the files");
