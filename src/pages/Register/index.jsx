@@ -10,10 +10,10 @@ import { useDispatch } from "react-redux";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-const steps = ["Registration", "Set Password", "file Upload", "Terms & conditions"];
+const steps = ["Registration", "File Upload", "Terms & conditions"];
 
 const Register = () => {
-	const [step, setStep] = useState(3);
+	const [step, setStep] = useState(0);
 	const [data, setData] = useState({});
 	const dispatch = useDispatch();
 
@@ -23,6 +23,8 @@ const Register = () => {
 
 	const nextStep = () => setStep(prevStep => prevStep + 1);
 	const prevStep = () => setStep(prevStep => prevStep - 1);
+
+	console.log("step :- ", step)
 
 	const renderStepContent = () => {
 		switch (step) {
@@ -40,21 +42,21 @@ const Register = () => {
 						<Step1 data={data} setData={setData} nextStep={nextStep} />
 					</div>
 				);
+			// case 1:
+			// 	return (
+			// 		<div>
+			// 			<Box alignItems='center' justifyContent='space-between'>
+			// 				<Typography fontSize='1.9rem' fontWeight={700}>
+			// 					Set Password
+			// 				</Typography>
+			// 				<Typography fontSize='0.8rem' fontWeight={300}>
+			// 					Set password for your account
+			// 				</Typography>
+			// 			</Box>
+			// 			<Step2 data={data} setData={setData} nextStep={nextStep} />
+			// 		</div>
+			// 	);
 			case 1:
-				return (
-					<div>
-						<Box alignItems='center' justifyContent='space-between'>
-							<Typography fontSize='1.9rem' fontWeight={700}>
-								Set Password
-							</Typography>
-							<Typography fontSize='0.8rem' fontWeight={300}>
-								Set password for your account
-							</Typography>
-						</Box>
-						<Step2 data={data} setData={setData} nextStep={nextStep} />
-					</div>
-				);
-			case 2:
 				return (
 					<div>
 						<Box alignItems='center' justifyContent='space-between'>
@@ -68,10 +70,9 @@ const Register = () => {
 						<Step3 data={data} setData={setData} nextStep={nextStep} />
 					</div>
 				);
-			case 3:
+			case 2:
 				return (
 					<div>
-
 						<Step4 data={data} />
 					</div >
 				);

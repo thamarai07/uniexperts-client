@@ -42,7 +42,7 @@ export const signup = data =>
 				resolve({ token, ...restDetails });
 			})
 			.catch(error => {
-				console.log(error);
+				reject(error);
 			});
 	});
 

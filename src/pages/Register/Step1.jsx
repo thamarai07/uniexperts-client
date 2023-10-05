@@ -307,6 +307,27 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const [zipCode, setZipCode] = useState('');
 	const [adddressCountry, setAddressCountry] = useState('');
 
+	const [conditions, setConditions] = useState({
+		condition1: false,
+		condition2: false,
+		condition3: false,
+		condition4: false,
+		condition5: false,
+	});
+
+	const [confPasswordError, setConfirmpasswordError] = useState("");
+	const [password, setPassword] = useState("");
+	const [confPassword, setConfPassword] = useState("");
+
+	const calculateConditions = (password) => {
+		setConditions({
+			condition1: password.length >= 12,
+			condition2: /[!@#$%^&*]/.test(password),
+			condition3: /^(?=.*[a-z])(?=.*[A-Z])/.test(password),
+			condition4: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password),
+		});
+	};
+
 	const [errors, setErrors] = useState();
 
 	const form = useRef(null);
@@ -421,10 +442,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 		},
 	};
 	const validateForm = (values) => {
+		console.log("Valuse: ", values)
 		const errors = {};
 		// Check if all fields are required
 		values.address.country == 'India' ? delete values.bank.swiftCode : delete values.bank.ifsc
 		const pd = { ...values.personalDetails }
+
 		Object.keys(pd).forEach((key) => {
 			if (!pd[key]) {
 				errors[key] = `${_.startCase(key)} is required`;
@@ -456,8 +479,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 			}
 		}
 
-
-
 		// Check if ifsc code is valid
 		const ifscReg = /^[A-Z]{4}[0][A-Z0-9]{6}$/;
 		if (values.bank?.ifsc) {
@@ -473,7 +494,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 				errors.swiftCode = "Please enter a valid swift code";
 			}
 		}
-
 		// Check if phone number valid
 		if (values.personalDetails.phone) {
 			const regex = /^\d{10}$/;
@@ -481,12 +501,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 				errors.phone = "Please enter a valid phone number";
 			}
 		}
-
 		// check if bank account number matches
 		if (values.bank.accountNumber !== values.bank.confirmNumber) {
 			errors.confirmNumber = "Account number and confirm number must be similar";
 		}
-
 		// check if zip code matches
 		if (values.address.zipCode) {
 			const regex = /^[a-zA-Z0-9 ]*$/;
@@ -494,13 +512,19 @@ const Step1 = ({ data, setData, nextStep }) => {
 				errors.zipCode = "Please enter a valid Zip Code";
 			}
 		}
-
 		// Check if password is valid
-		// if (values.personalDetails.password) {
-		//   if (values.personalDetails.password.length < 8) {
-		// 	errors.personalDetails.password = `Password must be at least 8 characters long`;
-		//   }
-		// }
+		if (!password) {
+			errors.password = `Password field must not be empty`;
+		}
+		if (password !== confPassword) {
+			setConfirmpasswordError("Password and confirm password are not the same");
+		}
+		console.log("conditions: ", conditions)
+		if (conditions.condition1 && conditions.condition2 && conditions.condition3 && conditions.condition4) {
+		} else {
+			errors.password = `Password must have a mix of capital small, numeric and special characters`;
+		}
+
 		setErrors(errors);
 		return errors;
 	};
@@ -559,7 +583,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	// },[email])
 
 	const onSubmit = values => {
-		dispatch(setLoader(true));
+
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -602,9 +626,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 				swiftCode,
 				ifsc
 			},
+			password
 		};
 
+		calculateConditions(password);
 		if (_.isEmpty(validateForm(dataValues))) {
+			// dispatch(setLoader(true));
 			let requestData = {
 				...data,
 				...dataValues,
@@ -621,8 +648,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 					bankName: dataValues?.bank?.bankName,
 					accountNumber: dataValues?.bank?.accountNumber,
 					confirmNumber: dataValues?.bank?.confirmNumber,
-
-				},
+				}
 			};
 			let extraField = {
 				"key": "ifsc",
@@ -632,9 +658,14 @@ const Step1 = ({ data, setData, nextStep }) => {
 			let swiftCode = dataValues?.bank?.swiftCode;
 			dataValues?.address?.country == "India" ? requestData.bank.extraField = extraField :
 				requestData.bank.swiftCode = swiftCode
-			// console.log(requestData)
 			setData(requestData);
-			nextStep();
+
+			const reqData = { ...data, password: values.password };
+			signup(requestData).then(res => {
+				nextStep();
+				dispatch(setLoader(false))
+			})
+			.finally(()=>dispatch(setLoader(false)))
 		}
 	};
 
@@ -1166,9 +1197,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 										name='password'
 										placeholder='Enter your password here'
 										onChange={e => {
-											// handleChange(e);
-											// calculateConditions(e.target.value);
+											setPassword(e.target.value)
 										}}
+										error={Boolean(errors?.password)}
+										helperText={errors?.password}
 									/>
 								</Grid>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
@@ -1176,8 +1208,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='password'
 										name='confirmPassword'
 										placeholder='Re-enter your password here'
-									// error={Boolean(confPasswordError)}
-									// helperText={confPasswordError}
+										error={Boolean(confPasswordError)}
+										helperText={confPasswordError}
+										onChange={e => {
+											setConfPassword(e.target.value)
+										}}
 									/>
 								</Grid>
 							</Grid>

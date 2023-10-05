@@ -24,7 +24,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 		//setSelectedFile(fileArr);
 	};
 	const handleSubmit = values => {
-		dispatch(setLoader(true));
+		//dispatch(setLoader(true));
 		const requiredKeys = [
 			'personal_identification',
 			'tax_registration_certificate',
@@ -68,25 +68,12 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					nextStep();
 				})
 				.catch(err => console.log("error", err))
-				.finally(() => {
-					dispatch(setLoader(false));
-					localStorage.clear()
-				});
+				.finally(
+					dispatch(setLoader(false)));
 
 		} else {
 			alert("Please upload all the files");
 		}
-
-
-
-		// dispatch(setLoader(true));
-		// signup({ ...data, password: values.password })
-		// 	.then(userDetails => {
-		// 		// console.log(data);
-		// 		dispatch(setUser(userDetails));
-		// 		// history.push(RouteNames.upload_documents);
-		// 	})
-		// 	.finally(() => dispatch(setLoader(false)));
 	};
 
 	const handleFileUpload = async (event) => {
