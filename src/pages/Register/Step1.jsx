@@ -39,6 +39,8 @@ const useStyles = makeStyles({
 // console.log(myCountryCodesObject, countryCodes);
 
 const Step1 = ({ data, setData, nextStep }) => {
+
+	// http://52.66.213.63:4433/api/auth/config?country=India
 	const classes = useStyles();
 	const { app: { countries = [], timezone = [] } = {} } = useSelector(
 		state => state
