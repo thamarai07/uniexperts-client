@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import { setLoader } from "store";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 import countryCodes from 'country-codes-list';
 const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
@@ -300,7 +301,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const [accountNumber, setAccountNumber] = useState('');
 	const [bankName, setBankName] = useState('');
 	const [confirmNumber, setConfirmNumber] = useState('');
-	const [ifsc, setIfsc] = useState('');
+	const [extraFieldValue, setExtraFieldValue] = useState('');
 	const [name, setName] = useState('');
 	const [swiftCode, setSwiftCode] = useState('');
 	const [address, setAddress] = useState('');
@@ -308,6 +309,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const [state, setState] = useState('');
 	const [zipCode, setZipCode] = useState('');
 	const [adddressCountry, setAddressCountry] = useState('');
+	const [bankFields, setBankFields] = useState();
 
 	const [conditions, setConditions] = useState({
 		condition1: false,
@@ -329,6 +331,23 @@ const Step1 = ({ data, setData, nextStep }) => {
 			condition4: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password),
 		});
 	};
+
+	
+	useEffect(()=> {
+		if(country){
+			loadField();
+		}
+	},[country])
+
+	const loadField = async () => {
+		try{
+			const response = await axios.get(`http://52.66.213.63:4433/api/auth/config?country=${country}`)
+			setBankField(response.data.data.bankFields);
+			console.log("Res: ", response)
+		}catch(err){
+			console.error(err)
+		}
+	} 
 
 	const [errors, setErrors] = useState();
 
@@ -440,14 +459,13 @@ const Step1 = ({ data, setData, nextStep }) => {
 			accountNumber: "",
 			confirmNumber: "",
 			swiftCode: "",
-			ifsc: ""
+			extraFieldValue: ""
 		},
 	};
 	const validateForm = (values) => {
-		console.log("Valuse: ", values)
 		const errors = {};
 		// Check if all fields are required
-		values.address.country == 'India' ? delete values.bank.swiftCode : delete values.bank.ifsc
+		//values.address.country == 'India' ? delete values.bank.swiftCode : delete values.bank.extraFieldValue
 		const pd = { ...values.personalDetails }
 
 		Object.keys(pd).forEach((key) => {
@@ -481,13 +499,13 @@ const Step1 = ({ data, setData, nextStep }) => {
 			}
 		}
 
-		// Check if ifsc code is valid
-		const ifscReg = /^[A-Z]{4}[0][A-Z0-9]{6}$/;
-		if (values.bank?.ifsc) {
-			if (!ifscReg.test(values.bank.ifsc)) {
-				errors.ifsc = "Please enter a valid ifsc code";
-			}
-		}
+		// Check if extraFieldValue code is valid
+		// const ifscReg = /^[A-Z]{4}[0][A-Z0-9]{6}$/;
+		// if (values.bank?.extraFieldValue) {
+		// 	if (!ifscReg.test(values.bank.extraFieldValue)) {
+		// 		errors.extraFieldValue = "Please enter a valid extraFieldValue code";
+		// 	}
+		// }
 
 		// Check if swift code is valid
 		const swiftReg = /^[A-Z]{4}[-]?[A-Z]{2}[-]?[A-Z0-9]{2}[-]?[0-9]{3}$/;
@@ -531,11 +549,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 		return errors;
 	};
 
-	useEffect(() => {
-		if (adddressCountry !== "India") {
-			setIfsc("HDFC0000128");
-		}
-	}, [adddressCountry])
+	// useEffect(() => {
+	// 	if (adddressCountry !== "India") {
+	// 		setExtraFieldValue("HDFC0000128");
+	// 	}
+	// }, [adddressCountry])
 
 
 	// useEffect(()=> {
@@ -626,7 +644,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				accountNumber,
 				confirmNumber,
 				swiftCode,
-				ifsc
+				extraFieldValue
 			},
 			password
 		};
@@ -653,12 +671,12 @@ const Step1 = ({ data, setData, nextStep }) => {
 				}
 			};
 			let extraField = {
-				"key": "ifsc",
-				"value": "IFSC Code",
-				"data": dataValues?.bank?.ifsc
+				"key": bankField.key,
+				"value": bankField.value,
+				"data": extraFieldValue
 			}
 			let swiftCode = dataValues?.bank?.swiftCode;
-			dataValues?.address?.country == "India" ? requestData.bank.extraField = extraField :
+			//dataValues?.address?.country == "India" ? requestData.bank.extraField = extraField :
 				requestData.bank.swiftCode = swiftCode
 			setData(requestData);
 
@@ -761,24 +779,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 															)}
 														</Select>
 													</FormControl>
-													{/* <DropdownWithSearch
-														style={{ width: "70px" }}
-														name={field.name}
-														placeholder='Country Code'
-														options={countryDialingCodes?.map(
-															(code) => `${code}`
-														)}
-														value={field.value}
-														handleOnChange={({ key, value }) => {
-															field.onChange({
-																target: { name: key, value },
-															});
-														}}
-														inputProps={{
-															error: meta.touched && meta.error ? true : false,
-															helperText:
-																meta.touched && meta.error ? meta.error : null,
-														}}></DropdownWithSearch> */}
+													
 
 													<FieldInput
 														name='personalDetails.phone'
@@ -800,7 +801,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FieldInput
 										name='personalDetails.jobTitle'
 										label='Job Title'
-										// style={{ marginLeft: "23px" }}
 										error={Boolean(errors?.jobTitle)}
 										helperText={errors?.jobTitle}
 										value={jobTitle}
@@ -824,27 +824,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											))}
 										</Select>
 									</FormControl>
-									{/* <TimezoneSelect
-										labelStyle="altName"
-										name='personalDetails.timezone'
-										label='Time Zone'
-										value={selectedTimezone}
-										onChange={setSelectedTimezone}
-										error={Boolean(errors?.timezone)}
-										helperText={errors?.timezone}
-										style={{background: "red"}}
-										timezones={{
-											...allTimezones,
-											"America/Lima": "Pittsburgh",
-											"Europe/Berlin": "Frankfurt"
-										  }}
-									/> */}
-									{/* <FieldInput
-										name='personalDetails.timezone'
-										label='Time Zone'
-										error={Boolean(errors?.timezone)}
-										helperText={errors?.timezone}
-									/> */}
+									
 								</Grid>
 							</Grid>
 						</Box>
@@ -981,13 +961,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											)}
 										</Select>
 									</FormControl>
-									{/* <FieldInput
-										type='text'
-										name='company.country'
-										label='Registered Country'
-										error={Boolean(errors?.country)}
-										helperText={errors?.country}
-									/> */}
+									
 								</Grid>
 							</Grid>
 						</Box>
@@ -1081,15 +1055,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 											)}
 										</Select>
 									</FormControl>
-
-									{/* <FieldInput
-										name='address.country'
-										label='Country'
-										error={Boolean(errors?.country)}
-										helperText={errors?.country}
-										value={adddressCountry}
-										onChange={(e)=> setAddressCountry(e.target.value)}
-									/> */}
 								</Grid>
 							</Grid>
 						</Box>
@@ -1143,16 +1108,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
-								{adddressCountry === "India" && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
-									<FieldInput
-										name='bank.ifsc'
-										label='IFSC Code'
-										error={Boolean(errors?.ifsc)}
-										helperText={errors?.ifsc}
-										value={ifsc}
-										onChange={(e) => setIfsc(e.target.value)}
-									/>
-								</Grid>}
+								
 
 								{adddressCountry !== "India" && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
@@ -1168,8 +1124,22 @@ const Step1 = ({ data, setData, nextStep }) => {
 										}}
 									/>
 								</Grid>}
+								{country && bankField && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+									<FieldInput
+										name={bankField.key}
+										label={bankField.value}
+										error={Boolean(errors?.extraFieldValue)}
+										helperText={errors?.extraFieldValue}
+										value={extraFieldValue}
+										onChange={(e) => {
+											const { current: { setFieldValue } = {} } = form || {};
+											setExtraFieldValue(e.target.value)
+											setFieldValue(bankField.key, e.target.value?.toUpperCase());
+										}}
+									/>
+								</Grid>}
 
-								{bankField?.key && (
+								{/* {bankField?.key && (
 									<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 										<FieldInput
 											name='bank.ifsc'
@@ -1183,7 +1153,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											}}
 										/>
 									</Grid>
-								)}
+								)} */}
 							</Grid>
 						</Box>
 
