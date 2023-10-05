@@ -5,6 +5,7 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
+import { _getToken } from "utils/token";
 import { setLoader } from "store";
 import { useDispatch } from "react-redux";
 
@@ -25,6 +26,12 @@ const Register = () => {
 	const prevStep = () => setStep(prevStep => prevStep - 1);
 
 	console.log("step :- ", step)
+
+	useEffect(() => {
+		if(_getToken()){
+			setStep(1);
+		}
+	},[])
 
 	const renderStepContent = () => {
 		switch (step) {

@@ -43,8 +43,16 @@ const Login = () => {
 		dispatch(setLoader(true));
 		login(values)
 			.then(userDetails => {
-				dispatch(setUser(userDetails));
-				history.push(RouteNames.dashboard);
+				localStorage.setItem("docUploaded", userDetails.docUploaded);
+				console.log("user details: " + userDetails.docUploaded)
+				if(userDetails.docUploaded){
+					dispatch(setUser(userDetails));
+					history.push(RouteNames.dashboard);
+				}else{
+					console.log("docupload false")
+					history.push(RouteNames.register);
+				}
+				
 			})
 			.finally(() => dispatch(setLoader(false)));
 	};
