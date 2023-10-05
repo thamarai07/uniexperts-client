@@ -138,7 +138,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
-						backgroundColor: "#e5e5e5",
+						backgroundColor: "#fff",
 					}}>
 					{files.personal_identification ? "Uploaded" : "Upload"}
 				</button>}
@@ -174,7 +174,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
-						backgroundColor: "#e5e5e5",
+						backgroundColor: "#fff",
 					}}>
 					{files.tax_registration_certificate ? "Uploaded" : "Upload"}
 				</button>}
@@ -209,7 +209,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
-						backgroundColor: "#e5e5e5",
+						backgroundColor: "#fff",
 					}}>
 					{files.bank_statement ? "Uploaded" : "Upload"}
 				</button>}
@@ -245,7 +245,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
-						backgroundColor: "#e5e5e5",
+						backgroundColor: "#fff",
 					}}>
 					{files.address_proof ? "Uploaded" : "Upload"}
 				</button>}
@@ -281,12 +281,12 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
-						backgroundColor: "#e5e5e5",
+						backgroundColor: "#fff",
 					}}>
 					{files.company_registration_certificate ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
-			<Box display='flex' justifyContent='center' m='1rem 0'>
+			<Box display='flex' justifyContent='center' m='1rem 0' mt="24px">
 				<Button
 					variant='contained'
 					size='small'

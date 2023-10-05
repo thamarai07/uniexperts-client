@@ -14,6 +14,7 @@ import { setLoader } from "store";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import style from "./style.module.scss"
 
 import countryCodes from 'country-codes-list';
 const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
@@ -332,22 +333,22 @@ const Step1 = ({ data, setData, nextStep }) => {
 		});
 	};
 
-	
-	useEffect(()=> {
-		if(country){
+
+	useEffect(() => {
+		if (country) {
 			loadField();
 		}
-	},[country])
+	}, [country])
 
 	const loadField = async () => {
-		try{
+		try {
 			const response = await axios.get(`http://52.66.213.63:4433/api/auth/config?country=${country}`)
 			setBankField(response.data.data.bankFields);
 			console.log("Res: ", response)
-		}catch(err){
+		} catch (err) {
 			console.error(err)
 		}
-	} 
+	}
 
 	const [errors, setErrors] = useState();
 
@@ -677,13 +678,13 @@ const Step1 = ({ data, setData, nextStep }) => {
 			}
 			let swiftCode = dataValues?.bank?.swiftCode;
 			//dataValues?.address?.country == "India" ? requestData.bank.extraField = extraField :
-				requestData.bank.swiftCode = swiftCode
+			requestData.bank.swiftCode = swiftCode
 			setData(requestData);
 
 			const reqData = { ...data, password: values.password };
 			signup(requestData).then(res => {
 				nextStep();
-				
+
 			})
 		}
 	};
@@ -779,7 +780,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 															)}
 														</Select>
 													</FormControl>
-													
+
 
 													<FieldInput
 														name='personalDetails.phone'
@@ -824,7 +825,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											))}
 										</Select>
 									</FormControl>
-									
+
 								</Grid>
 							</Grid>
 						</Box>
@@ -961,7 +962,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											)}
 										</Select>
 									</FormControl>
-									
+
 								</Grid>
 							</Grid>
 						</Box>
@@ -1108,7 +1109,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
-								
+
 
 								{adddressCountry !== "India" && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
@@ -1189,7 +1190,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
-						<Box display='flex' justifyContent='right' m='1rem 0'>
+						<Box className={style.saveCtaContainer}>
 							<Button
 								variant='contained'
 								size='small'
@@ -1200,6 +1201,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									borderRadius: "32px",
 									width: "140px",
 									height: "40px",
+									color: "white"
 								}}>
 								Save and Next
 							</Button>
