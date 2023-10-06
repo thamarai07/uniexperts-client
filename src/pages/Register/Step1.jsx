@@ -14,6 +14,7 @@ import { setLoader } from "store";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import style from "./style.module.scss"
 
 import countryCodes from 'country-codes-list';
 const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
@@ -327,22 +328,22 @@ const Step1 = ({ data, setData, nextStep }) => {
 		return password.length >= 12 && /[!@#$%^&*]/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password);
 	};
 
-	
-	useEffect(()=> {
-		if(country){
+
+	useEffect(() => {
+		if (country) {
 			loadField();
 		}
-	},[country])
+	}, [country])
 
 	const loadField = async () => {
-		try{
+		try {
 			const response = await axios.get(`http://52.66.213.63:4433/api/auth/config?country=${country}`)
 			setBankField(response.data.data.bankFields);
 			console.log("Res: ", response)
-		}catch(err){
+		} catch (err) {
 			console.error(err)
 		}
-	} 
+	}
 
 	const [errors, setErrors] = useState();
 
@@ -670,13 +671,13 @@ const Step1 = ({ data, setData, nextStep }) => {
 			}
 			let swiftCode = dataValues?.bank?.swiftCode;
 			//dataValues?.address?.country == "India" ? requestData.bank.extraField = extraField :
-				requestData.bank.swiftCode = swiftCode
+			requestData.bank.swiftCode = swiftCode
 			setData(requestData);
 
 			const reqData = { ...data, password: values.password };
 			signup(requestData).then(res => {
 				nextStep();
-				
+
 			})
 		}
 	};
@@ -755,7 +756,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											return (
 												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Code hgsdy</InputLabel>
+														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Code hgsdy</InputLabel>
 														<Select
 															sx={{ width: "90px", height: "37px" }}
 															name='company.countryCode'
@@ -772,7 +773,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 															)}
 														</Select>
 													</FormControl>
-													
+
 
 													<FieldInput
 														name='personalDetails.phone'
@@ -817,7 +818,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											))}
 										</Select>
 									</FormControl>
-									
+
 								</Grid>
 							</Grid>
 						</Box>
@@ -877,7 +878,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
+										<InputLabel sx={{ mt: entityTypeValue ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
 										<Select
 											sx={{ height: "37px" }}
 											name='company.entityType'
@@ -954,7 +955,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											)}
 										</Select>
 									</FormControl>
-									
+
 								</Grid>
 							</Grid>
 						</Box>
@@ -1030,7 +1031,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label"> Country</InputLabel>
+										<InputLabel sx={{ mt: adddressCountry ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label"> Country</InputLabel>
 										<Select
 											sx={{ height: "37px" }}
 											labelId="entity-label"
@@ -1101,7 +1102,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
-								
+
 
 								{ <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
@@ -1184,7 +1185,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
-						<Box display='flex' justifyContent='right' m='1rem 0'>
+						<Box className={style.saveCtaContainer}>
 							<Button
 								variant='contained'
 								size='small'
@@ -1195,6 +1196,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									borderRadius: "32px",
 									width: "140px",
 									height: "40px",
+									color: "white"
 								}}>
 								Save and Next
 							</Button>

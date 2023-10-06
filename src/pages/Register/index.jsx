@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-const steps = ["Registration", "File Upload", "Terms & conditions"];
 
 const Register = () => {
 	const [step, setStep] = useState(0);
@@ -25,13 +24,40 @@ const Register = () => {
 	const nextStep = () => setStep(prevStep => prevStep + 1);
 	const prevStep = () => setStep(prevStep => prevStep - 1);
 
-	console.log("step :- ", step)
+	// console.log("step :- ", step)
 
 	useEffect(() => {
-		if(_getToken()){
+		if (_getToken()) {
 			setStep(1);
 		}
-	},[])
+	}, [])
+
+
+	const ActiveStepIcon = (props) => {
+		const { active, completed, icon } = props;
+
+
+		const iconSrc = [
+			"https://cdn-images-1.medium.com/max/1600/1*3rf1Va8nYaNWZ-DykgFWEQ.png",
+			active ? "https://cdn-images-1.medium.com/max/1600/1*v4B06BsNROv2SA8xNnofCg.png" : "https://cdn-images-1.medium.com/max/1600/1*GrySgLo1B2bT2LVp8hrlqg.png",
+			active ? "https://cdn-images-1.medium.com/v2/resize:fit:1600/1*75wxTubX2U74Y-1aABgFIQ.png" : "https://cdn-images-1.medium.com/max/1600/1*HM41RpSWpDhYrTbwBXO8Ig.png"
+		]
+
+		return (
+			<img src={completed ? "https://cdn-images-1.medium.com/max/1600/1*XN4yTJcyi4G2mED3ysJBtg.png" : iconSrc[icon - 1]} alt="alt" style={
+				{
+					width: "44px",
+					height: "44px",
+					backgroundColor: completed || active ? "#F37B21" : "#fff",
+					border: completed || active ? "0px" : "2px solid #6A6A6A",
+					padding: "8px",
+					borderRadius: "99px",
+					marginTop: "-7px",
+
+				}
+			} />
+		)
+	}
 
 	const renderStepContent = () => {
 		switch (step) {
@@ -127,9 +153,9 @@ const Register = () => {
 					<img src={uniexperts_logo} alt='' style={{ width: "170px" }} />
 
 					<Stepper activeStep={step} alternativeLabel>
-						{steps.map(label => (
-							<Step key={label}>
-								<StepLabel>{label}</StepLabel>
+						{steps.map((item, index) => (
+							<Step key={index}>
+								<StepLabel StepIconComponent={ActiveStepIcon}   >{item.label}</StepLabel>
 							</Step>
 						))}
 					</Stepper>
@@ -142,3 +168,22 @@ const Register = () => {
 };
 
 export default Register;
+
+// const steps = ["Registration", "", ""];
+
+
+
+
+const steps = [
+	{
+		label: "Registration",
+	},
+	{
+		label: "File Upload",
+
+	},
+	{
+		label: "Terms & conditions",
+
+	}
+]
