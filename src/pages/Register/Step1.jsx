@@ -763,7 +763,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											return (
 												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Code hgsdy</InputLabel>
+														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Code hgsdy</InputLabel>
 														<Select
 															sx={{ width: "90px", height: "37px" }}
 															name='company.countryCode'
@@ -885,7 +885,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
+										<InputLabel sx={{ mt: entityTypeValue ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
 										<Select
 											sx={{ height: "37px" }}
 											name='company.entityType'
@@ -1038,7 +1038,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: -1, fontSize: "14px" }} id="entity-label"> Country</InputLabel>
+										<InputLabel sx={{ mt: adddressCountry ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label"> Country</InputLabel>
 										<Select
 											sx={{ height: "37px" }}
 											labelId="entity-label"
