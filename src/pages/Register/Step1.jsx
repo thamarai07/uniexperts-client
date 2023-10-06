@@ -320,16 +320,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 	});
 
 	const [confPasswordError, setConfirmpasswordError] = useState("");
-	const [password, setPassword] = useState("");
-	const [confPassword, setConfPassword] = useState("");
+	const [password, setPassword] = useState();
+	const [confPassword, setConfPassword] = useState();
 
-	const calculateConditions = (password) => {
-		setConditions({
-			condition1: password.length >= 12,
-			condition2: /[!@#$%^&*]/.test(password),
-			condition3: /^(?=.*[a-z])(?=.*[A-Z])/.test(password),
-			condition4: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password),
-		});
+	const validatePassword = (password) => {
+		return password.length >= 12 && /[!@#$%^&*]/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password);
 	};
 
 	
@@ -539,11 +534,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 		if (password !== confPassword) {
 			setConfirmpasswordError("Password and confirm password are not the same");
 		}
-		console.log("conditions: ", conditions)
-		if (conditions.condition1 && conditions.condition2 && conditions.condition3 && conditions.condition4) {
-		} else {
+		if (!validatePassword(password)) {
 			errors.password = `Password must have a mix of capital small, numeric and special characters`;
-		}
+		} 
 
 		setErrors(errors);
 		return errors;
@@ -649,7 +642,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			password
 		};
 
-		calculateConditions(password);
+		
 		if (_.isEmpty(validateForm(dataValues))) {
 			// dispatch(setLoader(true));
 			let requestData = {
@@ -1134,7 +1127,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => {
 											const { current: { setFieldValue } = {} } = form || {};
 											setExtraFieldValue(e.target.value)
-											setFieldValue(bankField.key, e.target.value?.toUpperCase());
+											setFieldValue("bank."+bankField.key, e.target.value?.toUpperCase());
 										}}
 									/>
 								</Grid>}
@@ -1167,8 +1160,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 										type='password'
 										name='password'
 										placeholder='Enter your password here'
-										onChange={e => {
+										onChange={(e) => {
+											const { current: { setFieldValue } = {} } = form || {};
 											setPassword(e.target.value)
+											setFieldValue("password", e.target.value);
 										}}
 										error={Boolean(errors?.password)}
 										helperText={errors?.password}
