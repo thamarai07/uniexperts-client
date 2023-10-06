@@ -8,7 +8,9 @@ import {
 	Dialog,
 	Grid,
 	IconButton,
+	MenuItem,
 	Paper,
+	Select,
 	Table,
 	TableBody,
 	TableCell,
@@ -16,6 +18,8 @@ import {
 	TableHead,
 	TableRow,
 	Typography,
+	InputLabel,
+	FormControl
 } from "@mui/material";
 import {
 	addStudentEducation,
@@ -56,12 +60,16 @@ const tableHead = [
 	"Grades",
 ];
 const preferredCountries = ["India", "Andorra", "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Antarctica", "Argentina", "Austria", "Australia*", "Aruba", "Aland Islands", "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "Saint Barthélemy", "Bermuda", "Brunei Darussalam", "Bolivia, Plurinational State of", "Bonaire, Sint Eustatius and Saba", "Brazil*", "Bahamas", "Bhutan", "Bouvet Island", "Botswana", "Belarus", "Belize", "Canada*", "Cocos (Keeling) Islands", "Congo, the Democratic Republic of the", "Central African Republic", "Congo", "Switzerland", "Cote d’Ivoire", "Cook Islands", "Chile", "Cameroon", "China*", "Colombia", "Costa Rica", "Cuba", "Cape Verde", "Curaçao", "Christmas Island", "Cyprus", "Czech Republic", "Germany", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador", "Estonia", "Egypt", "Western Sahara", "Eritrea", "Spain", "Ethiopia", "Finland", "Fiji", "Falkland Islands (Malvinas)", "Faroe Islands", "France", "Gabon", "United Kingdom", "Grenada", "Georgia", "French Guiana", "Guernsey", "Ghana", "Gibraltar", "Greenland", "Gambia", "Guinea", "Guadeloupe", "Equatorial Guinea", "Greece", "South Georgia and the South Sandwich Islands", "Guatemala", "Guinea-Bissau", "Guyana", "Heard Island and McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "Ireland*", "Israel", "Isle of Man", "India*", "British Indian Ocean Territory", "Iraq", "Iran, Islamic Republic of", "Iceland", "Italy*", "Jersey", "Jamaica", "Jordan", "Japan", "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "Saint Kitts and Nevis", "Korea, Democratic People’s Republic of", "Korea, Republic of", "Kuwait", "Cayman Islands", "Kazakhstan", "Lao People’s Democratic Republic", "Lebanon", "Saint Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Libyan Arab Jamahiriya", "Morocco", "Monaco", "Moldova, Republic of", "Montenegro", "Saint Martin (French part)", "Madagascar", "Macedonia, the former Yugoslav Republic of", "Mali", "Myanmar", "Mongolia", "Macao", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico*", "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea", "Philippines", "Pakistan", "Poland", "Saint Pierre and Miquelon", "Pitcairn", "Palestine", "Portugal", "Paraguay", "Qatar", "Reunion", "Romania", "Serbia", "Russian Federation", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan", "Sweden", "Singapore", "Saint Helena, Ascension and Tristan da Cunha", "Slovenia", "Svalbard and Jan Mayen", "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "Sao Tome and Principe", "El Salvador", "Sint Maarten (Dutch part)", "Syrian Arab Republic", "Swaziland", "Turks and Caicos Islands", "Chad", "French Southern Territories", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia", "Tonga", "Turkey", "Trinidad and Tobago", "Tuvalu", "Taiwan", "Tanzania, United Republic of", "Ukraine", "Uganda", "United States*", "Uruguay", "Uzbekistan", "Holy See (Vatican City State)", "Saint Vincent and the Grenadines", "Venezuela, Bolivarian Republic of", "Virgin Islands, British", "Vietnam", "Vanuatu", "Wallis and Futuna", "Samoa", "Yemen", "Mayotte", "South Africa", "Zambia", "Zimbabwe"]
+const gradingSchemeOptions = ["Percentage", "CGPA", "GPA", "Grade", "Class", "Score", "Division", "Score", "Division"]
 const Education = ({ studentId = null, nextStep = () => { } }) => {
 	const { app: { countries = [] } = {} } = useSelector(state => state);
 
 	const [educations, setEducations] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [selectedEducation, setSelectedEducation] = useState(null);
+	const [gradingScheme, setGradingScheme] = useState("");
+	const [gradeValue, setGradevalue] = useState();
+	const [gradeValueError, setGradevalueError] = useState("");
 
 	useEffect(() => {
 		_fetchEducationInformation();
@@ -91,7 +99,6 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 				toast.success("Education Updated Successfully");
 				_fetchEducationInformation();
 			});
-
 			return;
 		}
 
@@ -121,8 +128,6 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 				display='flex'
 				flexDirection='column'
 				gap='1rem'>
-
-
 				<TableContainer component={Paper}>
 					<Table sx={{ minWidth: 700 }}>
 						<TableHead>
@@ -328,7 +333,19 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={6}>
-										<FieldInput name='class' label='Class' />
+									<FormControl fullWidth>
+										<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Grading Scheme</InputLabel>
+										<Select
+											size="small"
+											sx={{ height: "37px" }}
+											onChange={e => setGradingScheme(e.target.value)}
+											value={gradingScheme ?? null}
+											// error={Boolean(errors?.timezone)}
+											// helperText={errors?.timezone}
+										>
+											{gradingSchemeOptions.map(gradingScheme=> <MenuItem value={gradingScheme}>{gradingScheme}</MenuItem>)}
+										</Select>
+									</FormControl>
 									</Grid>
 									<Grid item xs={12} sm={6}>
 										<Field name='isDegreeAwarded'>
@@ -382,7 +399,80 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={6}>
-										<FieldInput type='number' name='cgpa' label='CGPA' />
+											{(()=> {
+											switch (gradingScheme) {
+												case "Percentage": return <FieldInput
+												onChange={e => setGradevalue({"percentage": e.target.value})}
+															value={gradeValue?.percentage ?? null}
+															error={Boolean(gradeValueError)}
+															helperText={gradeValueError} type="number" name='percentage' label='Percentage' />
+												case "CGPA": return <FieldInput 
+												onChange={e => setGradevalue({"cgpa": e.target.value})}
+															value={gradeValue?.cgpa ?? null}
+															error={Boolean(gradeValueError)}
+															helperText={gradeValueError}type="number" name='cgpa' label='CGPA' />
+												case "GPA": return <FieldInput 
+												onChange={e => setGradevalue({"gpa": e.target.value})}
+															value={gradeValue?.gpa ?? null}
+															error={Boolean(gradeValueError)}
+															helperText={gradeValueError}
+												type="number" name='gpa' label='GPA'
+												 />
+												case "Grade": return <>
+													<FormControl fullWidth>
+														<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Grade</InputLabel>
+														<Select
+															size="small"
+															sx={{ height: "37px" }}
+															onChange={e => setGradevalue({"grade": e.target.value})}
+															value={gradeValue?.grade ?? null}
+															error={Boolean(gradeValueError)}
+															helperText={gradeValueError}
+														>
+															{["A+", "A-", "B+", "B-", "C+", "C-", "D+", "D-", "E", "E-", "F+", "F-"].map(g => <MenuItem value={g}>{g}</MenuItem>)}
+														</Select>
+													</FormControl>
+												</>
+
+												case "Class": return <>
+												<FormControl fullWidth>
+													<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Class</InputLabel>
+													<Select
+														size="small"
+														sx={{ height: "37px" }}
+														onChange={e => setGradevalue({"class": e.target.value})}
+															value={gradeValue?.class ?? null}
+															error={Boolean(gradeValueError)}
+															helperText={gradeValueError}
+													>
+														{["First", "Second", "Third", "Pass", "Fail"].map(cl => <MenuItem value={cl}>{cl}</MenuItem>)}
+													</Select>
+												</FormControl>
+											</>
+												case "Score": return <FieldInput onChange={e => setGradevalue({"score": e.target.value})}
+												value={gradeValue?.score ?? null}
+												error={Boolean(gradeValueError)}
+												helperText={gradeValueError} type="number" name='score' label='Score' />
+												case "Division": return <>
+												<FormControl fullWidth>
+													<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Division</InputLabel>
+													<Select
+														size="small"
+														sx={{ height: "37px" }}
+														onChange={e => setGradevalue({"division": e.target.value})}
+															value={gradeValue?.division ?? null}
+															error={Boolean(gradeValueError)}
+															helperText={gradeValueError}
+													>
+														{["First", "Second", "Third"].map(d => <MenuItem value={d}>{d}</MenuItem>)}
+													</Select>
+												</FormControl>
+											</>
+
+											}
+										})()
+										}
+										
 									</Grid>
 
 									<Grid item xs={12} sm={6}>
@@ -392,14 +482,6 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 											type='date'
 										/>
 									</Grid>
-
-
-
-
-
-
-
-
 								</Grid>
 								<Button
 									type='submit'
