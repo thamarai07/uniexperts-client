@@ -1103,7 +1103,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 								
 
-								{adddressCountry !== "India" && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+								{ <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.swiftCode'
 										label='Swift Code'

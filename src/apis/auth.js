@@ -23,6 +23,7 @@ export const login = data =>
 				resolve(restDetails);
 			})
 			.catch(error => {
+				
 				reject(error);
 			});
 	});
@@ -42,7 +43,8 @@ export const signup = data =>
 				resolve({ token, ...restDetails });
 			})
 			.catch(error => {
-				console.log(error);
+				console.log("Error: " + error)
+				reject(error);
 			});
 	});
 
