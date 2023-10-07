@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { setLoader } from "store";
+import S3 from '../../Register/aws';
 
 const RenderRow = ({
 	documentId,
@@ -193,52 +194,124 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 			dispatch(setLoader(false));
 		}
 	};
+
+	const [files, setFiles] = useState({});
+	const [filesUploading, setFilesUploading] = useState({});
 	const [personal, setPersonal] = useState(null)
 	const [taxCertificate, setTaxCertificate] = useState(null)
 	const [bankStatement, setBankStatement] = useState(null)
 	const [addressProof, setAddressProof] = useState(null)
 	const [companyCertificate, setCompanyCertificate] = useState(null)
 
+
+
+
+
+	const handleSubmit = values => {
+		//dispatch(setLoader(true));
+		const requiredKeys = [
+			'personal_identification',
+			'tax_registration_certificate',
+			'bank_statement',
+			'address_proof',
+			'company_registration_certificate'
+		];
+
+		if (requiredKeys.every(key => files.hasOwnProperty(key))) {
+			const data = {
+				"documents": [
+					{
+						"url": files['personal_identification'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['tax_registration_certificate'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['bank_statement'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['address_proof'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+					{
+						"url": files['company_registration_certificate'],
+						"documentTypeId": "648eb9827c35141cb52dc532"
+					},
+				]
+			}
+
+			//const studentId = "64887e619ab2135caf6062cd"
+			updateStudentDocument({
+				studentId,
+				data
+			}).then(res=> {
+				console.log("File updated successfully: " + res);
+				nextStep();
+			});
+
+			// uploadAgentDocuments(data)
+			// 	.then(res => {
+			// 		console.log("res", res);
+			// 		nextStep();
+			// 	})
+
+		} else {
+			alert("Please upload all the files");
+		}
+	};
+
+	const handleFileUpload = async (name, file) => {
+		
+		const fileName = file?.name;
+		setFilesUploading({ ...filesUploading, [name]: true })
+
+		const params = {
+			Bucket: 'uniexpert',
+			Key: fileName, // Name of the file in your S3 bucket
+			Body: file,
+		};
+
+		try {
+			const uploadedFile = await S3.upload(params).promise();
+			setFiles({ ...files, [name]: uploadedFile.Location })
+			setFilesUploading({ ...filesUploading, [name]: false })
+		} catch (error) {
+			console.error('Error uploading file:', error);
+			setFilesUploading({ ...filesUploading, [name]: false })
+		}
+	};
+
+	useEffect(()=> {
+		if(personal)
+		handleFileUpload("personal_identification", personal);
+	},[personal])
+
+	useEffect(()=> {
+		if(taxCertificate)
+		handleFileUpload("tax_registration_certificate", taxCertificate);
+	},[taxCertificate])
+
+	useEffect(()=> {
+		if(bankStatement)
+		handleFileUpload("bank_statement", bankStatement);
+	},[bankStatement])
+
+	useEffect(()=> {
+		if(addressProof)
+		handleFileUpload("address_proof", addressProof);
+	},[addressProof])
+
+	useEffect(()=> {
+		if(companyCertificate)
+		handleFileUpload("company_registration_certificate", companyCertificate);
+	},[companyCertificate])
+
 	return (
 		<>
 			<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
-				{/* <TableContainer component={Paper}>
-					<Table sx={{ minWidth: 700 }}>
-						<TableHead>
-							<TableRow sx={{ backgroundColor: "#F37B21" }}>
-								{tableHead?.map(label => (
-									<TableCell key={label} sx={{ color: "#fff" }}>
-										{label}
-									</TableCell>
-								))}
-							</TableRow>
-						</TableHead>
-
-						<TableBody>
-							{Object.keys(documents)?.length ? (
-								Object.keys(documents)?.map((documentId, index) => (
-									<RenderRow
-										key={documentId}
-										documentId={documentId}
-										index={index}
-										handleFileAttachment={handleFileAttachment}
-										{...documents[documentId]}
-									/>
-								))
-							) : (
-								<TableRow
-									key='no-data'
-									style={{
-										height: "10rem",
-									}}>
-									<TableCell colSpan={tableHead.length} align='center'>
-										No Data !
-									</TableCell>
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</TableContainer> */}
 
 				<span
 					style={{
@@ -266,13 +339,15 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 				<Button
 					variant='contained'
 					size='small'
-					disabled={!isBtnEnable}
+					// disabled={!isBtnEnable}
 					sx={{
 						textTransform: "none",
 						bgcolor: "#f37b21 !important",
 						"&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" },
 					}}
-					onClick={nextStep}>
+					onClick={()=> {
+						handleSubmit()
+					}}>
 					Next
 				</Button>
 			</Box>
