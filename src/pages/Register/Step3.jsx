@@ -108,7 +108,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 
 	return (
 		<div>
-			<div style={{ display: "flex" }}>
+			<div style={{ display: "flex", marginTop: "2.5rem" }}>
 				<label
 					htmlFor=''
 					style={{
@@ -124,7 +124,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
-						height: "40px",
+						height: "36px",
 						borderRadius: "5px",
 					}}
 				/>
@@ -134,7 +134,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						marginLeft: "32px",
 						borderRadius: "32px",
 						width: "100px",
-						height: "40px",
+						height: "36px",
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
@@ -160,7 +160,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
-						height: "40px",
+						height: "36px",
 						borderRadius: "5px",
 					}}
 				/>
@@ -170,7 +170,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						marginLeft: "32px",
 						borderRadius: "32px",
 						width: "100px",
-						height: "40px",
+						height: "36px",
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
@@ -195,7 +195,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
-						height: "40px",
+						height: "36px",
 						borderRadius: "5px",
 					}}
 				/>
@@ -205,7 +205,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						marginLeft: "32px",
 						borderRadius: "32px",
 						width: "100px",
-						height: "40px",
+						height: "36px",
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
@@ -231,7 +231,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					name="address_proof"
 					style={{
 						border: "2px solid gray",
-						height: "40px",
+						height: "36px",
 						borderRadius: "5px",
 					}}
 				/>
@@ -241,7 +241,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						marginLeft: "32px",
 						borderRadius: "32px",
 						width: "100px",
-						height: "40px",
+						height: "36px",
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",
@@ -267,7 +267,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					onChange={handleFileUpload}
 					style={{
 						border: "2px solid gray",
-						height: "40px",
+						height: "36px",
 						borderRadius: "5px",
 					}}
 				/>
@@ -277,7 +277,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 						marginLeft: "32px",
 						borderRadius: "32px",
 						width: "100px",
-						height: "40px",
+						height: "36px",
 						paddingTop: "2px",
 						color: "#f37b21",
 						border: "0.5px solid gray",

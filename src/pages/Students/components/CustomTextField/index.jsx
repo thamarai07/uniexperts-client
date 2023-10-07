@@ -9,13 +9,13 @@ const CustomTextField = ({
 	value,
 	placeholder,
 	sx = {},
-	handleOnChange = () => {},
+	handleOnChange = () => { },
 	type = "text",
 	InputLabelProps = {},
 	disabled = false,
 	disablePast = false,
 	disableFuture = false,
-	error=false,
+	error = false,
 	helperText,
 	...restProps
 }) => {
@@ -40,7 +40,12 @@ const CustomTextField = ({
 		sx: {
 			bgcolor: "transparent",
 			"& .MuiInputBase-root": { fontSize: "0.825rem" },
-			"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem" },
+			"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem", color: "#F37B21" },
+			"& .MuiOutlinedInput-root": {
+				"&.Mui-focused fieldset": {
+					borderColor: "#F37B21",
+				},
+			},
 			...sx,
 		},
 		InputLabelProps: { sx: { fontSize: "0.825rem" }, ...InputLabelProps },
@@ -136,7 +141,12 @@ const CustomTextField = ({
 						sx={{
 							bgcolor: "transparent",
 							"& .MuiInputBase-root": { fontSize: "0.825rem" },
-							"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem" },
+							"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem", color: "#F37B21" },
+							"& .MuiOutlinedInput-root": {
+								"&.Mui-focused fieldset": {
+									borderColor: "#F37B21",
+								},
+							},
 							...sx,
 						}}
 						InputLabelProps={{

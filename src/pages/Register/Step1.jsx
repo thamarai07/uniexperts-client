@@ -17,6 +17,7 @@ import axios from "axios";
 import style from "./style.module.scss"
 
 import countryCodes from 'country-codes-list';
+import Loader from "components/Loader";
 const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
 
 const myCountryCodesObject = Object.keys(codesObject).map((code) => codesObject[code]);
@@ -312,6 +313,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const [adddressCountry, setAddressCountry] = useState('');
 	const [bankFields, setBankFields] = useState();
 
+	const [showLoader, setShowLoader] = useState(false);
+
 	const [conditions, setConditions] = useState({
 		condition1: false,
 		condition2: false,
@@ -537,7 +540,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 		}
 		if (!validatePassword(password)) {
 			errors.password = `Password must have a mix of capital small, numeric and special characters`;
-		} 
+		}
 
 		setErrors(errors);
 		return errors;
@@ -598,6 +601,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 	const onSubmit = values => {
 
+		setShowLoader(true);
+
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -643,7 +648,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			password
 		};
 
-		
+
 		if (_.isEmpty(validateForm(dataValues))) {
 			// dispatch(setLoader(true));
 			let requestData = {
@@ -680,7 +685,14 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 			})
 		}
+		setTimeout(() => {
+			setShowLoader(false);
+		}, 2000);
 	};
+
+	if (showLoader) {
+		return <Loader />
+	}
 
 	return (
 		<Box width={{ xs: "unset", sm: "60vw", overflowY: "auto", }} maxHeight='80vh' >
@@ -756,9 +768,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 											return (
 												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Code hgsdy</InputLabel>
+														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "0.825rem" }} id="entity-label">Code hgsdy</InputLabel>
 														<Select
-															sx={{ width: "90px", height: "37px" }}
+															sx={{ width: "90px", height: "36px", fontSize: "0.825rem" }}
 															name='company.countryCode'
 															labelId="entity-label"
 															label="Code"
@@ -807,7 +819,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										<InputLabel sx={{ mt: selectedTimezone ? 0.45 : -0.9, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Time Zone</InputLabel>
 										<Select
 											size="small"
-											sx={{ height: "37px" }}
+											sx={{ height: "36px", fontSize: "0.825rem" }}
 											onChange={e => setSelectedTimezone(e.target.value)}
 											value={selectedTimezone ?? null}
 											error={Boolean(errors?.timezone)}
@@ -880,7 +892,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FormControl fullWidth>
 										<InputLabel sx={{ mt: entityTypeValue ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
 										<Select
-											sx={{ height: "37px" }}
+											sx={{ height: "36px", fontSize: "0.825rem" }}
 											name='company.entityType'
 											labelId="entity-label"
 											label="Entity Type"
@@ -939,7 +951,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FormControl fullWidth>
 										<InputLabel sx={{ mt: country ? 0.45 : -1, fontSize: "14px" }} id="entity-label">Registered Country</InputLabel>
 										<Select
-											sx={{ height: "37px" }}
+											sx={{ height: "36px", fontSize: "0.825rem" }}
 											labelId="entity-label"
 											name='company.country'
 											label='Registered Country'
@@ -1033,7 +1045,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 									<FormControl fullWidth>
 										<InputLabel sx={{ mt: adddressCountry ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label"> Country</InputLabel>
 										<Select
-											sx={{ height: "37px" }}
+											sx={{ height: "36px", fontSize: "0.825rem" }}
 											labelId="entity-label"
 											name='address.addressCountry'
 											label='Country'
@@ -1104,7 +1116,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 
-								{ <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+								{<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										name='bank.swiftCode'
 										label='Swift Code'
@@ -1128,7 +1140,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={(e) => {
 											const { current: { setFieldValue } = {} } = form || {};
 											setExtraFieldValue(e.target.value)
-											setFieldValue("bank."+bankField.key, e.target.value?.toUpperCase());
+											setFieldValue("bank." + bankField.key, e.target.value?.toUpperCase());
 										}}
 									/>
 								</Grid>}
