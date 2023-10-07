@@ -21,26 +21,26 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
         })
     }, [])
 
-    const printDocument = async ()=> {
+    const printDocument = async () => {
         let iframe = document.createElement("iframe");
         iframe.style.visibility = "hidden";
         document.body.appendChild(iframe);
         let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
         iframedoc.body.innerHTML = tncData;
-        
+
         let canvas = await html2canvas(iframedoc.body, {});
-        
+
         // Convert the iframe into a PNG image using canvas.
         let imgData = canvas.toDataURL("image/png");
-      
+
         // Create a PDF document and add the image as a page.
         const doc = new JsPDF({
-          format: "a4",
-          unit: "mm",
+            format: "a4",
+            unit: "mm",
         });
         doc.addImage(imgData, "PNG", 0, 0, 210, 297);
-        
-      
+
+
         // Get the file as blob output.
         let blob = doc.output("blob");
 
@@ -49,10 +49,10 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
         tempLink.href = csvURL;
         tempLink.setAttribute('download', 'filename.pdf');
         tempLink.click();
-      
+
         // Remove the iframe from the document when the file is generated.
         document.body.removeChild(iframe);
-      }
+    }
 
     const tncff = ` This Contractual Agreement is enacted with the primary objective of formalizing a collaborative partnership between Uniexperts and the Service Provider. The Service Provider shall function as an intermediary service facilitator, establishing a bridge between Uniexperts and Prospective Students across the global spectrum. The overarching purpose of this partnership is to enable Uniexperts to extend its outreach and establish connections with an extensive array of universities and educational institutions. It is to be noted that the Service Provider does not possess direct contractual affiliations with educational institutions on a global scale. By harnessing the intermediary capabilities of the Service Provider, Uniexperts aspires to amplify the scope and quality of its offerings. The ultimate goal is to enhance educational accessibility and opportunities on an international scale, thereby fostering mutually beneficial outcomes for the students, partner universities, the Service Provider, and Uniexperts.
     ARTICLE 1. SCOPE OF SERVICES
@@ -93,12 +93,12 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                     Read terms and conditions
                 </Typography>
             </Box>
-                <div id="tnc" style={{ width: "922px", border: "2px solid gray", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px",  background: "silver",  }} >
-                    {tncData && <div style={{overflowY: "scroll", maxHeight: "100vh"}}  dangerouslySetInnerHTML={{
+                <div id="tnc" style={{ width: "922px", borderRadius: "10px", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px", background: "#F5F5F5", }} >
+                    {tncData && <div style={{ overflowY: "scroll", maxHeight: "100vh" }} dangerouslySetInnerHTML={{
                         __html: tncData
                     }} />}
                 </div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "20px" }}>
 
                     <div style={{ display: "flex" }} >
                         <Checkbox onChange={() => setIsChecked(!isChecked)} />
@@ -125,8 +125,8 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                             style={{ backgroundColor: "#ededed", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid grey", color: isChecked ? "#f37b21" : "gray", paddingBlock: "8px", cursor: "pointer" }}
                             onClick={() => {
                                 //console.log("clicked");
-                               printDocument();
-                               history.push("/auth/login")
+                                printDocument();
+                                history.push("/auth/login")
                                 // dispatch(setLoader(true));
                                 // setTimeout(() =>{
                                 //     dispatch(setLoader(false));
@@ -138,7 +138,7 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                         </button>
                     </div>
                 </div>
-            </> : <div style={{ width: "922px", display: "flex", justifyContent: "center", alignItems: "center",  }}> <CircularProgress /></div>}
+            </> : <div style={{ width: "922px", display: "flex", justifyContent: "center", alignItems: "center", }}> <CircularProgress /></div>}
 
         </div>
     );

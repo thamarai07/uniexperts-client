@@ -333,19 +333,26 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={6}>
-									<FormControl fullWidth>
-										<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Grading Scheme</InputLabel>
-										<Select
-											size="small"
-											sx={{ height: "37px" }}
-											onChange={e => setGradingScheme(e.target.value)}
-											value={gradingScheme ?? null}
+										<FormControl fullWidth sx={{
+											"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem", color: "#F37B21" },
+											"& .MuiOutlinedInput-root": {
+												"&.Mui-focused fieldset": {
+													borderColor: "#F37B21",
+												},
+											},
+										}}>
+											<InputLabel sx={{ mt: gradingScheme ? 0 : -1, ml: -0.5, fontSize: "14px", paddingInline: "6px" }} id="entity-label">Grading Scheme</InputLabel>
+											<Select
+												size="small"
+												sx={{ height: "37px" }}
+												onChange={e => setGradingScheme(e.target.value)}
+												value={gradingScheme ?? null}
 											// error={Boolean(errors?.timezone)}
 											// helperText={errors?.timezone}
-										>
-											{gradingSchemeOptions.map(gradingScheme=> <MenuItem value={gradingScheme}>{gradingScheme}</MenuItem>)}
-										</Select>
-									</FormControl>
+											>
+												{gradingSchemeOptions.map(gradingScheme => <MenuItem value={gradingScheme}>{gradingScheme}</MenuItem>)}
+											</Select>
+										</FormControl>
 									</Grid>
 									<Grid item xs={12} sm={6}>
 										<Field name='isDegreeAwarded'>
@@ -399,32 +406,32 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={6}>
-											{(()=> {
+										{(() => {
 											switch (gradingScheme) {
 												case "Percentage": return <FieldInput
-												onChange={e => setGradevalue({"percentage": e.target.value})}
-															value={gradeValue?.percentage ?? null}
-															error={Boolean(gradeValueError)}
-															helperText={gradeValueError} type="number" name='percentage' label='Percentage' />
-												case "CGPA": return <FieldInput 
-												onChange={e => setGradevalue({"cgpa": e.target.value})}
-															value={gradeValue?.cgpa ?? null}
-															error={Boolean(gradeValueError)}
-															helperText={gradeValueError}type="number" name='cgpa' label='CGPA' />
-												case "GPA": return <FieldInput 
-												onChange={e => setGradevalue({"gpa": e.target.value})}
-															value={gradeValue?.gpa ?? null}
-															error={Boolean(gradeValueError)}
-															helperText={gradeValueError}
-												type="number" name='gpa' label='GPA'
-												 />
+													onChange={e => setGradevalue({ "percentage": e.target.value })}
+													value={gradeValue?.percentage ?? null}
+													error={Boolean(gradeValueError)}
+													helperText={gradeValueError} type="number" name='percentage' label='Percentage' />
+												case "CGPA": return <FieldInput
+													onChange={e => setGradevalue({ "cgpa": e.target.value })}
+													value={gradeValue?.cgpa ?? null}
+													error={Boolean(gradeValueError)}
+													helperText={gradeValueError} type="number" name='cgpa' label='CGPA' />
+												case "GPA": return <FieldInput
+													onChange={e => setGradevalue({ "gpa": e.target.value })}
+													value={gradeValue?.gpa ?? null}
+													error={Boolean(gradeValueError)}
+													helperText={gradeValueError}
+													type="number" name='gpa' label='GPA'
+												/>
 												case "Grade": return <>
 													<FormControl fullWidth>
 														<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Grade</InputLabel>
 														<Select
 															size="small"
 															sx={{ height: "37px" }}
-															onChange={e => setGradevalue({"grade": e.target.value})}
+															onChange={e => setGradevalue({ "grade": e.target.value })}
 															value={gradeValue?.grade ?? null}
 															error={Boolean(gradeValueError)}
 															helperText={gradeValueError}
@@ -435,44 +442,44 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 												</>
 
 												case "Class": return <>
-												<FormControl fullWidth>
-													<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Class</InputLabel>
-													<Select
-														size="small"
-														sx={{ height: "37px" }}
-														onChange={e => setGradevalue({"class": e.target.value})}
+													<FormControl fullWidth>
+														<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Class</InputLabel>
+														<Select
+															size="small"
+															sx={{ height: "37px" }}
+															onChange={e => setGradevalue({ "class": e.target.value })}
 															value={gradeValue?.class ?? null}
 															error={Boolean(gradeValueError)}
 															helperText={gradeValueError}
-													>
-														{["First", "Second", "Third", "Pass", "Fail"].map(cl => <MenuItem value={cl}>{cl}</MenuItem>)}
-													</Select>
-												</FormControl>
-											</>
-												case "Score": return <FieldInput onChange={e => setGradevalue({"score": e.target.value})}
-												value={gradeValue?.score ?? null}
-												error={Boolean(gradeValueError)}
-												helperText={gradeValueError} type="number" name='score' label='Score' />
+														>
+															{["First", "Second", "Third", "Pass", "Fail"].map(cl => <MenuItem value={cl}>{cl}</MenuItem>)}
+														</Select>
+													</FormControl>
+												</>
+												case "Score": return <FieldInput onChange={e => setGradevalue({ "score": e.target.value })}
+													value={gradeValue?.score ?? null}
+													error={Boolean(gradeValueError)}
+													helperText={gradeValueError} type="number" name='score' label='Score' />
 												case "Division": return <>
-												<FormControl fullWidth>
-													<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Division</InputLabel>
-													<Select
-														size="small"
-														sx={{ height: "37px" }}
-														onChange={e => setGradevalue({"division": e.target.value})}
+													<FormControl fullWidth>
+														<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Division</InputLabel>
+														<Select
+															size="small"
+															sx={{ height: "37px" }}
+															onChange={e => setGradevalue({ "division": e.target.value })}
 															value={gradeValue?.division ?? null}
 															error={Boolean(gradeValueError)}
 															helperText={gradeValueError}
-													>
-														{["First", "Second", "Third"].map(d => <MenuItem value={d}>{d}</MenuItem>)}
-													</Select>
-												</FormControl>
-											</>
+														>
+															{["First", "Second", "Third"].map(d => <MenuItem value={d}>{d}</MenuItem>)}
+														</Select>
+													</FormControl>
+												</>
 
 											}
 										})()
 										}
-										
+
 									</Grid>
 
 									<Grid item xs={12} sm={6}>

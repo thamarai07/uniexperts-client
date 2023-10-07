@@ -5,7 +5,7 @@ const DropdownWithSearch = ({
 	value,
 	placeholder,
 	options = [],
-	handleOnChange = () => {},
+	handleOnChange = () => { },
 	sx = {},
 	inputProps,
 	...restProps
@@ -32,7 +32,12 @@ const DropdownWithSearch = ({
 					sx={{
 						bgcolor: "transparent",
 						"& .MuiInputBase-root": { fontSize: "0.825rem" },
-						"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem" },
+						"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem", color: "#F37B21" },
+						"& .MuiOutlinedInput-root": {
+							"&.Mui-focused fieldset": {
+								borderColor: "#F37B21",
+							},
+						},
 					}}
 					InputLabelProps={{ sx: { fontSize: "0.825rem" } }}
 				/>

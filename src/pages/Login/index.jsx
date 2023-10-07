@@ -45,14 +45,14 @@ const Login = () => {
 			.then(userDetails => {
 				localStorage.setItem("docUploaded", userDetails.docUploaded);
 				console.log("user details: " + userDetails.docUploaded)
-				if(userDetails.docUploaded){
+				if (userDetails.docUploaded) {
 					dispatch(setUser(userDetails));
 					history.push(RouteNames.dashboard);
-				}else{
+				} else {
 					console.log("docupload false")
 					history.push(RouteNames.register);
 				}
-				
+
 			})
 			.finally(() => dispatch(setLoader(false)));
 	};
@@ -69,8 +69,8 @@ const Login = () => {
 					backgroundSize: "cover",
 				}}
 			/> */}
-			<div style={{ display: 'flex', width: '100%' }}>
-				<Box style={{ flex: 1 }}>
+			<div style={{ display: 'flex', width: '100%', justifyContent: "center", alignItems: "center", columnGap: "60px" }}>
+				<Box >
 					<div>
 						<SimpleImageSlider
 							width={450}
@@ -80,7 +80,7 @@ const Login = () => {
 							showBullets={true}
 							style={{
 								borderRadius: "15px",
-								marginTop: "60px",
+								// marginTop: "60px",
 								marginLeft: "10rem",
 								marginBottom: "25px"
 							}}
@@ -88,10 +88,11 @@ const Login = () => {
 					</div>
 				</Box>
 				<Box
-					width={{ xs: "100%", md: "30dvw" }}
+					// width={{ xs: "100%", md: "30dvw" }}
+					style={{ width: "47vw" }}
 					display='flex'
 					flexDirection='column'
-					style={{ flex: 1 }}>
+				>
 					<Box
 						flexGrow={3}
 						display='flex'
