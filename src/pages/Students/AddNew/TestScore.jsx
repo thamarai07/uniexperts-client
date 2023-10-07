@@ -71,19 +71,19 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 		_fetchExamTypes();
 	}, []);
 
-	useEffect(() => {
-		const temp = {};
-		fieldList?.forEach(key => {
-			initialValues[key] = "";
-			temp[key] = Yup.string().nullable().required("Required");
-		});
+	// useEffect(() => {
+	// 	const temp = {};
+	// 	fieldList?.forEach(key => {
+	// 		initialValues[key] = "";
+	// 		temp[key] = Yup.string().nullable().required("Required");
+	// 	});
 
-		Object.keys(initialValues)?.forEach(key => {
-			temp[key] = Yup.string().nullable().required("Required");
-		});
+	// 	Object.keys(initialValues)?.forEach(key => {
+	// 		temp[key] = Yup.string().nullable().required("Required");
+	// 	});
 
-		setValidationSchema(Yup.object(temp));
-	}, [fieldList]);
+	// 	setValidationSchema(Yup.object(temp));
+	// }, [fieldList]);
 
 	const _fetchTestScores = () => {
 		getTestScore(studentId).then((ts = []) => setTests(ts));
@@ -103,6 +103,18 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	};
 
 	const onSubmit = values => {
+		const temp = {};
+		fieldList?.forEach(key => {
+			initialValues[key] = "";
+			temp[key] = Yup.string().nullable().required("Required");
+		});
+
+		Object.keys(initialValues)?.forEach(key => {
+			temp[key] = Yup.string().nullable().required("Required");
+		});
+
+		setValidationSchema(Yup.object(temp));
+
 		const requestData = {
 			name: values?.name,
 			doe: new Date(values?.doe),

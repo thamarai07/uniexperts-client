@@ -61,6 +61,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 	const [workHistory, setWorkHistory] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [selectedWork, setSelectedWork] = useState(null);
+	const [isOptional, setIsOptional] = useState(false)
 
 	useEffect(() => {
 		_fetchWorkHistory();
@@ -182,15 +183,25 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<Box display='flex' justifyContent='flex-end'>
+				<Box display='flex' justifyContent='flex-end' columnGap={2}>
+					<Button
+						variant='contained'
+						size='small'
+						disabled={isOptional}
+						type='button'
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", "&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" }, }}
+						onClick={() => setOpen(true)}
+						startIcon={<AddIcon />}>
+						Add
+					</Button>
 					<Button
 						variant='contained'
 						size='small'
 						type='button'
 						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
-						onClick={() => setOpen(true)}
-						startIcon={<AddIcon />}>
-						Add
+						onClick={() => setIsOptional(true)}
+					>
+						No Work History
 					</Button>
 				</Box>
 			</Box>
@@ -199,7 +210,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 				<Button
 					variant='contained'
 					size='small'
-					disabled={!workHistory?.length}
+					disabled={!isOptional && !workHistory?.length}
 					sx={{
 						textTransform: "none",
 						bgcolor: "#f37b21 !important",
