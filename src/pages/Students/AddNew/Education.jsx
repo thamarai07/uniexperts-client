@@ -82,6 +82,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 	};
 
 	const onSubmit = (values, { resetForm }) => {
+		console.log("onSubmit: ", values)
 		if (selectedEducation?.id) {
 			updateStudentEducation({
 				studentId,
@@ -230,9 +231,10 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 						initialValues={
 							selectedEducation ? selectedEducation : initialValues
 						}
-						validationSchema={educationValidation}
+						//validationSchema={educationValidation}
 						onSubmit={onSubmit}>
-						<Form>
+							
+						{props=> (<Form>
 							<Box
 								display='flex'
 								flexDirection='column'
@@ -502,7 +504,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 									Save
 								</Button>
 							</Box>
-						</Form>
+						</Form>)}
 					</Formik>
 				</Box>
 			</Dialog>
