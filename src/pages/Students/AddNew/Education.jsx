@@ -343,7 +343,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 												},
 											},
 										}}>
-											<InputLabel sx={{ mt: gradingScheme ? 0 : -1, ml: -0.5, fontSize: "14px", paddingInline: "6px" }} id="entity-label">Grading Scheme</InputLabel>
+											<InputLabel sx={{ mt: gradingScheme ? 0 : -1, ml: -0.5, fontSize: "14px", paddingInline: "6px", bgcolor: "white" }} id="entity-label">Grading Scheme</InputLabel>
 											<Select
 												size="small"
 												sx={{ height: "37px" }}
