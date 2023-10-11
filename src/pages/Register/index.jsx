@@ -36,7 +36,6 @@ const Register = () => {
 	const ActiveStepIcon = (props) => {
 		const { active, completed, icon } = props;
 
-
 		const iconSrc = [
 			"https://cdn-images-1.medium.com/max/1600/1*3rf1Va8nYaNWZ-DykgFWEQ.png",
 			active ? "https://cdn-images-1.medium.com/max/1600/1*v4B06BsNROv2SA8xNnofCg.png" : "https://cdn-images-1.medium.com/max/1600/1*GrySgLo1B2bT2LVp8hrlqg.png",
