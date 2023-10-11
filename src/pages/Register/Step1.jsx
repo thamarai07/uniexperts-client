@@ -18,6 +18,7 @@ import style from "./style.module.scss"
 
 import countryCodes from 'country-codes-list';
 import Loader from "components/Loader";
+import Step2 from "./Step2";
 const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
 
 const myCountryCodesObject = Object.keys(codesObject).map((code) => codesObject[code]);
@@ -681,6 +682,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 			const reqData = { ...data, password: values.password };
 			signup(requestData).then(res => {
+				// console.log(">>>>>>>>>> SUCCESS STEP 2");
 				nextStep();
 
 			})
@@ -700,13 +702,13 @@ const Step1 = ({ data, setData, nextStep }) => {
 				enableReinitialize
 				initialValues={initialValues}
 				// validationSchema={validationSchema}
-				onSubmit={onSubmit}
+				// onSubmit={onSubmit}
 				innerRef={form}>
 				<Form>
 					<Box display='flex' flexDirection='column' gap='1rem'>
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								PERSONAL DETAILS
+								Personal Details
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -837,7 +839,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								COMPANY DETAILS
+								Company Details
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -974,7 +976,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								ADDRESS
+								Address
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -1067,7 +1069,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								BANK DETAILS
+								Bank Details
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -1163,41 +1165,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
-							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								SET PASSWORD
-							</Typography>
-							<Grid container spacing={1} mt={0}>
-								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
-									<FieldInput
-										type='password'
-										name='password'
-										placeholder='Enter your password here'
-										onChange={(e) => {
-											const { current: { setFieldValue } = {} } = form || {};
-											setPassword(e.target.value)
-											setFieldValue("password", e.target.value);
-										}}
-										error={Boolean(errors?.password)}
-										helperText={errors?.password}
-									/>
-								</Grid>
-								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
-									<FieldInput
-										type='password'
-										name='confirmPassword'
-										placeholder='Re-enter your password here'
-										error={Boolean(confPasswordError)}
-										helperText={confPasswordError}
-										onChange={e => {
-											setConfPassword(e.target.value)
-										}}
-									/>
-								</Grid>
-							</Grid>
-						</Box>
+						<Step2 data={data} setData={setData} nextStep={nextStep} onSubmit={onSubmit} />
 
-						<Box className={style.saveCtaContainer}>
+						{/* <Box className={style.saveCtaContainer}>
 							<Button
 								variant='contained'
 								size='small'
@@ -1212,7 +1182,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 								}}>
 								Save and Next
 							</Button>
-						</Box>
+						</Box> */}
 					</Box>
 				</Form>
 			</Formik>
