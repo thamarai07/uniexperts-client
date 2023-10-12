@@ -70,11 +70,11 @@ const Login = () => {
 				}}
 			/> */}
 			<div style={{ display: 'flex', width: '100%', justifyContent: "center", alignItems: "center", columnGap: "60px" }}>
-				<Box >
+				<Box>
 					<div>
 						<SimpleImageSlider
-							width={450}
-							height={700}
+							width={580}
+							height={"90vh"}
 							images={sliderImages}
 							autoPlay={true}
 							showBullets={true}
@@ -89,7 +89,7 @@ const Login = () => {
 				</Box>
 				<Box
 					// width={{ xs: "100%", md: "30dvw" }}
-					style={{ width: "47vw" }}
+					style={{ width: "50%" }}
 					display='flex'
 					flexDirection='column'
 				>
