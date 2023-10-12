@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import JsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import Loader from "components/Loader";
+import styles from './style.module.scss'
 
 
 const Step4 = ({ data = {}, setData, nextStep }) => {
@@ -16,13 +17,26 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
     const [isChecked, setIsChecked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [tncData, setTncData] = useState("");
-    const dispatch = useDispatch();
+    const [ip, setIp] = useState("")
+    // const dispatch = useDispatch();
     useEffect(() => {
         tnc().then((response) => {
             setTncData(`${response?.records[0]?.Term_Condition__c}`);
         })
+        getIpAddress()
     }, [])
 
+
+    async function getIpAddress() {
+        await fetch('https://api.ipify.org/?format=json')
+            .then((response) => response.json())
+            .then((data) => {
+                setIp(data.ip)
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }
 
     const handleSignUp = () => {
         setIsLoading(true)
@@ -67,6 +81,8 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
 
     }
 
+    // const location = window.navigator && window.navigator.geolocation
+
     if (isLoading) return <Loader />
 
     return (
@@ -80,7 +96,7 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                 </Typography>
             </Box>
                 <div id="tnc" style={{ width: "922px", borderRadius: "10px", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px", background: "#F5F5F5", }} >
-                    {tncData && <div style={{ overflowY: "scroll", maxHeight: "100vh" }} dangerouslySetInnerHTML={{
+                    {tncData && <div className={styles.scrollView} dangerouslySetInnerHTML={{
                         __html: tncData
                     }} />}
                 </div>
@@ -94,7 +110,7 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                     <div style={{ display: "flex", columnGap: "10px" }} >
                         <button
                             size='small'
-                            style={{ backgroundColor: "#ededed", color: "#f37b21", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
+                            style={{ backgroundColor: "#ededed", color: !isChecked ? "#f37b21" : "gray", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
                             onClick={() => {
                                 history.push("/auth/login")
                                 // setTimeout(() =>{
@@ -124,6 +140,8 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                         </button>
                     </div>
                 </div>
+
+                {isChecked && <p style={{ fontSize: '12px', color: "#727272", marginTop: '6px', fontWeight: "400", marginLeft: '20px' }}>This agreement has been signed on 09:09 PM at IP:  {ip}, Logitude: 123’ 32” , Latitude: 234’ 23”</p>}
             </> : <div style={{ width: "922px", display: "flex", justifyContent: "center", alignItems: "center", }}> <CircularProgress /></div>}
 
         </div>
