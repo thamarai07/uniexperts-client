@@ -24,6 +24,7 @@ const Forgot = () => {
 	const [email, setEmail] = useState(null);
 	const [otp, setOtp] = useState("");
 	const [resendCounter, setResendCounter] = useState(59);
+	const [isLoading, setIsLoading] = useState(false);
 
 	// set the counter to 59s for resend btn , after the 59s , enable the resend button
 	useEffect(() => {
@@ -42,6 +43,7 @@ const Forgot = () => {
 	const initialValues = { email: email || "" };
 
 	const sendOtp = values => {
+		setIsLoading(true)
 		setEmail(values.email);
 		setStep(2);
 		forgotPassword(values).then(() => {
@@ -49,16 +51,20 @@ const Forgot = () => {
 			setEmail(values.email);
 			setStep(2);
 		});
+		setIsLoading(false)
 	};
 
 	const resendOtp = () => {
+		setIsLoading(true)
 		forgotPassword({ email }).then(() => {
 			toast.success("OTP Send Successfully");
 			setResendCounter(59);
 		});
+		setIsLoading(false)
 	};
 
 	const submitOtp = () => {
+		setIsLoading(true)
 		const data = { email, otp };
 		dispatch(setLoader(true));
 
@@ -67,6 +73,7 @@ const Forgot = () => {
 				history.push({ pathname: RouteNames.reset, state: data.email });
 			})
 			.finally(() => dispatch(setLoader(false)));
+		setIsLoading(false)
 	};
 
 	return (
@@ -180,9 +187,8 @@ const Forgot = () => {
 								}}
 								disabled={resendCounter > 0}
 								onClick={resendOtp}>
-								{`Resend OTP ${
-									resendCounter > 0 ? `in ${resendCounter}s` : ""
-								}`}
+								{`Resend OTP ${resendCounter > 0 ? `in ${resendCounter}s` : ""
+									}`}
 							</Button>
 							<Button
 								variant='contained'
