@@ -14,6 +14,7 @@ import { RouteNames } from "routes/_base";
 import { setLoader } from "store";
 import { forgotValidation } from "utils/validations";
 import style from "./style.module.scss";
+import Loader from "components/Loader";
 
 const Forgot = () => {
 	const history = useHistory();
@@ -75,6 +76,10 @@ const Forgot = () => {
 			.finally(() => dispatch(setLoader(false)));
 		setIsLoading(false)
 	};
+
+	if (isLoading) {
+		<Loader />
+	}
 
 	return (
 		<Box
