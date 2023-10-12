@@ -22,6 +22,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { generalValidation } from "../Validations/validations";
+import Loader from "components/Loader";
 const countryOfCitizenship =
 	["Afghanistan", "Aland Islands", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia, Plurinational State of", "Bonaire, Sint Eustatius and Saba", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d’Ivoire", "Croatia", "Cuba", "Curaçao", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard Island and McDonald Islands", "Holy See (Vatican City State)", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran, Islamic Republic of", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People’s Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao People’s Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macao", "Macedonia, the former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Moldova, Republic of", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Norway", "Oman", "Pakistan", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Barthélemy", "Saint Helena, Ascension and Tristan da Cunha", "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin (French part)", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten (Dutch part)", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Svalbard and Jan Mayen", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Timor-Leste", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela, Bolivarian Republic of", "Vietnam", "Virgin Islands, British", "Wallis and Futuna", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"]
 const General = ({
@@ -91,6 +92,7 @@ const General = ({
 	const form = useRef(null);
 
 	const [information, setInformation] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if (studentId) {
@@ -111,6 +113,7 @@ const General = ({
 
 	const onSubmit = values => {
 		console.log({ values })
+		setIsLoading(true)
 		const applicantAge = differenceInYears(
 			new Date(),
 			values.demographicInformation.dateOfBirth
@@ -135,9 +138,15 @@ const General = ({
 		} else {
 			toast.error("Age cannot be less than 17");
 		}
+
+		setTimeout(() => {
+			setIsLoading(false)
+		}, 5000);
 	};
 
-	let debounceTimer;
+	// let debounceTimer;
+
+	if (isLoading) { return <Loader /> }
 
 	return (
 		<Formik
@@ -149,16 +158,17 @@ const General = ({
 			{props => (
 				<Form style={{ display: "grid", gap: "1.25rem" }}>
 					{/* <<< Student Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					{/* <Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'> */}
+
+					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
-							color='#f37b21'
-							textTransform='uppercase'>
+							color='#f37b21'>
 							Student Information
 						</Typography>
 
-						<Grid container spacing={1} mt={0}>
+						<Grid container spacing={1} mt={1}>
 							<Grid item xs={4} sm={3}>
 								<Field name='studentInformation.salutation'>
 									{props => {
@@ -439,17 +449,17 @@ const General = ({
 						</Grid>
 					</Box>
 
+
 					{/* <<< Demographic Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
-							color='#f37b21'
-							textTransform='uppercase'>
+							color='#f37b21'>
 							Demographic Information
 						</Typography>
 
-						<Grid container spacing={1} mt={0}>
+						<Grid container spacing={1} mt={1}>
 							<Grid item xs={6}>
 								<FieldInput
 									name='demographicInformation.medicalHistoryDetails'
@@ -595,16 +605,15 @@ const General = ({
 					</Box>
 
 					{/* <<< Address Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
-							color='#f37b21'
-							textTransform='uppercase'>
+							color='#f37b21'>
 							Address Information
 						</Typography>
 
-						<Grid container spacing={1} mt={0}>
+						<Grid container spacing={1} mt={1}>
 							<Grid item xs={12}>
 								<FieldInput name='address.address' label='Address' />
 							</Grid>
@@ -652,16 +661,15 @@ const General = ({
 					</Box>
 
 					{/* <<< Emergency Contact Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
-							color='#f37b21'
-							textTransform='uppercase'>
+							color='#f37b21'>
 							Emergency Contact Information
 						</Typography>
 
-						<Grid container spacing={1} mt={0}>
+						<Grid container spacing={1} mt={1}>
 							<Grid item xs={6}>
 								<FieldInput name='emergencyContact.name' label='Name' />
 							</Grid>
@@ -739,17 +747,17 @@ const General = ({
 					</Box>
 
 					{/* <<< Background Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
 							color='#f37b21'
-							textTransform='uppercase'>
+						>
 							Background Information
 						</Typography>
 
-						<Grid container spacing={1} mt={0}>
-							<Grid item xs={6} sm={6}>
+						<Grid container spacing={1} mt={1}>
+							<Grid item xs={6} sm={6} >
 								<Field name='backgroundInformation.isRefusedVisa'>
 									{props => {
 										const { field, meta } = props || {};
@@ -785,10 +793,12 @@ const General = ({
 									}}
 								</Field>
 								{props?.values?.backgroundInformation?.isRefusedVisa ? (
-									<FieldInput
-										name='backgroundInformation.visaRefusalInformation'
-										label='Visa Refusal Reason'
-									/>
+									<div style={{ marginTop: 10 }} >
+										<FieldInput
+											name='backgroundInformation.visaRefusalInformation'
+											label='Visa Refusal Reason'
+										/>
+									</div>
 								) : null}
 							</Grid>
 

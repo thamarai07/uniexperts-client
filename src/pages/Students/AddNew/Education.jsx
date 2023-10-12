@@ -35,6 +35,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { educationValidation } from "../Validations/validations";
+import Loader from "components/Loader";
 
 const initialValues = {
 	degree: "",
@@ -71,6 +72,8 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 	const [gradeValue, setGradevalue] = useState();
 	const [gradeValueError, setGradevalueError] = useState("");
 
+	const [isLoading, setIsLoading] = useState(false);
+
 	useEffect(() => {
 		_fetchEducationInformation();
 	}, []);
@@ -82,6 +85,12 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 	};
 
 	const onSubmit = (values, { resetForm }) => {
+		setIsLoading(true)
+
+		setTimeout(() => {
+			setIsLoading(false)
+		}, 1000);
+
 		console.log("onSubmit: ", values)
 		if (selectedEducation?.id) {
 			updateStudentEducation({
@@ -100,6 +109,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 				toast.success("Education Updated Successfully");
 				_fetchEducationInformation();
 			});
+
 			return;
 		}
 
@@ -119,6 +129,8 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 			_fetchEducationInformation();
 		});
 	};
+
+	if (isLoading) return <Loader />
 
 	return (
 		<>
@@ -233,8 +245,8 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 						}
 						//validationSchema={educationValidation}
 						onSubmit={onSubmit}>
-							
-						{props=> (<Form>
+
+						{props => (<Form>
 							<Box
 								display='flex'
 								flexDirection='column'

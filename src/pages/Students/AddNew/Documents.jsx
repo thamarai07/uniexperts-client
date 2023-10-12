@@ -247,7 +247,7 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 			updateStudentDocument({
 				studentId,
 				data
-			}).then(res=> {
+			}).then(res => {
 				console.log("File updated successfully: " + res);
 				nextStep();
 			});
@@ -264,7 +264,7 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 	};
 
 	const handleFileUpload = async (name, file) => {
-		
+
 		const fileName = file?.name;
 		setFilesUploading({ ...filesUploading, [name]: true })
 
@@ -284,30 +284,30 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 		}
 	};
 
-	useEffect(()=> {
-		if(personal)
-		handleFileUpload("personal_identification", personal);
-	},[personal])
+	useEffect(() => {
+		if (personal)
+			handleFileUpload("personal_identification", personal);
+	}, [personal])
 
-	useEffect(()=> {
-		if(taxCertificate)
-		handleFileUpload("tax_registration_certificate", taxCertificate);
-	},[taxCertificate])
+	useEffect(() => {
+		if (taxCertificate)
+			handleFileUpload("tax_registration_certificate", taxCertificate);
+	}, [taxCertificate])
 
-	useEffect(()=> {
-		if(bankStatement)
-		handleFileUpload("bank_statement", bankStatement);
-	},[bankStatement])
+	useEffect(() => {
+		if (bankStatement)
+			handleFileUpload("bank_statement", bankStatement);
+	}, [bankStatement])
 
-	useEffect(()=> {
-		if(addressProof)
-		handleFileUpload("address_proof", addressProof);
-	},[addressProof])
+	useEffect(() => {
+		if (addressProof)
+			handleFileUpload("address_proof", addressProof);
+	}, [addressProof])
 
-	useEffect(()=> {
-		if(companyCertificate)
-		handleFileUpload("company_registration_certificate", companyCertificate);
-	},[companyCertificate])
+	useEffect(() => {
+		if (companyCertificate)
+			handleFileUpload("company_registration_certificate", companyCertificate);
+	}, [companyCertificate])
 
 	return (
 		<>
@@ -345,7 +345,7 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 						bgcolor: "#f37b21 !important",
 						"&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" },
 					}}
-					onClick={()=> {
+					onClick={() => {
 						handleSubmit()
 					}}>
 					Next
