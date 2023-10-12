@@ -13,7 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 
 const Register = () => {
-	const [step, setStep] = useState(2);
+	const [step, setStep] = useState(0);
 	const [data, setData] = useState({});
 	const dispatch = useDispatch();
 
