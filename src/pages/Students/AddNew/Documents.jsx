@@ -342,8 +342,10 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 					// disabled={!isBtnEnable}
 					sx={{
 						textTransform: "none",
+						borderRadius: 99,
 						bgcolor: "#f37b21 !important",
 						"&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" },
+						marginRight: "2%"
 					}}
 					onClick={() => {
 						handleSubmit()

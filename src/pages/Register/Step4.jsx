@@ -109,22 +109,9 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
 
                     <div style={{ display: "flex", columnGap: "10px" }} >
                         <button
+                            disabled={isChecked}
                             size='small'
-                            style={{ backgroundColor: "#ededed", color: !isChecked ? "#f37b21" : "gray", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid gray", paddingBlock: "8px", cursor: "pointer" }}
-                            onClick={() => {
-                                history.push("/auth/login")
-                                // setTimeout(() =>{
-                                //     dispatch(setLoader(false));
-                                //     history.push("/auth/login")
-                                // },1000)
-                            }}
-                        >
-                            Sign
-                        </button>
-                        <button
-                            //disabled={isChecked}
-                            size='small'
-                            style={{ backgroundColor: "#ededed", textTransform: "none", borderRadius: "19px", width: "100px", border: "1px solid grey", color: isChecked ? "#f37b21" : "gray", paddingBlock: "8px", cursor: "pointer" }}
+                            style={{ backgroundColor: "#F37B21", border: "0px", textTransform: "none", borderRadius: "99px", width: "100px", color: isChecked ? "#FFF" : "gray", paddingBlock: "8px", cursor: "pointer" }}
                             onClick={() => {
                                 //console.log("clicked");
                                 handleSignUp()

@@ -69,11 +69,11 @@ const Login = () => {
 					backgroundSize: "cover",
 				}}
 			/> */}
-			<div style={{ display: 'flex', width: '100%', justifyContent: "center", alignItems: "center", columnGap: "60px" }}>
-				<Box>
+			<div style={{ display: 'flex', width: '100%', justifyContent: "center", alignItems: "center" }}>
+				<Box flex={1} >
 					<div>
 						<SimpleImageSlider
-							width={580}
+							width={"34vw"}
 							height={"90vh"}
 							images={sliderImages}
 							autoPlay={true}
@@ -88,10 +88,11 @@ const Login = () => {
 					</div>
 				</Box>
 				<Box
-					// width={{ xs: "100%", md: "30dvw" }}
-					style={{ width: "50%" }}
+					// width={{ xs: "100%", md: "30dvw" }
+					flex={1}
 					display='flex'
 					flexDirection='column'
+					marginLeft={"-8%"}
 				>
 					<Box
 						flexGrow={3}
@@ -104,7 +105,7 @@ const Login = () => {
 							src={logo}
 							alt=''
 							height='100%'
-							style={{ maxHeight: "3rem", width: "150px", marginLeft: "5rem" }}
+							style={{ maxHeight: "3rem", width: "150px", marginLeft: "10%" }}
 						/>
 						<Formik
 							initialValues={initialValues}

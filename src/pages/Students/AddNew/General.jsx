@@ -880,7 +880,7 @@ const General = ({
 							variant='contained'
 							size='small'
 							type='submit'
-							sx={{ bgcolor: "#f37b21 !important", textTransform: "none" }}>
+							sx={{ bgcolor: "#f37b21 !important", textTransform: "none", borderRadius: 99, marginRight: "2%" }}>
 							Next
 						</Button>
 					</Box>

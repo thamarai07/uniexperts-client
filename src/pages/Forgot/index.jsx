@@ -93,7 +93,7 @@ const Forgot = () => {
 				p='1rem 1.25rem'
 				// borderRadius='0.625rem'
 				flexGrow={{ xs: 1, sm: "unset" }}
-				minWidth='40vw'
+				// 
 				// display='flex'
 				// flexDirection='column'
 				gap='2rem'>
@@ -106,36 +106,38 @@ const Forgot = () => {
 				</Box>
 
 				{step === 1 ? (
-					<Formik
-						initialValues={initialValues}
-						validationSchema={forgotValidation}
-						onSubmit={sendOtp}>
-						<Form>
-							<FieldInput
-								name='email'
-								label='Email'
-								placeholder='Enter your email here'
-								style={{ marginTop: "3rem" }}
-							/>
+					<div style={{ minWidth: '40vw' }} >
+						<Formik
+							initialValues={initialValues}
+							validationSchema={forgotValidation}
+							onSubmit={sendOtp}>
+							<Form>
+								<FieldInput
+									name='email'
+									label='Email'
+									placeholder='Enter your email here'
+									style={{ marginTop: "3rem" }}
+								/>
 
-							<Box display='flex' justifyContent='right' mt='2rem'>
-								<Button
-									variant='contained'
-									size='small'
-									type='submit'
-									sx={{
-										textTransform: "none",
-										bgcolor: "#f37b21 !important",
-										height: "40px",
-										width: "140px",
-										borderRadius: "32px",
-										float: "right",
-									}}>
-									Send OTP
-								</Button>
-							</Box>
-						</Form>
-					</Formik>
+								<Box display='flex' justifyContent='right' mt='2rem'>
+									<Button
+										variant='contained'
+										size='small'
+										type='submit'
+										sx={{
+											textTransform: "none",
+											bgcolor: "#f37b21 !important",
+											height: "40px",
+											width: "140px",
+											borderRadius: "32px",
+											float: "right",
+										}}>
+										Send OTP
+									</Button>
+								</Box>
+							</Form>
+						</Formik>
+					</div>
 				) : null}
 
 				{step === 2 ? (

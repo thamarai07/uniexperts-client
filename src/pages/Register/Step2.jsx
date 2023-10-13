@@ -38,17 +38,17 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 	// Define a custom function to handle form submission
 	const handleSubmit = values => {
 		dispatch(setLoader(true))
-		if(values.password!==values.confirmPassword) {
+		if (values.password !== values.confirmPassword) {
 			setConfirmpasswordError("Password and confirm password are not the same");
 			return;
 		}
-		
+
 		if (conditions.condition1 && conditions.condition2 && conditions.condition3 && conditions.condition4) {
 			setData({ ...data, password: values.password })
 			const reqData = { ...data, password: values.password };
 			signup(reqData).then(res => {
 				nextStep();
-			}).finally(()=>  dispatch(setLoader(false)))
+			}).finally(() => dispatch(setLoader(false)))
 		}
 	};
 
@@ -121,7 +121,7 @@ const Step2 = ({ data = {}, setData, nextStep }) => {
 								A mixture of letters and numbers
 							</Typography>
 						</Box>
-						
+
 						<FieldInput
 							type='password'
 							name='password'
