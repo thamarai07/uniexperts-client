@@ -26,6 +26,22 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
         getIpAddress()
     }, [])
 
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setLatitude(position.coords.latitude);
+                setLongitude(position.coords.longitude);
+            }, (error) => {
+                console.error(error);
+            });
+        } else {
+            console.error('Geolocation is not supported by your browser');
+        }
+    }, []);
+
 
     async function getIpAddress() {
         await fetch('https://api.ipify.org/?format=json')
@@ -43,8 +59,19 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
 
         setTimeout(() => {
             setIsLoading(false)
-            history.push("/auth/login")
+            history.push("/dashboard")
         }, 5000);
+    }
+
+    function getCurrentTime() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+
+        const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+        return formattedTime;
     }
 
     const printDocument = async () => {
@@ -109,13 +136,13 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
 
                     <div style={{ display: "flex", columnGap: "10px" }} >
                         <button
-                            disabled={isChecked}
+                            // disabled={isChecked}
                             size='small'
                             style={{ backgroundColor: "#F37B21", border: "0px", textTransform: "none", borderRadius: "99px", width: "100px", color: isChecked ? "#FFF" : "gray", paddingBlock: "8px", cursor: "pointer" }}
                             onClick={() => {
                                 //console.log("clicked");
-                                handleSignUp()
-                                printDocument();
+                                isChecked && handleSignUp()
+                                isChecked && printDocument();
                                 // dispatch(setLoader(true));
                                 // setTimeout(() =>{
                                 //     dispatch(setLoader(false));
@@ -128,7 +155,7 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                     </div>
                 </div>
 
-                {isChecked && <p style={{ fontSize: '12px', color: "#727272", marginTop: '6px', fontWeight: "400", marginLeft: '20px' }}>This agreement has been signed on 09:09 PM at IP:  {ip}, Logitude: 123’ 32” , Latitude: 234’ 23”</p>}
+                {isChecked && <p style={{ fontSize: '12px', color: "#727272", marginTop: '6px', fontWeight: "400", marginLeft: '20px' }}>This agreement has been signed on {getCurrentTime()} at IP:  {ip}, Logitude: {longitude} , Latitude: {latitude}</p>}
             </> : <div style={{ width: "922px", display: "flex", justifyContent: "center", alignItems: "center", }}> <CircularProgress /></div>}
 
         </div>

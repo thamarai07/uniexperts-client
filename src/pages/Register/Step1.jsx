@@ -614,6 +614,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 		setShowLoader(true);
 
+		setTimeout(() => {
+			setShowLoader(false);
+		}, 2000);
+
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -696,9 +700,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 			})
 		}
-		setTimeout(() => {
-			setShowLoader(false);
-		}, 2000);
 	};
 
 	if (showLoader) {

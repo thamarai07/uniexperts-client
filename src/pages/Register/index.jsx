@@ -26,11 +26,13 @@ const Register = () => {
 
 	// console.log("step :- ", step)
 
+
 	useEffect(() => {
 		if (_getToken()) {
 			setStep(1);
 		}
 	}, [])
+
 
 
 	const ActiveStepIcon = (props) => {

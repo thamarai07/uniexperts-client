@@ -195,7 +195,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 						variant='contained'
 						size='small'
 						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99 }}
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99, marginRight: "0.6%" }}
 						onClick={() => setOpen(true)}
 						startIcon={<AddIcon />}>
 						Add More

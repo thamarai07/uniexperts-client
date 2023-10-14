@@ -1,7 +1,7 @@
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { forgotPassword, verifyOTP } from "apis/auth";
+import { forgotPassword, verifyEmail, verifyOTP } from "apis/auth";
 import uniexperts_logo from "assets/uniexperts_logo.svg";
 import FieldInput from "components/FieldInput";
 import { Form, Formik } from "formik";
@@ -27,6 +27,8 @@ const Forgot = () => {
 	const [resendCounter, setResendCounter] = useState(59);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const [isEmailVerified, setIsEmailVerified] = useState(null);
+
 	// set the counter to 59s for resend btn , after the 59s , enable the resend button
 	useEffect(() => {
 		const counter =
@@ -39,19 +41,34 @@ const Forgot = () => {
 
 	useEffect(() => {
 		setOtp("");
+
 	}, [step]);
 
 	const initialValues = { email: email || "" };
 
+
 	const sendOtp = values => {
-		setIsLoading(true)
-		setEmail(values.email);
-		setStep(2);
-		forgotPassword(values).then(() => {
-			toast.success("OTP Send Successfully");
-			setEmail(values.email);
-			setStep(2);
-		});
+		verifyEmail(values.email)
+			.then((res) => {
+				if (res === true) {
+					setIsEmailVerified(true);
+					setIsLoading(true)
+					setEmail(values.email);
+					setStep(2);
+					forgotPassword(values).then(() => {
+						toast.success("OTP Send Successfully");
+						setEmail(values.email);
+						setStep(2);
+					});
+				} else if (res && res.data === false && res.statusCode === 200) {
+					setIsEmailVerified(false);
+				}
+			})
+			.catch((error) => {
+				// Handle any error that may occur during the request
+				console.error(error);
+			});
+
 		setIsLoading(false)
 	};
 
@@ -118,6 +135,9 @@ const Forgot = () => {
 									placeholder='Enter your email here'
 									style={{ marginTop: "3rem" }}
 								/>
+
+								{isEmailVerified !== null && !isEmailVerified && <p style={{ fontSize: "12px", fontWeight: "600", marginTop: "10px" }} >Sorry this email does not exist</p>}
+
 
 								<Box display='flex' justifyContent='right' mt='2rem'>
 									<Button

@@ -227,7 +227,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 						variant='contained'
 						size='small'
 						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99, marginRight: "0.6%" }}
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99, marginRight: "0.7%" }}
 						onClick={() => setOpen(true)}
 						startIcon={<AddIcon />}>
 						Add

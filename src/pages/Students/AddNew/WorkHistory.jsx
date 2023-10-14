@@ -198,7 +198,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 						variant='contained'
 						size='small'
 						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99 }}
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99, marginRight: "0.7%" }}
 						onClick={() => setIsOptional(true)}
 					>
 						No Work History

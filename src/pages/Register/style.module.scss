@@ -40,7 +40,7 @@ input[type="file"]::file-selector-button:active {
 	max-height: 100vh;
 
 	-ms-overflow-style: initial !important;
-	scrollbar-width: 10px !important;
+	scrollbar-width: 15px !important;
 }
 /* hide scrollbar for chrome, safari and opera */
 .scrollView::-webkit-scrollbar {
@@ -50,6 +50,8 @@ input[type="file"]::file-selector-button:active {
 
 .scrollView::-webkit-scrollbar-thumb {
 	background-color: #f37b21;
+	height: 28%;
+	border-radius: 99px;
 }
 .scrollView::-webkit-scrollbar-track {
 	background: #f5f5f5;
