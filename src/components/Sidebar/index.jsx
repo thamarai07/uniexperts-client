@@ -42,9 +42,8 @@ const Sidebar = () => {
 				return (
 					<Box
 						key={key}
-						className={`${style.item} ${
-							pathname?.includes(path) ? style.selected : ""
-						} ${disabled ? style.disabled : ""}`}
+						className={`${style.item} ${pathname?.includes(path) ? style.selected : ""
+							} ${disabled ? style.disabled : ""}`}
 						onClick={() => {
 							if (!path) return;
 

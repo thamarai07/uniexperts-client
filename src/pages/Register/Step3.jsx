@@ -291,6 +291,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 				<Button
 					variant='contained'
 					size='small'
+					onClick={nextStep}
 					type='submit'
 					sx={{
 						textTransform: "none",
