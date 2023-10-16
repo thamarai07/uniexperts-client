@@ -80,7 +80,7 @@ const Welcome = ({ data = {}, isAccountDisabled }) => {
 					size='small'
 					onClick={onClick}
 					startIcon={<AddIcon />}
-					disabled={!modules?.includes(ModuleKeys.Students)}
+					//disabled={!modules?.includes(ModuleKeys.Students)}
 					sx={{
 						textTransform: "none",
 						bgcolor: "#f37b21 !important",

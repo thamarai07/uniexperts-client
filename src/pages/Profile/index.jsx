@@ -49,7 +49,7 @@ const Profile = () => {
 						<Tab
 							key={tab}
 							label={tab}
-							disabled={!(role === "admin")}
+							//disabled={!(role === "admin")}
 							sx={{
 								textTransform: "none",
 								borderBottom: "2px solid transparent",
