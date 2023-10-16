@@ -612,7 +612,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 	const onSubmit = values => {
 
-		setShowLoader(true);
+		
 
 		setTimeout(() => {
 			setShowLoader(false);
@@ -665,6 +665,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 
 		if (_.isEmpty(validateForm(dataValues))) {
+			setShowLoader(true);
 			// dispatch(setLoader(true));
 			let requestData = {
 				...data,
@@ -697,6 +698,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			const reqData = { ...data, password: values.password };
 			signup(requestData).then(res => {
 				nextStep();
+				setShowLoader(false);
 
 			})
 		}
