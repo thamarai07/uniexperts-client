@@ -1,4 +1,4 @@
-import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl } from "@mui/material";
+import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl, Checkbox } from "@mui/material";
 import { Box } from "@mui/system";
 import { config, signup, verifyEmail } from "apis/auth";
 import FieldInput from "components/FieldInput";
@@ -327,6 +327,17 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const [password, setPassword] = useState();
 	const [confPassword, setConfPassword] = useState();
 
+
+	const calculateConditions = (password) => {
+		setConditions({
+			condition1: password.length >= 12,
+			condition2: /[!@#$%^&*]/.test(password),
+			condition3: /^(?=.*[a-z])(?=.*[A-Z])/.test(password),
+			condition4: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password),
+		});
+	};
+
+
 	const validatePassword = (password) => {
 		return password.length >= 12 && /[!@#$%^&*]/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password);
 	};
@@ -603,6 +614,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 		setShowLoader(true);
 
+		setTimeout(() => {
+			setShowLoader(false);
+		}, 2000);
+
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -685,9 +700,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 			})
 		}
-		setTimeout(() => {
-			setShowLoader(false);
-		}, 2000);
 	};
 
 	if (showLoader) {
@@ -706,7 +718,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 					<Box display='flex' flexDirection='column' gap='1rem'>
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								PERSONAL DETAILS
+								Personal Details
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -837,7 +849,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								COMPANY DETAILS
+								Company Details
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -974,7 +986,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								ADDRESS
+								Address
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -1067,7 +1079,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								BANK DETAILS
+								Bank Details
 							</Typography>
 
 							<Grid container spacing={1} mt={0}>
@@ -1165,9 +1177,73 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
-								SET PASSWORD
+								Set Password
 							</Typography>
 							<Grid container spacing={1} mt={0}>
+
+								<Box>
+									<Box display='flex' gap='0.5rem'>
+										<Checkbox
+											checked={conditions.condition1}
+											disabled
+											sx={{
+												"&.Mui-checked": {
+													color: "#f37b21",
+												},
+											}}
+										/>
+										<Typography variant='body2' sx={{ marginTop: "10px" }}>
+											At least 12 characters (required for your Muhlenberg password) -
+											the more characters, the better.
+										</Typography>
+									</Box>
+
+									<Box display='flex' gap='0.5rem'>
+										<Checkbox
+											checked={conditions.condition2}
+											disabled
+											sx={{
+												"&.Mui-checked": {
+													color: "#f37b21",
+												},
+											}}
+										/>
+										<Typography variant='body2' sx={{ marginTop: "10px" }}>
+											Include of at least one special character, e.g.,! @ # ?
+										</Typography>
+									</Box>
+
+									<Box display='flex' gap='0.5rem'>
+										<Checkbox
+											checked={conditions.condition3}
+											disabled
+											sx={{
+												"&.Mui-checked": {
+													color: "#f37b21",
+												},
+											}}
+										/>
+										<Typography variant='body2' sx={{ marginTop: "10px" }}>
+											A mixture of both uppercase and lowercase letters
+										</Typography>
+									</Box>
+
+									<Box display='flex' gap='0.5rem'>
+										<Checkbox
+											checked={conditions.condition4}
+											disabled
+											sx={{
+												"&.Mui-checked": {
+													color: "#f37b21",
+												},
+											}}
+										/>
+										<Typography variant='body2' sx={{ marginTop: "10px" }}>
+											A mixture of letters and numbers
+										</Typography>
+									</Box>
+
+								</Box>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
 										type='password'
@@ -1177,6 +1253,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											const { current: { setFieldValue } = {} } = form || {};
 											setPassword(e.target.value)
 											setFieldValue("password", e.target.value);
+											calculateConditions(e.target.value);
 										}}
 										error={Boolean(errors?.password)}
 										helperText={errors?.password}

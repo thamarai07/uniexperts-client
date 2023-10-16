@@ -189,7 +189,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 						size='small'
 						disabled={isOptional}
 						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", "&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" }, }}
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", "&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" }, borderRadius: 99 }}
 						onClick={() => setOpen(true)}
 						startIcon={<AddIcon />}>
 						Add
@@ -198,7 +198,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 						variant='contained'
 						size='small'
 						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99, marginRight: "0.7%" }}
 						onClick={() => setIsOptional(true)}
 					>
 						No Work History
@@ -215,6 +215,8 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 						textTransform: "none",
 						bgcolor: "#f37b21 !important",
 						"&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" },
+						marginRight: "2%",
+						borderRadius: 99
 					}}
 					onClick={nextStep}>
 					Next

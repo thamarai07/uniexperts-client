@@ -286,18 +286,23 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					{files.company_registration_certificate ? "Uploaded" : "Upload"}
 				</button>}
 			</div>
-			<Box display='flex' justifyContent='center' m='1rem 0' mt="24px">
+			<Box display='flex' justifyContent='center' m='1rem 0' mt="3rem">
+
 				<Button
 					variant='contained'
 					size='small'
 					type='submit'
-					onClick={handleSubmit}
 					sx={{
 						textTransform: "none",
 						bgcolor: "#f37b21 !important",
+						borderRadius: "32px",
+						width: "140px",
+						height: "40px",
+						color: "white"
 					}}>
 					Continue
 				</Button>
+
 			</Box>
 		</div>
 	);

@@ -88,7 +88,7 @@ const Dashboard = () => {
 
 	return (
 		<>
-			<Grid container spacing={2}>
+			<Grid container spacing={2} bgcolor="#f5f5f5">
 				{data?.intakes?.length ? (
 					<Grid item xs={12}>
 						<Intake data={data?.intakes} />
@@ -101,7 +101,7 @@ const Dashboard = () => {
 					</Grid>
 				) : null}
 
-				<Grid item xs={12} md={8}>
+				<Grid item xs={12} md={8} bgcolor="#f5f5f5" >
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<Welcome
@@ -116,18 +116,18 @@ const Dashboard = () => {
 					</Grid>
 				</Grid>
 
-				<Grid item xs={12} md={4}>
+				<Grid item xs={12} md={4} bgcolor="#f5f5f5">
 					<Interview data={data?.interviews} />
 				</Grid>
 
-				<Grid item xs={12} md={8}>
+				<Grid item xs={12} md={8} bgcolor="#f5f5f5">
 					<Application
 						data={data?.applications}
 						isAccountDisabled={isAccountDisabled}
 					/>
 				</Grid>
 
-				<Grid item xs={12} md={4}>
+				<Grid item xs={12} md={4} bgcolor="#f5f5f5">
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<AccountManager data={data?.accountManager} />
@@ -143,13 +143,13 @@ const Dashboard = () => {
 				</Grid>
 
 				{modules?.includes(ModuleKeys.ProgramAndSchool) ? (
-					<Grid item xs={12}>
+					<Grid item xs={12} bgcolor="#f5f5f5">
 						<Schools data={data?.topSchools} />
 					</Grid>
 				) : null}
 
 				{modules?.includes(ModuleKeys.ProgramAndSchool) ? (
-					<Grid item xs={12}>
+					<Grid item xs={12} bgcolor="#f5f5f5">
 						<Programs data={data?.programs} />
 					</Grid>
 				) : null}

@@ -1,7 +1,7 @@
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { forgotPassword, verifyOTP } from "apis/auth";
+import { forgotPassword, verifyEmail, verifyOTP } from "apis/auth";
 import uniexperts_logo from "assets/uniexperts_logo.svg";
 import FieldInput from "components/FieldInput";
 import { Form, Formik } from "formik";
@@ -14,6 +14,7 @@ import { RouteNames } from "routes/_base";
 import { setLoader } from "store";
 import { forgotValidation } from "utils/validations";
 import style from "./style.module.scss";
+import Loader from "components/Loader";
 
 const Forgot = () => {
 	const history = useHistory();
@@ -24,6 +25,9 @@ const Forgot = () => {
 	const [email, setEmail] = useState(null);
 	const [otp, setOtp] = useState("");
 	const [resendCounter, setResendCounter] = useState(59);
+	const [isLoading, setIsLoading] = useState(false);
+
+	const [isEmailVerified, setIsEmailVerified] = useState(null);
 
 	// set the counter to 59s for resend btn , after the 59s , enable the resend button
 	useEffect(() => {
@@ -37,28 +41,48 @@ const Forgot = () => {
 
 	useEffect(() => {
 		setOtp("");
+
 	}, [step]);
 
 	const initialValues = { email: email || "" };
 
+
 	const sendOtp = values => {
-		setEmail(values.email);
-		setStep(2);
-		forgotPassword(values).then(() => {
-			toast.success("OTP Send Successfully");
-			setEmail(values.email);
-			setStep(2);
-		});
+		verifyEmail(values.email)
+			.then((res) => {
+				if (res === true) {
+					setIsEmailVerified(true);
+					setIsLoading(true)
+					setEmail(values.email);
+					setStep(2);
+					forgotPassword(values).then(() => {
+						toast.success("OTP Send Successfully");
+						setEmail(values.email);
+						setStep(2);
+					});
+				} else if (res && res.data === false && res.statusCode === 200) {
+					setIsEmailVerified(false);
+				}
+			})
+			.catch((error) => {
+				// Handle any error that may occur during the request
+				console.error(error);
+			});
+
+		setIsLoading(false)
 	};
 
 	const resendOtp = () => {
+		setIsLoading(true)
 		forgotPassword({ email }).then(() => {
 			toast.success("OTP Send Successfully");
 			setResendCounter(59);
 		});
+		setIsLoading(false)
 	};
 
 	const submitOtp = () => {
+		setIsLoading(true)
 		const data = { email, otp };
 		dispatch(setLoader(true));
 
@@ -67,7 +91,12 @@ const Forgot = () => {
 				history.push({ pathname: RouteNames.reset, state: data.email });
 			})
 			.finally(() => dispatch(setLoader(false)));
+		setIsLoading(false)
 	};
+
+	if (isLoading) {
+		<Loader />
+	}
 
 	return (
 		<Box
@@ -81,7 +110,7 @@ const Forgot = () => {
 				p='1rem 1.25rem'
 				// borderRadius='0.625rem'
 				flexGrow={{ xs: 1, sm: "unset" }}
-				minWidth='40vw'
+				// 
 				// display='flex'
 				// flexDirection='column'
 				gap='2rem'>
@@ -94,36 +123,41 @@ const Forgot = () => {
 				</Box>
 
 				{step === 1 ? (
-					<Formik
-						initialValues={initialValues}
-						validationSchema={forgotValidation}
-						onSubmit={sendOtp}>
-						<Form>
-							<FieldInput
-								name='email'
-								label='Email'
-								placeholder='Enter your email here'
-								style={{ marginTop: "3rem" }}
-							/>
+					<div style={{ minWidth: '40vw' }} >
+						<Formik
+							initialValues={initialValues}
+							validationSchema={forgotValidation}
+							onSubmit={sendOtp}>
+							<Form>
+								<FieldInput
+									name='email'
+									label='Email'
+									placeholder='Enter your email here'
+									style={{ marginTop: "3rem" }}
+								/>
 
-							<Box display='flex' justifyContent='right' mt='2rem'>
-								<Button
-									variant='contained'
-									size='small'
-									type='submit'
-									sx={{
-										textTransform: "none",
-										bgcolor: "#f37b21 !important",
-										height: "40px",
-										width: "140px",
-										borderRadius: "32px",
-										float: "right",
-									}}>
-									Send OTP
-								</Button>
-							</Box>
-						</Form>
-					</Formik>
+								{isEmailVerified !== null && !isEmailVerified && <p style={{ fontSize: "12px", fontWeight: "600", marginTop: "10px" }} >Sorry this email does not exist</p>}
+
+
+								<Box display='flex' justifyContent='right' mt='2rem'>
+									<Button
+										variant='contained'
+										size='small'
+										type='submit'
+										sx={{
+											textTransform: "none",
+											bgcolor: "#f37b21 !important",
+											height: "40px",
+											width: "140px",
+											borderRadius: "32px",
+											float: "right",
+										}}>
+										Send OTP
+									</Button>
+								</Box>
+							</Form>
+						</Formik>
+					</div>
 				) : null}
 
 				{step === 2 ? (
@@ -180,9 +214,8 @@ const Forgot = () => {
 								}}
 								disabled={resendCounter > 0}
 								onClick={resendOtp}>
-								{`Resend OTP ${
-									resendCounter > 0 ? `in ${resendCounter}s` : ""
-								}`}
+								{`Resend OTP ${resendCounter > 0 ? `in ${resendCounter}s` : ""
+									}`}
 							</Button>
 							<Button
 								variant='contained'

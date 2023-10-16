@@ -173,17 +173,6 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 				display='flex'
 				flexDirection='column'
 				gap='1rem'>
-				<Box display='flex' justifyContent='flex-end'>
-					<Button
-						variant='contained'
-						size='small'
-						type='button'
-						sx={{ textTransform: "none", bgcolor: "#f37b21 !important" }}
-						onClick={() => setOpen(true)}
-						startIcon={<AddIcon />}>
-						Add
-					</Button>
-				</Box>
 
 				<TableContainer component={Paper}>
 					<Table sx={{ minWidth: 700 }}>
@@ -233,8 +222,18 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 						</TableBody>
 					</Table>
 				</TableContainer>
+				<Box display='flex' justifyContent='flex-end'>
+					<Button
+						variant='contained'
+						size='small'
+						type='button'
+						sx={{ textTransform: "none", bgcolor: "#f37b21 !important", borderRadius: 99, marginRight: "0.7%" }}
+						onClick={() => setOpen(true)}
+						startIcon={<AddIcon />}>
+						Add
+					</Button>
+				</Box>
 			</Box>
-
 			<Box display='flex' justifyContent='flex-end'>
 				<Button
 					variant='contained'
@@ -244,6 +243,8 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 						textTransform: "none",
 						bgcolor: "#f37b21 !important",
 						"&:disabled": { bgcolor: "rgba(0, 0, 0, 0.12) !important" },
+						marginRight: "2%",
+						borderRadius: 99,
 					}}
 					onClick={nextStep}>
 					NEXT
@@ -435,6 +436,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 												"&:disabled": {
 													bgcolor: "rgba(0, 0, 0, 0.12) !important",
 												},
+
 											}}>
 											Next
 										</Button>
