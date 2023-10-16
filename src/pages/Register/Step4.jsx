@@ -10,7 +10,8 @@ import JsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import Loader from "components/Loader";
 import styles from './style.module.scss'
-
+import agreementFile from "../../assets/agreement.pdf"
+import gif from "../../assets/loader.gif"
 
 const Step4 = ({ data = {}, setData, nextStep }) => {
     const history = useHistory()
@@ -75,42 +76,64 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
     }
 
     const printDocument = async () => {
-        let iframe = document.createElement("iframe");
-        iframe.style.visibility = "hidden";
-        document.body.appendChild(iframe);
-        let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
-        iframedoc.body.innerHTML = tncff
+        // let iframe = document.createElement("iframe");
+        // iframe.style.visibility = "hidden";
+        // document.body.appendChild(iframe);
+        // let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
+        // iframedoc.body.innerHTML = tncff
 
-        let canvas = await html2canvas(iframedoc.body, {});
+        // let canvas = await html2canvas(iframedoc.body, {});
 
-        // Convert the iframe into a PNG image using canvas.
-        let imgData = canvas.toDataURL("image/png");
+        // // Convert the iframe into a PNG image using canvas.
+        // let imgData = canvas.toDataURL("image/png");
 
-        // Create a PDF document and add the image as a page.
-        const doc = new JsPDF({
-            format: "a4",
-            unit: "mm",
-        });
-        doc.addImage(imgData, "PNG", 0, 0, 210, 297);
+        // // Create a PDF document and add the image as a page.
+        // const doc = new JsPDF({
+        //     format: "a4",
+        //     unit: "mm",
+        // });
+        // doc.addImage(imgData, "PNG", 0, 0, 210, 297);
 
 
-        // Get the file as blob output.
-        let blob = doc.output("blob");
+        // // Get the file as blob output.
+        // let blob = doc.output("blob");
 
-        var csvURL = window.URL.createObjectURL(blob);
-        var tempLink = document.createElement('a');
-        tempLink.href = csvURL;
-        tempLink.setAttribute('download', 'Agreement.pdf');
-        tempLink.click();
+        // var csvURL = window.URL.createObjectURL(blob);
+        // var tempLink = document.createElement('a');
+        // tempLink.href = csvURL;
+        // tempLink.setAttribute('download', 'Agreement.pdf');
+        // tempLink.click();
 
-        // Remove the iframe from the document when the file is generated.
-        document.body.removeChild(iframe);
+        // // Remove the iframe from the document when the file is generated.
+        // document.body.removeChild(iframe);
+
+        const fileURL = agreementFile;
+
+        const a = document.createElement('a');
+        a.href = fileURL;
+        a.download = agreementFile; // The name for the downloaded file
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+
 
     }
 
     // const location = window.navigator && window.navigator.geolocation
 
-    if (isLoading) return <Loader />
+    if (isLoading) return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "16%" }} >
+        <img
+            src={gif}
+            alt=''
+            style={{
+                height: "20%",
+                width: "20%",
+                objectFit: "contain",
+                objectPosition: "center",
+            }}
+        />
+    </div>
 
     return (
         <div>
