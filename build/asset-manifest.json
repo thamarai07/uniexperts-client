@@ -1,9 +1,11 @@
 {
   "files": {
     "main.css": "/static/css/main.dc06c4a7.css",
-    "main.js": "/static/js/main.e1c95957.js",
+    "main.js": "/static/js/main.2fcfd91d.js",
     "static/js/703.c44d63d3.chunk.js": "/static/js/703.c44d63d3.chunk.js",
     "static/js/513.159840bb.chunk.js": "/static/js/513.159840bb.chunk.js",
+    "static/media/loader.gif": "/static/media/loader.1e6617e85829c24ca65d.gif",
+    "static/media/agreement.pdf": "/static/media/agreement.4d079311e029fe70112d.pdf",
     "static/media/uniexperts_logo.svg": "/static/media/uniexperts_logo.516e4be10f167c32a62fbf30dd5e0dc8.svg",
     "static/media/student.svg": "/static/media/student.49c3a6c7cda262d8dec6a18ed1465b95.svg",
     "static/media/home.svg": "/static/media/home.27e4fe646f0e0b5552e9943d67f1b9df.svg",
@@ -15,12 +17,12 @@
     "static/media/application.svg": "/static/media/application.4bb11d122aef24b4c6724ef86a4a230c.svg",
     "static/media/report.svg": "/static/media/report.2624bfbd7183fb86a588ae285cb8e730.svg",
     "main.dc06c4a7.css.map": "/static/css/main.dc06c4a7.css.map",
-    "main.e1c95957.js.map": "/static/js/main.e1c95957.js.map",
+    "main.2fcfd91d.js.map": "/static/js/main.2fcfd91d.js.map",
     "703.c44d63d3.chunk.js.map": "/static/js/703.c44d63d3.chunk.js.map",
     "513.159840bb.chunk.js.map": "/static/js/513.159840bb.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.dc06c4a7.css",
-    "static/js/main.e1c95957.js"
+    "static/js/main.2fcfd91d.js"
   ]
 }
