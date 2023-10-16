@@ -2,6 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { resetPassword } from "apis/auth";
 import uniexperts_logo from "assets/uniexperts_logo.svg";
 import FieldInput from "components/FieldInput";
+import Loader from "components/Loader";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -16,6 +17,7 @@ const Reset = ({ location = {}, history }) => {
 	const dispatch = useDispatch();
 
 	const [email, setEmail] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if (location.state) {
@@ -28,12 +30,16 @@ const Reset = ({ location = {}, history }) => {
 	}, []);
 
 	const onSubmit = values => {
+		setIsLoading(true)
 		resetPassword({ email, password: values?.password }).then(userDetails => {
 			toast.success("Password reset Successful");
 			dispatch(setUser(userDetails));
 			history.push(RouteNames.dashboard);
-		});
+		}).finally(() => setIsLoading(false));
 	};
+
+
+	if (isLoading) return <Loader />
 
 	return (
 		<Box

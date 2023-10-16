@@ -803,7 +803,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 														name='personalDetails.phone'
 														label='Contact Number'
 														style={{ marginLeft: "23px" }}
-														type='tel'
+														type='number'
 														error={Boolean(errors?.phone)}
 														helperText={errors?.phone}
 														value={phone}
