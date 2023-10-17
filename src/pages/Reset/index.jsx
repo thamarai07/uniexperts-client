@@ -43,13 +43,13 @@ const Reset = ({ location = {}, history }) => {
 
 	return (
 		<Box
-			bgcolor='rgba(243, 123, 33, 0.25)'
+			bgcolor='#fff'
 			minHeight='100vh'
 			display='flex'
 			alignItems={{ xs: "unset", sm: "center" }}
 			justifyContent='center'>
 			<Box
-				bgcolor='#fff'
+				bgcolor='#fbfbfb'
 				p='1rem 1.25rem'
 				borderRadius='0.625rem'
 				flexGrow={{ xs: 1, sm: "unset" }}
@@ -91,7 +91,7 @@ const Reset = ({ location = {}, history }) => {
 								character
 							</Typography>
 
-							<Box display='flex' justifyContent='center' mt='1rem'>
+							<Box display='flex' justifyContent='end' mt='1rem' >
 								<Button
 									variant='contained'
 									size='small'
@@ -99,8 +99,9 @@ const Reset = ({ location = {}, history }) => {
 									sx={{
 										textTransform: "none",
 										bgcolor: "#f37b21 !important",
+										borderRadius: 99
 									}}>
-									Change Password
+									Save
 								</Button>
 							</Box>
 						</Box>

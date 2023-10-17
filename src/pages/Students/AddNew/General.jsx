@@ -158,9 +158,9 @@ const General = ({
 			{props => (
 				<Form style={{ display: "grid", gap: "1.25rem" }}>
 					{/* <<< Student Information >>> */}
-					{/* <Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'> */}
+					{/* <Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'> */}
 
-					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -451,7 +451,7 @@ const General = ({
 
 
 					{/* <<< Demographic Information >>> */}
-					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -605,7 +605,7 @@ const General = ({
 					</Box>
 
 					{/* <<< Address Information >>> */}
-					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -661,7 +661,7 @@ const General = ({
 					</Box>
 
 					{/* <<< Emergency Contact Information >>> */}
-					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -747,7 +747,7 @@ const General = ({
 					</Box>
 
 					{/* <<< Background Information >>> */}
-					<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}

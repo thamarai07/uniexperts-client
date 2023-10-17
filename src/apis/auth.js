@@ -23,7 +23,7 @@ export const login = data =>
 				resolve(restDetails);
 			})
 			.catch(error => {
-				
+
 				reject(error);
 			});
 	});
@@ -31,7 +31,7 @@ export const login = data =>
 export const tnc = () =>
 	new Promise((resolve, reject) => {
 		APICaller({ url: "/agent/tnc", method: "GET" })
-			.then(( data ) => resolve(data))
+			.then((data) => resolve(data))
 			.catch(error => reject(error));
 	});
 
@@ -58,7 +58,7 @@ export const forgotPassword = data =>
 export const verifyOTP = data =>
 	new Promise((resolve, reject) => {
 		APICaller({ url: "/auth/verify-otp", method: "POST", data })
-			.then(() => resolve())
+			.then((res) => resolve(res))
 			.catch(error => reject(error));
 	});
 

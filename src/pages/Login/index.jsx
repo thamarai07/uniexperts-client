@@ -58,7 +58,7 @@ const Login = () => {
 	};
 
 	return (
-		<Box minHeight='100vh' display='flex'>
+		<Box minHeight='100vh' display='flex' maxWidth={"90vw"} marginInline="auto">
 			{/* <Box
 				display={{ xs: "none", md: "block" }}
 				flexGrow={1}
@@ -92,7 +92,7 @@ const Login = () => {
 					flex={1}
 					display='flex'
 					flexDirection='column'
-					marginLeft={"-8%"}
+					marginLeft={"-4%"}
 				>
 					<Box
 						flexGrow={3}
@@ -105,13 +105,13 @@ const Login = () => {
 							src={logo}
 							alt=''
 							height='100%'
-							style={{ maxHeight: "3rem", width: "150px", marginLeft: "10%" }}
+							style={{ maxHeight: "3rem", width: "150px", marginLeft: "8%" }}
 						/>
 						<Formik
 							initialValues={initialValues}
 							validationSchema={loginValidation}
 							onSubmit={onSubmit}>
-							<Form style={{ width: "100%" }}>
+							<Form style={{ width: "80%" }}>
 								<Box
 									display='flex'
 									width={{ xs: "100%", md: "80%" }}

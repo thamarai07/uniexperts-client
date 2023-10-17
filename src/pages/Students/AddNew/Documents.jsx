@@ -22,6 +22,8 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { setLoader } from "store";
 import S3 from '../../Register/aws';
+import { useHistory } from "react-router-dom";
+import { RouteNames } from "routes/_base";
 
 const RenderRow = ({
 	documentId,
@@ -108,6 +110,7 @@ const tableHead = [
 
 const Documents = ({ studentId, nextStep = () => { } }) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	const [documents, setDocuments] = useState({});
 	const [isBtnEnable, setIsBtnEnable] = useState(false);
@@ -249,7 +252,7 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 				data
 			}).then(res => {
 				console.log("File updated successfully: " + res);
-				nextStep();
+				history.push(RouteNames.students)
 			});
 
 			// uploadAgentDocuments(data)

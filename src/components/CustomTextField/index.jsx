@@ -90,7 +90,7 @@ const CustomTextField = ({
 					onMouseDown={handleMouseDownPassword}
 					sx={{ scale: "0.75" }}
 					edge='end'>
-					{showPassword ? <VisibilityOff /> : <Visibility />}
+					{!showPassword ? <VisibilityOff /> : <Visibility />}
 				</IconButton>
 			</InputAdornment>
 		);
