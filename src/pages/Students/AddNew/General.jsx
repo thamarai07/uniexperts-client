@@ -36,7 +36,6 @@ const General = ({
 	const {
 		user: { staff: { id: userStaffId } = {} },
 	} = useSelector(state => state);
-
 	const initialValues = {
 		studentInformation: {
 			salutation: null,
@@ -115,11 +114,6 @@ const General = ({
 	const onSubmit = values => {
 		console.log({ values })
 		setIsLoading(true)
-
-		//if get into in loop
-		setTimeout(() => {
-			setIsLoading(false)
-		}, 10000);
 		const applicantAge = differenceInYears(
 			new Date(),
 			values.demographicInformation.dateOfBirth
@@ -130,7 +124,6 @@ const General = ({
 				updateStudentGeneralInformation({ studentId, data: values }).then(
 					() => {
 						toast.success("Updated Successfully");
-						setIsLoading(false)
 						nextStep();
 					}
 				);
@@ -140,12 +133,15 @@ const General = ({
 
 			addStudent(values).then(({ id }) => {
 				setStudentId(id);
-				setIsLoading(false)
 				nextStep();
 			});
 		} else {
 			toast.error("Age cannot be less than 17");
 		}
+
+		setTimeout(() => {
+			setIsLoading(false)
+		}, 5000);
 	};
 
 	// let debounceTimer;
@@ -162,9 +158,9 @@ const General = ({
 			{props => (
 				<Form style={{ display: "grid", gap: "1.25rem" }}>
 					{/* <<< Student Information >>> */}
-					{/* <Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'> */}
+					{/* <Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'> */}
 
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -455,7 +451,7 @@ const General = ({
 
 
 					{/* <<< Demographic Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -609,7 +605,7 @@ const General = ({
 					</Box>
 
 					{/* <<< Address Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -665,7 +661,7 @@ const General = ({
 					</Box>
 
 					{/* <<< Emergency Contact Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}
@@ -751,7 +747,7 @@ const General = ({
 					</Box>
 
 					{/* <<< Background Information >>> */}
-					<Box bgcolor='#fff' p='1rem 1.25rem' borderRadius='0.625rem'>
+					<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 						<Typography
 							fontSize='1rem'
 							fontWeight={500}

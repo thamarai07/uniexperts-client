@@ -45,6 +45,7 @@ const Register = () => {
 		]
 
 		return (
+
 			<img src={completed ? "https://cdn-images-1.medium.com/max/1600/1*XN4yTJcyi4G2mED3ysJBtg.png" : iconSrc[icon - 1]} alt="alt" style={
 				{
 					width: "44px",
@@ -53,10 +54,10 @@ const Register = () => {
 					border: completed || active ? "0px" : "2px solid #6A6A6A",
 					padding: "8px",
 					borderRadius: "99px",
-					marginTop: "-7px",
-
+					marginTop: "-8px",
 				}
 			} />
+
 		)
 	}
 
@@ -147,21 +148,26 @@ const Register = () => {
 					p='1rem 1.25rem'
 					borderRadius='0.625rem'
 					flexGrow={{ xs: 1, sm: "unset" }}
-					minWidth='40vw'
 					display='flex'
 					flexDirection='column'
+					alignItems={"center"}
+					minWidth='40vw'
 					gap='2rem'>
-					<img src={uniexperts_logo} alt='' style={{ width: "170px" }} />
+					<img src={uniexperts_logo} alt='' style={{ width: "170px", marginBottom: "30px", alignSelf: "flex-start", marginLeft: "12.4%" }} />
 
-					<Stepper activeStep={step} alternativeLabel >
-						{steps.map((item, index) => (
-							<Step key={index} >
-								<StepLabel StepIconComponent={ActiveStepIcon}   >{item.label}</StepLabel>
-							</Step>
-						))}
-					</Stepper>
+					<Box minWidth='80vw' >
+						<Stepper activeStep={step} alternativeLabel >
+							{steps.map((item, index) => (
+								<Step key={index} >
+									<StepLabel StepIconComponent={ActiveStepIcon}   >{item.label}</StepLabel>
+								</Step>
+							))}
+						</Stepper>
+					</Box>
+
 
 					{renderStepContent()}
+
 				</Box>
 			</Box>
 		</ThemeProvider>

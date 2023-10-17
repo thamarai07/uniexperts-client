@@ -46,6 +46,9 @@ const CustomTextField = ({
 					borderColor: "#F37B21",
 				},
 			},
+			"&:hover fieldset": { // Add this to change border color on hover
+				borderColor: "#F37B21", //
+			},
 			...sx,
 		},
 		InputLabelProps: { sx: { fontSize: "0.825rem" }, ...InputLabelProps },
