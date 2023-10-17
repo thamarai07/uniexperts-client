@@ -612,7 +612,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 	const onSubmit = values => {
 
-		
+
 
 		setTimeout(() => {
 			setShowLoader(false);
@@ -718,7 +718,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				innerRef={form}>
 				<Form>
 					<Box display='flex' flexDirection='column' gap='1rem'>
-						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
 								Personal Details
 							</Typography>
@@ -782,7 +782,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 											return (
 												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "0.825rem" }} id="entity-label">Code hgsdy</InputLabel>
+														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#FBFBFB", paddingInline: "2px", fontSize: "0.825rem" }} id="entity-label">Code hgsdy</InputLabel>
 														<Select
 															sx={{ width: "90px", height: "36px", fontSize: "0.825rem" }}
 															name='company.countryCode'
@@ -830,7 +830,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: selectedTimezone ? 0.45 : -0.9, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Time Zone</InputLabel>
+										<InputLabel sx={{ mt: selectedTimezone ? 0.45 : -0.9, fontSize: "14px", bgcolor: "#FBFBFB", paddingInline: "6px" }} id="entity-label">Time Zone</InputLabel>
 										<Select
 											size="small"
 											sx={{ height: "36px", fontSize: "0.825rem" }}
@@ -849,7 +849,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
 								Company Details
 							</Typography>
@@ -904,7 +904,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: entityTypeValue ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
+										<InputLabel sx={{ mt: entityTypeValue ? 0.45 : -1, bgcolor: "#FBFBFB", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
 										<Select
 											sx={{ height: "36px", fontSize: "0.825rem" }}
 											name='company.entityType'
@@ -986,7 +986,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
 								Address
 							</Typography>
@@ -1057,7 +1057,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: adddressCountry ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "14px" }} id="entity-label"> Country</InputLabel>
+										<InputLabel sx={{ mt: adddressCountry ? 0.45 : -1, bgcolor: "#FBFBFB", paddingInline: "2px", fontSize: "14px" }} id="entity-label"> Country</InputLabel>
 										<Select
 											sx={{ height: "36px", fontSize: "0.825rem" }}
 											labelId="entity-label"
@@ -1079,7 +1079,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
 								Bank Details
 							</Typography>
@@ -1177,7 +1177,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#f5f5f5' p='1rem 1.25rem' borderRadius='0.625rem'>
+						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
 							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
 								Set Password
 							</Typography>

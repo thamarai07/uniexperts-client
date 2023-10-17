@@ -153,9 +153,9 @@ const Register = () => {
 					gap='2rem'>
 					<img src={uniexperts_logo} alt='' style={{ width: "170px" }} />
 
-					<Stepper activeStep={step} alternativeLabel>
+					<Stepper activeStep={step} alternativeLabel >
 						{steps.map((item, index) => (
-							<Step key={index}>
+							<Step key={index} >
 								<StepLabel StepIconComponent={ActiveStepIcon}   >{item.label}</StepLabel>
 							</Step>
 						))}

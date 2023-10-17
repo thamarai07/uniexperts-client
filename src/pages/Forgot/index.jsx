@@ -87,11 +87,16 @@ const Forgot = () => {
 		dispatch(setLoader(true));
 
 		verifyOTP(data)
-			.then(() => {
-				history.push({ pathname: RouteNames.reset, state: data.email });
+			.then((res) => {
+				if (res.statusCode == 200) { history.push({ pathname: RouteNames.reset, state: data.email }) } else {
+					setIsEmailVerified("OTP_NOT_VALID")
+				}
 			})
-			.finally(() => dispatch(setLoader(false)));
-		setIsLoading(false)
+			.finally(() => {
+				dispatch(setLoader(false))
+				setIsLoading(false)
+			});
+
 	};
 
 	if (isLoading) {
@@ -116,28 +121,31 @@ const Forgot = () => {
 				gap='2rem'>
 				<Box alignItems='center' justifyContent='space-between'>
 					<img src={uniexperts_logo} alt='' />
-					<Typography fontSize='1.8rem' fontWeight={700} marginTop={6}>
+					<Typography fontSize='36px' fontWeight={700} marginTop={6}>
 						Forgot Password ?
 					</Typography>
+					{step === 1 && <Typography fontSize='14px' fontWeight={400} color="#48464C">
+						Set password for your account
+					</Typography>}
 					{/* <p style={{ marginTop: "12px" }}>Set password for your account</p> */}
 				</Box>
 
 				{step === 1 ? (
-					<div style={{ minWidth: '40vw' }} >
+					<div style={{ minWidth: '30vw' }} >
 						<Formik
 							initialValues={initialValues}
 							validationSchema={forgotValidation}
 							onSubmit={sendOtp}>
 							<Form>
-								<FieldInput
-									name='email'
-									label='Email'
-									placeholder='Enter your email here'
-									style={{ marginTop: "3rem" }}
-								/>
+								<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='10px' marginTop={"3rem"}>
+									<FieldInput
+										name='email'
+										label='Email'
+										placeholder='Enter your email here'
+									/>
+									{isEmailVerified !== null && !isEmailVerified && <p style={{ fontSize: "12px", fontWeight: "400", color: "#DC362E", marginLeft: "4px", marginTop: "4px" }} >Sorry this email does not exist</p>}
 
-								{isEmailVerified !== null && !isEmailVerified && <p style={{ fontSize: "12px", fontWeight: "600", marginTop: "10px" }} >Sorry this email does not exist</p>}
-
+								</Box>
 
 								<Box display='flex' justifyContent='right' mt='2rem'>
 									<Button
@@ -161,10 +169,10 @@ const Forgot = () => {
 				) : null}
 
 				{step === 2 ? (
-					<Box>
-						<Typography fontSize='0.75rem'>Sending OTP to {email}</Typography>
+					<Box minWidth="30vw" >
+						<Typography fontSize='0.75rem'>Sending OTP to  <span style={{ color: "#4F47A6" }} >{email}</span> </Typography>
 
-						<Box display='flex' gap='0.5rem' alignItems='center'>
+						<Box display='flex' columnGap='0.5rem' alignItems='center'>
 							<Typography fontSize='0.825rem'>Not your email?</Typography>
 
 							<Button
@@ -177,19 +185,23 @@ const Forgot = () => {
 							</Button>
 						</Box>
 
-						<Typography fontSize='1rem' mt='2rem'>
-							Enter OTP
-						</Typography>
+						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='10px' marginTop={"2rem"}>
+							<Typography fontSize='16px' color={"#707070"}>
+								Enter OTP
+							</Typography>
 
-						<OtpInput
-							name='otp'
-							value={otp}
-							onChange={setOtp}
-							containerStyle={style["otp-input"]}
-							inputStyle={style.otp}
-							numInputs={4}
-							isInputNum
-						/>
+							<OtpInput
+								name='otp'
+								value={otp}
+								onChange={setOtp}
+								containerStyle={style["otp-input"]}
+								inputStyle={style.otp}
+								numInputs={4}
+								isInputNum
+							/>
+
+						</Box>
+						{isEmailVerified === "OTP_NOT_VALID" && <p style={{ fontSize: "12px", fontWeight: "400", color: "#DC362E", marginLeft: "4px", marginTop: "4px" }} >You have entered a wrong OTP, please retry</p>}
 
 						<Box
 							display='flex'
