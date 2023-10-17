@@ -59,8 +59,8 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
         setIsLoading(true)
 
         setTimeout(() => {
-            setIsLoading(false)
             history.push("/dashboard")
+            setIsLoading(false)
         }, 5000);
     }
 
@@ -127,8 +127,8 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
             src={gif}
             alt=''
             style={{
-                height: "20%",
-                width: "20%",
+                height: "23%",
+                width: "23%",
                 objectFit: "contain",
                 objectPosition: "center",
             }}

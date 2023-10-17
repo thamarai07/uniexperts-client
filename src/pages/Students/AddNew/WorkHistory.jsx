@@ -28,6 +28,7 @@ import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { workValidation } from "../Validations/validations";
+import Loader from "components/Loader";
 
 const initialValues = {
 	employerName: "",
@@ -62,6 +63,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 	const [open, setOpen] = useState(false);
 	const [selectedWork, setSelectedWork] = useState(null);
 	const [isOptional, setIsOptional] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
 
 	useEffect(() => {
 		_fetchWorkHistory();
@@ -74,6 +76,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 	};
 
 	const onSubmit = (values, { resetForm }) => {
+		setIsLoading(false)
 		if (selectedWork?.id) {
 			updateStudentWorkHistory({
 				studentId,
@@ -105,6 +108,7 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 			resetForm();
 			setWorkHistory([]);
 			setOpen(false);
+			setIsLoading(false)
 			toast.success("Work Experience Added Successfully");
 			_fetchWorkHistory();
 		});
@@ -113,6 +117,8 @@ const WorkHistory = ({ studentId, nextStep = () => { } }) => {
 	// const onFinish = () => {
 	// 	history.push(RouteNames.edit_student?.replace(":id", studentId));
 	// };
+
+	if (isLoading) return <Loader />
 
 	return (
 		<>

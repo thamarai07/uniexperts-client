@@ -31,6 +31,7 @@ import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { RouteNames } from "routes/_base";
 import * as Yup from "yup";
+import Loader from "components/Loader";
 
 const initialValues = {
 	examType: "",
@@ -64,6 +65,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	const [fieldList, setFieldList] = useState([]);
 	const [showFields, setShowFields] = useState(false);
 	const [validationSchema, setValidationSchema] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 
 	useEffect(() => {
@@ -103,6 +105,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	};
 
 	const onSubmit = values => {
+		setIsLoading(true)
 		const temp = {};
 		fieldList?.forEach(key => {
 			initialValues[key] = "";
@@ -149,6 +152,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 			_fetchTestScores();
 			toast.success("Test Score Added SuccessFully");
 			onClose();
+			setIsLoading(false)
 		});
 	};
 
@@ -163,6 +167,8 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	// const onFinish = () => {
 	// 	history.push(RouteNames.edit_student?.replace(":id", studentId));
 	// };
+
+	if (isLoading) return <Loader />
 
 	return (
 		<>

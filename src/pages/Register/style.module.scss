@@ -38,14 +38,16 @@ input[type="file"]::file-selector-button:active {
 	scroll-behavior: smooth;
 	overflow-y: scroll;
 	max-height: 100vh;
+	padding-right: 20px;
 
 	-ms-overflow-style: initial !important;
 	scrollbar-width: 15px !important;
+	scroll-behavior: smooth;
 }
 /* hide scrollbar for chrome, safari and opera */
 .scrollView::-webkit-scrollbar {
 	display: flex !important;
-	width: 4px !important;
+	width: 5px !important;
 }
 
 .scrollView::-webkit-scrollbar-thumb {

@@ -613,11 +613,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const onSubmit = values => {
 
 
-
-		setTimeout(() => {
-			setShowLoader(false);
-		}, 2000);
-
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -781,8 +776,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 											const { field, meta } = props || {};
 											return (
 												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-													<FormControl sx={{ width: "90px" }}>
-														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#FBFBFB", paddingInline: "2px", fontSize: "0.825rem" }} id="entity-label">Code hgsdy</InputLabel>
+													<FormControl sx={{ width: "90px", marginBottom: Boolean(errors?.phone) ? "24px" : 0 }}>
+														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "0.825rem" }} id="entity-label">Country Code</InputLabel>
 														<Select
 															sx={{ width: "90px", height: "36px", fontSize: "0.825rem" }}
 															name='company.countryCode'
@@ -804,9 +799,9 @@ const Step1 = ({ data, setData, nextStep }) => {
 													<FieldInput
 														name='personalDetails.phone'
 														label='Contact Number'
-														style={{ marginLeft: "23px" }}
 														type='number'
 														error={Boolean(errors?.phone)}
+														style={{ marginLeft: "23px" }}
 														helperText={errors?.phone}
 														value={phone}
 														onChange={(e) => setPhone(e.target.value)}

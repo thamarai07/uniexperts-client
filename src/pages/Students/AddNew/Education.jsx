@@ -87,10 +87,6 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 	const onSubmit = (values, { resetForm }) => {
 		setIsLoading(true)
 
-		setTimeout(() => {
-			setIsLoading(false)
-		}, 1000);
-
 		console.log("onSubmit: ", values)
 		if (selectedEducation?.id) {
 			updateStudentEducation({
@@ -106,6 +102,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 				resetForm();
 				setEducations([]);
 				setOpen(false);
+				setIsLoading(false)
 				toast.success("Education Updated Successfully");
 				_fetchEducationInformation();
 			});
