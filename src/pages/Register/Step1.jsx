@@ -549,7 +549,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 		if (password !== confPassword) {
 			setConfirmpasswordError("Password and confirm password are not the same");
 		}
-		if (!validatePassword(password)) {
+	
+		if (password && !validatePassword(password)) {
 			errors.password = `Password must have a mix of capital small, numeric and special characters`;
 		}
 
@@ -695,7 +696,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				nextStep();
 				setShowLoader(false);
 
-			})
+			}).catch(()=> setShowLoader(false))
 		}
 	};
 
