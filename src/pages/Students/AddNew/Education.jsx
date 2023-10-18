@@ -124,6 +124,8 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 			setOpen(false);
 			toast.success("Education Added Successfully");
 			_fetchEducationInformation();
+			//nextStep();
+			setIsLoading(false)
 		});
 	};
 
