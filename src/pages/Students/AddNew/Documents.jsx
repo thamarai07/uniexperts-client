@@ -266,6 +266,7 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 		}
 	};
 
+
 	const handleFileUpload = async (name, file) => {
 
 		const fileName = file?.name;

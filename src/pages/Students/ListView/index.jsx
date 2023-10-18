@@ -187,6 +187,7 @@ const Students = () => {
 								color: "#f37b21 !important",
 								borderColor: "#f37b21 !important",
 								textTransform: "none",
+								borderRadius: 99
 							}}>
 							{`${showFilters ? "Hide" : "Show"} Filters`}
 						</Button>
@@ -198,6 +199,7 @@ const Students = () => {
 							sx={{
 								backgroundColor: "#F37B21 !important",
 								textTransform: "none",
+								borderRadius: 99
 							}}>
 							Add Student
 						</Button>

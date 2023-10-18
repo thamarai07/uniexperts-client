@@ -98,6 +98,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 
 	const getFields = () => {
 		setShowFields(true);
+		setIsLoading(false)
 		getExamFields(selectedExamType).then(fields => {
 			setFieldList(fields);
 			setShowFields(true);
@@ -106,6 +107,10 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 
 	const onSubmit = values => {
 		setIsLoading(true)
+		setTimeout(() => {
+			setIsLoading(false)
+		}, 5000);
+
 		const temp = {};
 		fieldList?.forEach(key => {
 			initialValues[key] = "";
@@ -140,6 +145,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 				testScoreId: selectedTest?.id,
 				data: requestData,
 			}).then(() => {
+				setIsLoading(false)
 				_fetchTestScores();
 				toast.success("Test Score Updated SuccessFully");
 				onClose();
@@ -160,6 +166,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 		setSelectedTest(null);
 		setSelectedExamType(null);
 		setOpen(close);
+		setIsLoading(false)
 		setShowFields(false);
 		setFieldList([]);
 	};
@@ -294,6 +301,8 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 									<Typography
 										fontSize='1.2rem'
 										fontWeight={500}
+										textAlign={"center"}
+										width={"100%"}
 										color='#f37b21'>
 										{showFields && selectedExamType}
 									</Typography>
@@ -306,8 +315,14 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 									{showFields ? (
 										<>
 											<Grid item xs={12} sm={12}>
-												INFORMATION
+												<Typography
+													fontSize='1rem'
+													fontWeight={500}
+													color='#f37b21'>
+													Information
+												</Typography>
 											</Grid>
+
 
 											<Grid item xs={12} sm={6}>
 												<FieldInput name='name' label='Student Name' />
@@ -350,7 +365,12 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 											</Grid>
 											<Divider />
 											<Grid item xs={12} sm={12}>
-												SCORE INFORMATION
+												<Typography
+													fontSize='1rem'
+													fontWeight={500}
+													color='#f37b21'>
+													Score Information
+												</Typography>
 											</Grid>
 
 											<Grid item xs={12} sm={6}>
@@ -375,7 +395,13 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 										</>
 									) : (
 										<Grid item xs={12} sm={12}>
-											<FormLabel>Select an Exam:</FormLabel>
+
+											<Typography
+												fontSize='1rem'
+												fontWeight={500}
+												color='#f37b21'>
+												Select an Exam :
+											</Typography>
 
 											<Field name='examType'>
 												{props => {
@@ -426,6 +452,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 												"&:disabled": {
 													bgcolor: "rgba(0, 0, 0, 0.12) !important",
 												},
+												borderRadius: 99
 											}}>
 											Submit
 										</Button>
@@ -442,7 +469,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 												"&:disabled": {
 													bgcolor: "rgba(0, 0, 0, 0.12) !important",
 												},
-
+												borderRadius: 99
 											}}>
 											Next
 										</Button>

@@ -114,6 +114,10 @@ const General = ({
 	const onSubmit = values => {
 		console.log({ values })
 		setIsLoading(true)
+		setTimeout(() => {
+			setIsLoading(false)
+		}, 10000);
+
 		const applicantAge = differenceInYears(
 			new Date(),
 			values.demographicInformation.dateOfBirth
@@ -124,6 +128,7 @@ const General = ({
 				updateStudentGeneralInformation({ studentId, data: values }).then(
 					() => {
 						toast.success("Updated Successfully");
+						setIsLoading(false)
 						nextStep();
 					}
 				);
@@ -133,15 +138,14 @@ const General = ({
 
 			addStudent(values).then(({ id }) => {
 				setStudentId(id);
+				setIsLoading(false)
 				nextStep();
 			});
 		} else {
 			toast.error("Age cannot be less than 17");
 		}
 
-		setTimeout(() => {
-			setIsLoading(false)
-		}, 5000);
+
 	};
 
 	// let debounceTimer;

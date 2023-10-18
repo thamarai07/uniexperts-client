@@ -87,6 +87,10 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 	const onSubmit = (values, { resetForm }) => {
 		setIsLoading(true)
 
+		setTimeout(() => {
+			setIsLoading(false)
+		}, 10000);
+
 		console.log("onSubmit: ", values)
 		if (selectedEducation?.id) {
 			updateStudentEducation({

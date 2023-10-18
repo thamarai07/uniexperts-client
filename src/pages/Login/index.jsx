@@ -70,7 +70,7 @@ const Login = () => {
 					backgroundSize: "cover",
 				}}
 			/> */}
-			<div style={{ display: 'flex', width: '100%', justifyContent: "center", alignItems: "center" }}>
+			<div className={style.container} >
 				<div className={style.banner} >
 					<Box flex={1} >
 						<SimpleImageSlider
@@ -89,12 +89,9 @@ const Login = () => {
 					</Box>
 				</div>
 				<Box
-					// width={{ xs: "100%", md: "30dvw" }
 					flex={1}
 					display='flex'
 					flexDirection='column'
-					marginLeft={"-5%"}
-
 				>
 					<div
 						className={style.formContainer}
@@ -109,7 +106,7 @@ const Login = () => {
 							initialValues={initialValues}
 							validationSchema={loginValidation}
 							onSubmit={onSubmit}>
-							<Form style={{ width: "86%" }}>
+							<Form style={{ width: "86%" }} className={style.form} >
 								<Box
 									display='flex'
 									width={{ xs: "100%", md: "80%" }}
@@ -130,6 +127,8 @@ const Login = () => {
 												textTransform: "none",
 												color: "#f37b21 !important",
 												fontSize: "16px",
+												marginLeft: "-4px",
+												marginTop: "-4px"
 											}}>
 											Register Now
 										</Button>
