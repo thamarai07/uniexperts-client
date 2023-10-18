@@ -106,6 +106,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	};
 
 	const onSubmit = values => {
+		console.log("onSubmit")
 		setIsLoading(true)
 		setTimeout(() => {
 			setIsLoading(false)
@@ -285,7 +286,7 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 					<Formik
 						enableReinitialize
 						initialValues={selectedTest ? selectedTest : initialValues}
-						validationSchema={validationSchema}
+						//validationSchema={validationSchema}
 						onSubmit={onSubmit}>
 						<Form>
 							<Box
