@@ -11,6 +11,7 @@ import { setLoader, setUser } from "store";
 import { loginValidation } from "utils/validations";
 import logo from "assets/uniexperts_logo.svg";
 import SimpleImageSlider from "react-simple-image-slider";
+import style from "./style.module.scss"
 
 const initialValues = { email: "", password: "" };
 
@@ -70,10 +71,10 @@ const Login = () => {
 				}}
 			/> */}
 			<div style={{ display: 'flex', width: '100%', justifyContent: "center", alignItems: "center" }}>
-				<Box flex={1} >
-					<div>
+				<div className={style.banner} >
+					<Box flex={1} >
 						<SimpleImageSlider
-							width={"34vw"}
+							width={"32vw"}
 							height={"90vh"}
 							images={sliderImages}
 							autoPlay={true}
@@ -85,42 +86,41 @@ const Login = () => {
 								marginBottom: "25px"
 							}}
 						/>
-					</div>
-				</Box>
+					</Box>
+				</div>
 				<Box
 					// width={{ xs: "100%", md: "30dvw" }
 					flex={1}
 					display='flex'
 					flexDirection='column'
-					marginLeft={"-4%"}
+					marginLeft={"-5%"}
+
 				>
-					<Box
-						flexGrow={3}
-						display='flex'
-						flexDirection='column'
-						// alignItems='center'
-						justifyContent='center'
-						gap='1rem'>
+					<div
+						className={style.formContainer}
+					>
 						<img
 							src={logo}
 							alt=''
 							height='100%'
-							style={{ maxHeight: "3rem", width: "150px", marginLeft: "8%" }}
+							className={style.logo}
 						/>
 						<Formik
 							initialValues={initialValues}
 							validationSchema={loginValidation}
 							onSubmit={onSubmit}>
-							<Form style={{ width: "80%" }}>
+							<Form style={{ width: "86%" }}>
 								<Box
 									display='flex'
 									width={{ xs: "100%", md: "80%" }}
-									p='1rem 1.25rem 1rem 0'
+									p='1rem 1rem'
+									borderRadius={"10px"}
+									bgcolor={"#fbfbfb"}
 									m='0 auto'
 									flexDirection='column'
 									gap='1rem'>
-									<h1>Sign In</h1>
-									<p style={{ marginBottom: "20px" }}>
+									<p style={{ fontSize: "36px", fontWeight: "700" }}>Sign In</p>
+									<p style={{ marginBottom: "20px", marginTop: "-18px", fontWeight: "400", fontSize: "16px", width: "100%" }}>
 										Don’t have an account?{" "}
 										<Button
 											size='small'
@@ -129,7 +129,7 @@ const Login = () => {
 											sx={{
 												textTransform: "none",
 												color: "#f37b21 !important",
-												fontSize: "17px",
+												fontSize: "16px",
 											}}>
 											Register Now
 										</Button>
@@ -180,7 +180,7 @@ const Login = () => {
 								</Box>
 							</Form>
 						</Formik>
-					</Box>
+					</div>
 
 					<Box
 						flexGrow={1}
@@ -192,8 +192,8 @@ const Login = () => {
 						}}
 					/>
 				</Box>
-			</div>
-		</Box>
+			</div >
+		</Box >
 	);
 };
 
