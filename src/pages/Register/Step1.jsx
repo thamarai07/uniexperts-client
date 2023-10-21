@@ -518,7 +518,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 		// }
 
 		// Check if swift code is valid
-		const swiftReg = /^[A-Z]{4}[-]?[A-Z]{2}[-]?[A-Z0-9]{2}[-]?[0-9]{3}$/;
+		//const swiftReg = /^[A-Z]{4}[-]?[A-Z]{2}[-]?[A-Z0-9]{2}[-]?[0-9]{3}$/;
+		const swiftReg = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/;
 		if (values.bank?.swiftCode) {
 			if (!swiftReg.test(values.bank.swiftCode)) {
 				errors.swiftCode = "Please enter a valid swift code";
