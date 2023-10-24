@@ -39,7 +39,6 @@ const useStyles = makeStyles({
 		height: "60px",
 	},
 });
-// console.log(myCountryCodesObject, countryCodes);
 
 const Step1 = ({ data, setData, nextStep }) => {
 
@@ -548,7 +547,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 			errors.password = `Password field must not be empty`;
 		}
 		if (password !== confPassword) {
-			setConfirmpasswordError("Password and confirm password are not the same");
+			setConfirmpasswordError("Password and confirm password are not same");
+			errors.confPassword = `Password and confirm password are not same`;
 		}
 	
 		if (password && !validatePassword(password)) {
@@ -613,7 +613,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 	// },[email])
 
 	const onSubmit = values => {
-
 
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
@@ -1014,18 +1013,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 											setFieldValue("address.zipCode", value);
 
 											if (!value) return;
-
-											// if (debounceTimer) clearTimeout(debounceTimer);
-											// debounceTimer = setTimeout(() => {
-											// 	debounceTimer = null;
-											// 	getPincodeData(value).then(
-											// 		({ city, state, country }) => {
-											// 			setFieldValue("address.city", city);
-											// 			setFieldValue("address.state", state);
-											// 			setFieldValue("address.country", country);
-											// 		}
-											// 	);
-											// }, 2000);
 										}}
 									/>
 								</Grid>
@@ -1155,22 +1142,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 										}}
 									/>
 								</Grid>}
-
-								{/* {bankField?.key && (
-									<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
-										<FieldInput
-											name='bank.ifsc'
-											error={Boolean(errors?.ifsc)}
-											helperText={errors?.ifsc}
-											label={`${bankField.value}`}
-											onChange={({ target: { value } }) => {
-												const { current: { setFieldValue } = {} } = form || {};
-
-												setFieldValue("bank.ifsc", value?.toUpperCase());
-											}}
-										/>
-									</Grid>
-								)} */}
 							</Grid>
 						</Box>
 
@@ -1245,6 +1216,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Box>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										value={password}
 										type='password'
 										name='password'
 										placeholder='Enter your password here'
@@ -1265,6 +1237,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										placeholder='Re-enter your password here'
 										error={Boolean(confPasswordError)}
 										helperText={confPasswordError}
+										value={confPassword}
 										onChange={e => {
 											setConfPassword(e.target.value)
 										}}
