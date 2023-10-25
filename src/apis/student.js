@@ -100,7 +100,7 @@ export const updateStudentDocument = ({ studentId, data }) =>
 	new Promise((resolve, reject) => {
 		APICaller({
 			url: `/student/${studentId}/document`,
-			method: "PATCH",
+			method: "POST",
 			data: data,
 		})
 			.then(response => resolve(response))

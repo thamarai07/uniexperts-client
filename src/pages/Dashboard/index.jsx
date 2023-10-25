@@ -24,8 +24,10 @@ import Performance from "./Performance";
 import Programs from "./Programs";
 import Schools from "./Schools";
 import Welcome from "./Welcome";
+import { useHistory } from "react-router-dom";
 
 const Dashboard = () => {
+	const history = useHistory()
 	const { user: { status, staff: { modules = [] } = {} } = {} } = useSelector(
 		state => state
 	);
@@ -36,6 +38,7 @@ const Dashboard = () => {
 	const [isAccountDisabled, setIsAccountDisabled] = useState(false);
 
 	useEffect(() => {
+
 		dispatch(setLoader(true));
 
 		Promise.all([
@@ -85,6 +88,12 @@ const Dashboard = () => {
 
 		setIsAccountDisabled(true);
 	}, [status]);
+
+	useEffect(()=> {
+		if(localStorage.getItem("docUploaded")==="false"){
+			history.push("/auth/register")
+		}
+	}, [])
 
 	return (
 		<>

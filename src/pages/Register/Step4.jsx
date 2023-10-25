@@ -76,47 +76,13 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
     }
 
     const printDocument = async () => {
-        // let iframe = document.createElement("iframe");
-        // iframe.style.visibility = "hidden";
-        // document.body.appendChild(iframe);
-        // let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
-        // iframedoc.body.innerHTML = tncff
-
-        // let canvas = await html2canvas(iframedoc.body, {});
-
-        // // Convert the iframe into a PNG image using canvas.
-        // let imgData = canvas.toDataURL("image/png");
-
-        // // Create a PDF document and add the image as a page.
-        // const doc = new JsPDF({
-        //     format: "a4",
-        //     unit: "mm",
-        // });
-        // doc.addImage(imgData, "PNG", 0, 0, 210, 297);
-
-
-        // // Get the file as blob output.
-        // let blob = doc.output("blob");
-
-        // var csvURL = window.URL.createObjectURL(blob);
-        // var tempLink = document.createElement('a');
-        // tempLink.href = csvURL;
-        // tempLink.setAttribute('download', 'Agreement.pdf');
-        // tempLink.click();
-
-        // // Remove the iframe from the document when the file is generated.
-        // document.body.removeChild(iframe);
-
         const fileURL = agreementFile;
-
         const a = document.createElement('a');
         a.href = fileURL;
         a.download = agreementFile; // The name for the downloaded file
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-
-
 
     }
 
@@ -166,6 +132,7 @@ const Step4 = ({ data = {}, setData, nextStep }) => {
                                 //console.log("clicked");
                                 isChecked && handleSignUp()
                                 isChecked && printDocument();
+                                isChecked && localStorage.setItem("docUploaded", true);
                                 // dispatch(setLoader(true));
                                 // setTimeout(() =>{
                                 //     dispatch(setLoader(false));

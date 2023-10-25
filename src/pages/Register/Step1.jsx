@@ -695,6 +695,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			signup(requestData).then(res => {
 				nextStep();
 				setShowLoader(false);
+				localStorage.setItem("docUploaded", false);
 
 			}).catch(()=> setShowLoader(false))
 		}
