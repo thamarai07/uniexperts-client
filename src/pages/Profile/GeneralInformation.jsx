@@ -1,6 +1,6 @@
 import { Avatar, Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { s3Upload } from "apis/app";
+// import { s3Upload } from "apis/app";
 import { getProfileData } from "apis/auth";
 import { generalStaffDetail, updateStaff, updateUserDP } from "apis/staff";
 import CustomSwitch from "components/CustomSwitch";
@@ -10,11 +10,13 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLoader, setUser } from "store";
 import ChangePassword from "./ChangePassword";
+import S3 from "../Register/aws";
 
 const GeneralInformation = ({ staffId }) => {
 	const [isModalOpen, setModalOpen] = useState(false);
 	const [isEditable, setIsEditable] = useState(false);
 	const [modules, setModules] = useState([]);
+	const [profilePic, setProfilePic] = useState("");
 
 	const dispatch = useDispatch();
 
@@ -28,6 +30,8 @@ const GeneralInformation = ({ staffId }) => {
 		generalStaffDetail()
 			.then(response => {
 				setData(response);
+				setProfilePic(response.dp)
+				localStorage.setItem('profilePic', response.dp);
 				setModules(response?.modules);
 			})
 			.finally(() => dispatch(setLoader(false)));
@@ -39,23 +43,41 @@ const GeneralInformation = ({ staffId }) => {
 		const file = event.target.files[0];
 
 		if (!file) return;
+		const fileName = file.name;
 
-		dispatch(setLoader(true));
+		const params = {
+			Bucket: 'uniexpert',
+			Key: fileName, // Name of the file in your S3 bucket
+			Body: file,
+		};
+		dispatch(setLoader(true))
 		try {
-			const fileURL = await s3Upload(file);
 
-			await updateUserDP(fileURL);
-
-			generalStaffDetail().then(setData);
-
-			await getProfileData().then(userDetails =>
-				dispatch(setUser(userDetails))
-			);
+			const uploadedFile = await S3.upload(params).promise();
+			setProfilePic(uploadedFile.Location);
+			const response = await updateUserDP(uploadedFile.Location);
 
 			dispatch(setLoader(false));
 		} catch (error) {
 			dispatch(setLoader(false));
 		}
+
+		//dispatch(setLoader(true));
+		// try {
+		// 	const fileURL = await s3Upload(file);
+
+		// 	await updateUserDP(fileURL);
+
+		// 	generalStaffDetail().then(setData);
+
+		// 	await getProfileData().then(userDetails =>
+		// 		dispatch(setUser(userDetails))
+		// 	);
+
+		// 	dispatch(setLoader(false));
+		// } catch (error) {
+		// 	dispatch(setLoader(false));
+		// }
 	};
 
 	const onClick = () => {
@@ -105,20 +127,34 @@ const GeneralInformation = ({ staffId }) => {
 					flexDirection='column'
 					alignItems='center'
 					gap='1rem'>
-					<Avatar src={dp} alt='' sx={{ height: "8rem", width: "8rem" }} />
+					<Avatar src={profilePic} alt='' sx={{ height: "8rem", width: "8rem" }} />
 
-					<Button
+					{/* <Button
 						variant='text'
 						size='small'
 						onClick={handleAttachClick}
 						sx={{ textTransform: "none", color: "#f37b21 !important" }}>
 						Change Profile Picture
-					</Button>
-
+					</Button> */}
+					<label
+						htmlFor="my-file"
+						//title="Change Profile Picture"
+						style={{ color: "#f37b21", cursor: "pointer" }}
+					>
+						Change Profile Picture
+						{/* <Button
+						variant='text'
+						size='small'
+						//onClick={handleAttachClick}
+						sx={{ textTransform: "none", color: "#f37b21 !important" }}>
+						Change Profile Picture
+					</Button> */}
+					</label>
 					<input
 						type='file'
+						id="my-file"
 						accept='image/*'
-						ref={hiddenFileInput}
+						//ref={hiddenFileInput}
 						onChange={handleFileAttachment}
 						style={{ display: "none" }}
 					/>
