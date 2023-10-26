@@ -176,7 +176,6 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 
 										<TableCell>{row?.cgpa}</TableCell>
 
-
 									</TableRow>
 								))
 							) : (
@@ -363,7 +362,7 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 											<InputLabel sx={{ mt: gradingScheme ? 0 : -1, ml: -0.5, fontSize: "14px", paddingInline: "6px", bgcolor: "white" }} id="entity-label">Grading Scheme</InputLabel>
 											<Select
 												size="small"
-												sx={{ height: "37px" }}
+												sx={{ height: "37px", fontSize: "14px" }}
 												onChange={e => setGradingScheme(e.target.value)}
 												value={gradingScheme ?? null}
 											// error={Boolean(errors?.timezone)}
@@ -428,12 +427,12 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 										{(() => {
 											switch (gradingScheme) {
 												case "Percentage": return <FieldInput
-													onChange={e => setGradevalue({ "percentage": e.target.value })}
+													onChange={e => setGradevalue({ "percentage": e.target.value <= 100 ? e.target.value : 100 })}
 													value={gradeValue?.percentage ?? null}
 													error={Boolean(gradeValueError)}
 													helperText={gradeValueError} type="number" name='percentage' label='Percentage' />
 												case "CGPA": return <FieldInput
-													onChange={e => setGradevalue({ "cgpa": e.target.value })}
+													onChange={e => setGradevalue({ "cgpa": e.target.value <= 10 ? e.target.value : 10.0 })}
 													value={gradeValue?.cgpa ?? null}
 													error={Boolean(gradeValueError)}
 													helperText={gradeValueError} type="number" name='cgpa' label='CGPA' />
@@ -445,11 +444,22 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 													type="number" name='gpa' label='GPA'
 												/>
 												case "Grade": return <>
-													<FormControl fullWidth>
-														<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Grade</InputLabel>
+													<FormControl fullWidth sx={{
+														"& .MuiOutlinedInput-root": {
+															"&.Mui-focused fieldset": {
+																borderColor: "#F37B21",
+															},
+														},
+														"&:hover fieldset": { // Add this to change border color on hover
+															borderColor: "#F37B21", //
+														},
+													}} >
+														<InputLabel sx={{ mt: gradeValue ? 0.20 : -1, ml: -0.5, fontSize: "14px", bgcolor: "#fff", paddingInline: "6px", }} id="entity-label">Grade</InputLabel>
 														<Select
 															size="small"
-															sx={{ height: "37px" }}
+															sx={{
+																height: "36px"
+															}}
 															onChange={e => setGradevalue({ "grade": e.target.value })}
 															value={gradeValue?.grade ?? null}
 															error={Boolean(gradeValueError)}
@@ -461,8 +471,17 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 												</>
 
 												case "Class": return <>
-													<FormControl fullWidth>
-														<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Class</InputLabel>
+													<FormControl fullWidth sx={{
+														"& .MuiOutlinedInput-root": {
+															"&.Mui-focused fieldset": {
+																borderColor: "#F37B21",
+															},
+														},
+														"&:hover fieldset": { // Add this to change border color on hover
+															borderColor: "#F37B21", //
+														},
+													}} >
+														<InputLabel sx={{ mt: gradeValue ? 0.20 : -1, ml: -0.5, fontSize: "14px", bgcolor: "#fff", paddingInline: "6px", }} id="entity-label">Class</InputLabel>
 														<Select
 															size="small"
 															sx={{ height: "37px" }}
@@ -480,8 +499,17 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 													error={Boolean(gradeValueError)}
 													helperText={gradeValueError} type="number" name='score' label='Score' />
 												case "Division": return <>
-													<FormControl fullWidth>
-														<InputLabel sx={{ mt: -1, ml: -0.5, fontSize: "14px", bgcolor: "#f5f5f5", paddingInline: "6px" }} id="entity-label">Division</InputLabel>
+													<FormControl fullWidth sx={{
+														"& .MuiOutlinedInput-root": {
+															"&.Mui-focused fieldset": {
+																borderColor: "#F37B21",
+															},
+														},
+														"&:hover fieldset": { // Add this to change border color on hover
+															borderColor: "#F37B21", //
+														},
+													}} >
+														<InputLabel sx={{ mt: gradeValue ? 0.20 : -1, ml: -0.5, fontSize: "14px", bgcolor: "#fff", paddingInline: "6px", }} id="entity-label">Division</InputLabel>
 														<Select
 															size="small"
 															sx={{ height: "37px" }}

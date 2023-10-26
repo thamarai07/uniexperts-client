@@ -197,7 +197,7 @@ const GeneralInformation = ({ staffId }) => {
 				</Grid>
 			</Box>
 
-			{role === "admin" ? (
+			{/* {role === "admin" ? (
 				<>
 					<Box
 						bgcolor='#fff'
@@ -246,7 +246,7 @@ const GeneralInformation = ({ staffId }) => {
 						</Grid>
 					</Box>
 				</>
-			) : null}
+			) : null} */}
 
 			{isModalOpen ? (
 				<ChangePassword isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
