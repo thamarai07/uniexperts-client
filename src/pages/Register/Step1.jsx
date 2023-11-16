@@ -6,7 +6,6 @@ import { Field, Form, Formik } from "formik";
 import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { phoneRegExp } from "utils/validations";
 import TimezoneSelect, { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import * as Yup from "yup";
