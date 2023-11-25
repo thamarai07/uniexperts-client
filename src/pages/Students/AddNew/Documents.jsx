@@ -251,7 +251,6 @@ const Documents = ({ studentId, nextStep = () => { } }) => {
 				studentId,
 				data
 			}).then(res => {
-				console.log("File updated successfully: " + res);
 				history.push(RouteNames.students)
 			});
 

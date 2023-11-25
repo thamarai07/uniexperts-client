@@ -106,7 +106,6 @@ const TestScore = ({ studentId, nextStep = { nextStep } }) => {
 	};
 
 	const onSubmit = values => {
-		console.log("onSubmit")
 		setIsLoading(true)
 		setTimeout(() => {
 			setIsLoading(false)

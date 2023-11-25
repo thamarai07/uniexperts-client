@@ -7,10 +7,11 @@ import {
 	Tooltip,
 	Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RouteNames } from "routes/_base";
 import CheckEligibilityDialog from "./CheckEligibilityDialog";
+import { getStudents } from "apis/student";
 
 const ProgramCard = data => {
 	const {
@@ -34,6 +35,7 @@ const ProgramCard = data => {
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedIntake, setSelectedIntake] = useState(intakes[0] ?? {});
+	const [students, setStudents] = useState([]);
 
 	const handleIntakeChange = ({ target: { value } }) => {
 		setSelectedIntake(intakes?.filter(({ id }) => id === value)[0]);
@@ -46,6 +48,12 @@ const ProgramCard = data => {
 	const onCheckEligibility = () => {
 		setIsModalOpen(true);
 	};
+
+	useEffect(() => {
+		getStudents().then(response => {
+			setStudents(response)
+		});
+	}, [])
 
 	return (
 		<>
@@ -245,7 +253,7 @@ const ProgramCard = data => {
 				}}
 				schoolId={schoolId}
 				programId={id}
-				studentList={studentList}
+				studentList={students}
 				selectedIntake={selectedIntake}
 			/>
 		</>

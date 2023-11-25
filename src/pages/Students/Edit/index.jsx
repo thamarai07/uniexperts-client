@@ -47,8 +47,6 @@ const EditStudent = () => {
 		RouteNames.edit_student?.replace(":id", "")
 	)?.[1];
 
-	console.log('in edit view===', studentId, pathname);
-
 	const { user: { staff: { modules = [] } = {} } = {} } = useSelector(
 		state => state
 	);

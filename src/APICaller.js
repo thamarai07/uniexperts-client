@@ -4,12 +4,10 @@ import { _getToken } from "utils/token";
 
 // eslint-disable-next-line no-undef
 const createURL = url => "http://3.108.220.199/api" + url;
-// const createURL = url => "http://localhost:5000/api" + url;
+//const createURL = url => "http://localhost:5000/api" + url;
 
 const APICaller = ({ url, method, data, params }) => {
-
 	let updatedUrl = createURL(url);
-
 	let token = _getToken()
 
 	const requestParams = {
@@ -57,7 +55,6 @@ const APICaller = ({ url, method, data, params }) => {
 			if (res.meta) {
 				return { data: res.data, meta: res.meta };
 			}
-			console.log(res)
 			return res.data ? res.data : res;
 		});
 };

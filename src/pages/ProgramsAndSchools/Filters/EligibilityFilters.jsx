@@ -32,7 +32,6 @@ const EligibilityFilters = ({
 					nationality: null,
 				},
 			}));
-
 			return;
 		}
 
@@ -180,7 +179,6 @@ const EligibilityFilters = ({
 						placeholder='English Exam Type'
 					/>
 				</Grid>
-
 				{examTypeFields?.map((field, index) => (
 					<Grid key={index} item xs={6}>
 						<CustomTextField

@@ -12,13 +12,17 @@ const Programs = ({ schoolId }) => {
 	const [programs, setPrograms] = useState([]);
 	const [studentList, setStudentList] = useState([]);
 
+	console.log("Student List: f: " + studentList)
+
 	useEffect(() => {
 		dispatch(setLoader(true));
 
-		Promise.all([getSchoolPrograms(schoolId), getStudents()])
+		Promise.all([getSchoolPrograms(schoolId), 
+			getStudents()
+		])
 			.then(([programList, students]) => {
 				setPrograms(programList);
-				setStudentList(students?.data);
+				setStudentList(students);
 			})
 			.finally(dispatch(setLoader(false)));
 	}, []);

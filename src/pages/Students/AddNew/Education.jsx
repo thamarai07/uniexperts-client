@@ -91,7 +91,6 @@ const Education = ({ studentId = null, nextStep = () => { } }) => {
 			setIsLoading(false)
 		}, 10000);
 
-		console.log("onSubmit: ", values)
 		if (selectedEducation?.id) {
 			updateStudentEducation({
 				studentId,

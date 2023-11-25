@@ -112,7 +112,6 @@ const General = ({
 	}, []);
 
 	const onSubmit = values => {
-		console.log({ values })
 		setIsLoading(true)
 		setTimeout(() => {
 			setIsLoading(false)

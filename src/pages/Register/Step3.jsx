@@ -18,7 +18,6 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 		const file = event.target.files[0];
 		let fileArr = [];
 		fileArr.push(file);
-		console.log("file", fileArr);
 		//setSelectedFile([...file]);
 
 		//setSelectedFile(fileArr);
@@ -32,9 +31,6 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 			'address_proof',
 			'company_registration_certificate'
 		];
-
-
-		console.log("files: ", files);
 
 		if (requiredKeys.every(key => files.hasOwnProperty(key))) {
 			const data = {
@@ -64,7 +60,6 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 
 			uploadAgentDocuments(data)
 				.then(res => {
-					console.log("res", res);
 					nextStep();
 				})
 
@@ -93,8 +88,6 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 			setFilesUploading({ ...filesUploading, [event.target.name]: false })
 		}
 	};
-
-	console.log("files: ", files)
 
 	const handleUpload = () => {
 		// You can perform the file upload here using APIs, like Axios or Fetch.

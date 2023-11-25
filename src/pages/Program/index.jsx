@@ -51,7 +51,7 @@ const Program = () => {
 	}, [programId]);
 
 	useEffect(() => {
-		getStudents().then(students => setStudentList(students?.data));
+		getStudents().then(students => setStudentList(students));
 	}, []);
 
 	const { name, schoolId, city, icon, about, requirements, intakes } =

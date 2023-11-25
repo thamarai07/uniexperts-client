@@ -28,7 +28,7 @@ const CheckEligibilityDialog = ({
 		const tempStudents = [];
 
 		studentList?.forEach(student => {
-			const { firstName, lastName, email, mobile } = student || {};
+			const { firstName, lastName, email, mobile } = student.studentInformation || {};
 
 			if (firstName?.toLowerCase()?.includes(search?.toLowerCase())) {
 				tempStudents.push(student);
@@ -120,7 +120,7 @@ const CheckEligibilityDialog = ({
 					{students?.map(student => (
 						<StudentCard
 							key={student?.id}
-							studentData={student}
+							studentData={student.studentInformation}
 							schoolId={schoolId}
 							selectedIntake={selectedIntake}
 							programId={programId}

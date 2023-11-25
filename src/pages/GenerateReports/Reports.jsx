@@ -60,7 +60,6 @@ const Reports = () => {
 				return response.blob();
 			})
 			.then(res => {
-				console.log(">>> ~ res", res);
 				var file = window.URL.createObjectURL(res);
 				window.location.assign(file);
 			});

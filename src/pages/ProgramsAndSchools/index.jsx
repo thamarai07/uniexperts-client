@@ -60,12 +60,14 @@ const ProgramsAndSchools = () => {
 
 	useEffect(() => {
 		Promise.all([
-			getStudents(),
+			//getStudents(),
 			getSchools(),
 			getIntakes(),
 			getExamTypes(),
-		]).then(([students, schools, intakes, examTypes]) => {
-			setStudents(students?.data);
+		]).then(([
+			//students, 
+			schools, intakes, examTypes]) => {
+			//setStudents(students);
 			setSchools(schools);
 			setIntakes(intakes);
 			setExamTypes(examTypes);

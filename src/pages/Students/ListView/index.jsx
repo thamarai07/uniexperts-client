@@ -237,7 +237,6 @@ const Students = () => {
 						</TableHead>
 
 						<TableBody>
-							{console.log(data, 'asdjasdhjashdjhsd')}
 							{data?.length ? (
 								data.map((row, index) => (
 									<TableRow key={row?.id}>
