@@ -8,9 +8,8 @@ import { toast } from "react-toastify";
 import { RouteNames } from "routes/_base";
 import { setLoader } from "store";
 
-const StudentCard = ({ studentData, schoolId, selectedIntake, programId }) => {
+const StudentCard = ({ studentData, schoolId, selectedIntake, programId, studentId }) => {
 	const {
-		id: studentId,
 		dp,
 		salutation,
 		firstName,
@@ -33,7 +32,7 @@ const StudentCard = ({ studentData, schoolId, selectedIntake, programId }) => {
 			programId,
 			intakeId: selectedIntake?.id,
 		};
-
+		console.log("student id: ", studentId)
 		checkStudentEligibility(reqParams)
 			.then(setIsStudentEligible)
 			.finally(dispatch(setLoader(false)));
