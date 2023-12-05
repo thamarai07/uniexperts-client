@@ -130,6 +130,15 @@ export const NotificationLabels = {
 	document: "Document Notifications",
 };
 
+export const TimelineFilters = {
+	None: "None",
+	Today: "Today",
+	Yesterday: "Yesterday",
+	ThisWeek: "This Week",
+	ThisMonth: "This Month",
+	LastMonth: "Last Month",
+};
+
 export const ApplicationStatus = [
 	"New",
 	"Accepted",
