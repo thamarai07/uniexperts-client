@@ -30,13 +30,7 @@ const Sidebar = () => {
 						disabled = false;
 					}
 				} else {
-					if (
-						!(
-							key === ModuleKeys.Financial || key === ModuleKeys.GenerateReports
-						)
-					) {
-						disabled = false;
-					}
+					disabled = false;
 				}
 
 				return (

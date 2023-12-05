@@ -16,6 +16,7 @@ const CustomTextField = ({
 	disablePast = false,
 	disableFuture = false,
 	error = false,
+	minDate = null,
 	helperText,
 	...restProps
 }) => {
@@ -39,8 +40,11 @@ const CustomTextField = ({
 		onChange: ({ target: { value } }) => handleOnChange({ key: name, value }),
 		sx: {
 			bgcolor: "transparent",
-			"& .MuiInputBase-root": { fontSize: "0.825rem", },
-			"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem", color: "#f37b21 !important", },
+			"& .MuiInputBase-root": { fontSize: "0.825rem" },
+			"& .MuiFormLabel-root.MuiInputLabel-shrink": {
+				top: "0.25rem",
+				color: "#f37b21 !important",
+			},
 			"& .MuiOutlinedInput-root": {
 				"&.Mui-focused fieldset": {
 					borderColor: "#F37B21",
@@ -48,10 +52,13 @@ const CustomTextField = ({
 			},
 			...sx,
 		},
-		InputLabelProps: { sx: { fontSize: "0.825rem" }, ...InputLabelProps },
+		InputLabelProps: {
+			sx: { fontSize: "0.825rem" },
+			...InputLabelProps,
+		},
 		...restProps,
 		error,
-		helperText
+		helperText,
 	};
 
 	if (type === "number") {
@@ -130,6 +137,7 @@ const CustomTextField = ({
 				disablePast={disablePast}
 				disableFuture={disableFuture}
 				inputFormat='dd/MM/yyyy'
+				minDate={minDate}
 				onChange={value => {
 					restProps.onChange({ target: { name, value: value } });
 				}}
@@ -139,10 +147,7 @@ const CustomTextField = ({
 						fullWidth
 						size='small'
 						sx={{
-							bgcolor: "transparent",
-							"& .MuiInputBase-root": { fontSize: "0.825rem" },
-							"& .MuiFormLabel-root.MuiInputLabel-shrink": { top: "0.25rem" },
-							...sx,
+							...textFieldProps.sx,
 						}}
 						InputLabelProps={{
 							sx: { fontSize: "0.825rem" },

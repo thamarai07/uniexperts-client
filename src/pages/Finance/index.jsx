@@ -1,16 +1,18 @@
 import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import DownloadPaymentModal from "components/DownloadPaymentModal";
+import WithdrawModal from "components/WithdrawModal";
 import { useState } from "react";
 import Commissions from "./Commissions";
 import Dashboard from "./Dashboard";
 import Invoice from "./Invoice";
 import Payments from "./Payments";
-import WithdrawModal from "components/WithdrawModal";
 
 const tabs = ["Dashboard", "Commissions", "Invoice", "Payments"];
 
 const Finance = () => {
 	const [selectedTab, setSelectedTab] = useState(0);
 	const [isWithdrawalModalOpen, setWithdrawalModalOpen] = useState(false);
+	const [isDownloadModalOpen, setDownloadModalOpen] = useState(false);
 
 	return (
 		<>
@@ -42,6 +44,9 @@ const Finance = () => {
 								textTransform: "none",
 								color: "#F37B21 !important",
 								borderColor: "#F37B21 !important",
+							}}
+							onClick={() => {
+								setDownloadModalOpen(true);
 							}}>
 							Download
 						</Button>
@@ -82,20 +87,25 @@ const Finance = () => {
 						))}
 					</Tabs>
 				</Box>
+				{selectedTab === 1 && <Commissions />}
+
+				{selectedTab === 2 && <Invoice />}
+
+				{selectedTab === 3 && <Payments />}
 			</Box>
 
 			{selectedTab === 0 && <Dashboard />}
-
-			{selectedTab === 1 && <Commissions />}
-
-			{selectedTab === 2 && <Invoice />}
-
-			{selectedTab === 3 && <Payments />}
 
 			{isWithdrawalModalOpen ? (
 				<WithdrawModal
 					isModalOpen={isWithdrawalModalOpen}
 					setModalOpen={setWithdrawalModalOpen}
+				/>
+			) : null}
+			{isDownloadModalOpen ? (
+				<DownloadPaymentModal
+					isModalOpen={isDownloadModalOpen}
+					setModalOpen={setDownloadModalOpen}
 				/>
 			) : null}
 		</>

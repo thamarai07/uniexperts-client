@@ -1,6 +1,5 @@
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {
-	Button,
 	Grid,
 	IconButton,
 	Paper,
@@ -17,18 +16,17 @@ import {
 	Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { DateRangePicker } from "@mui/x-date-pickers-pro";
 import { getCurrency } from "apis/currency";
 import { getAccountSummary, getPaymentTransactions } from "apis/payment";
 import waveIcon from "assets/icons/primary-account-wave.png";
-import CustomTextField from "components/CustomTextField";
+import { DateFilter } from "components/DateFilter";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLoader } from "store";
 
 const headCells = [
-	"",
+	"Sno.",
 	"Type",
 	"Application ID",
 	"College",
@@ -37,6 +35,8 @@ const headCells = [
 	"Status",
 	"Date",
 ];
+
+const filterFormat = "DD-MM-YYYY";
 
 const SummaryCard = ({ isPrimary = false, label, amount, currencyLabel }) => {
 	return (
@@ -140,25 +140,22 @@ const AccountSummary = ({
 					<SummaryCard
 						isPrimary
 						label='Current Wallet Amount'
-						amount={`${selectedCurrencyDetails?.sign} ${
-							(+accountSummary?.currentWalletAmount)?.toFixed(2) ?? 0
-						}`}
+						amount={`${selectedCurrencyDetails?.sign} ${(+accountSummary?.currentWalletAmount)?.toFixed(2) ?? 0
+							}`}
 						currencyLabel={selectedCurrencyDetails?.name}
 					/>
 
 					<SummaryCard
 						label='Amount Withdrawn'
-						amount={`${selectedCurrencyDetails?.sign} ${
-							(+accountSummary?.totalWithdrawn)?.toFixed(2) ?? 0
-						}`}
+						amount={`${selectedCurrencyDetails?.sign} ${(+accountSummary?.totalWithdrawn)?.toFixed(2) ?? 0
+							}`}
 						currencyLabel={selectedCurrencyDetails?.name}
 					/>
 
 					<SummaryCard
 						label='Total Earned'
-						amount={`${selectedCurrencyDetails?.sign} ${
-							(+accountSummary?.totalEarned)?.toFixed(2) ?? 0
-						}`}
+						amount={`${selectedCurrencyDetails?.sign} ${(+accountSummary?.totalEarned)?.toFixed(2) ?? 0
+							}`}
 						currencyLabel={selectedCurrencyDetails?.name}
 					/>
 				</Grid>
@@ -179,7 +176,26 @@ const Dashboard = () => {
 	const [page, setPage] = useState(0);
 	const [total, setTotal] = useState(0);
 
-	const [data, setData] = useState([]);
+	const [data, setData] = useState([
+		{
+			type: "Commission",
+			applicationId: "App-0102",
+			college: "South Carolina",
+			currency: "$ - Dollar",
+			amount: "$8678",
+			status: "Credited",
+			updatedAt: "2023-11-25",
+		},
+		{
+			type: "Admission Charge",
+			applicationId: "App-0102",
+			college: "ASU",
+			currency: "$ - Dollar",
+			amount: "$8678",
+			status: "Credited",
+			updatedAt: "2023-11-25",
+		},
+	]);
 
 	useEffect(() => {
 		getCurrency().then(currencies => {
@@ -196,7 +212,7 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		_fetchData();
-	}, [page, rowsPerPage]);
+	}, [page, rowsPerPage, dateRange]);
 
 	const _fetchData = () => {
 		let requestParams = {
@@ -218,8 +234,8 @@ const Dashboard = () => {
 
 		getPaymentTransactions(requestParams)
 			.then(response => {
-				setData(response?.data);
-				setTotal(response?.meta?.total);
+				setData(response?.data ?? []);
+				setTotal(response?.meta?.total ?? 0);
 			})
 			.finally(() => dispatch(setLoader(false)));
 	};
@@ -246,53 +262,7 @@ const Dashboard = () => {
 
 			<Box
 				sx={{ bgcolor: "#fff", borderRadius: "0.625rem", p: "1rem 1.25rem" }}>
-				<Grid container spacing={2}>
-					<Grid item sm={10} xs={12}>
-						<DateRangePicker
-							inputFormat='dd/MM/yyyy'
-							calendars={2}
-							value={dateRange}
-							onChange={setDateRange}
-							renderInput={(startProps, endProps) => (
-								<>
-									<CustomTextField
-										disabled={startProps?.disabled}
-										placeholder={startProps?.label}
-										inputProps={{
-											...startProps.inputProps,
-										}}
-									/>
-
-									<Box sx={{ mx: 2 }}>
-										<Typography fontSize='0.825rem'>to</Typography>{" "}
-									</Box>
-
-									<CustomTextField
-										disabled={endProps?.disabled}
-										placeholder={endProps?.label}
-										inputProps={{
-											...endProps.inputProps,
-										}}
-									/>
-								</>
-							)}
-						/>
-					</Grid>
-
-					<Grid item sm={2} xs={12}>
-						<Button
-							variant='contained'
-							onClick={_fetchData}
-							size='small'
-							sx={{
-								bgcolor: "#f37b21 !important",
-								textTransform: "none",
-							}}>
-							Apply Filters
-						</Button>
-					</Grid>
-				</Grid>
-
+				<DateFilter dateRange={dateRange} setDateRange={setDateRange} />
 				<TableContainer component={Paper} sx={{ mt: "1rem" }}>
 					<Table sx={{ minWidth: 700 }}>
 						<TableHead>
@@ -310,19 +280,12 @@ const Dashboard = () => {
 								data.map((row, index) => (
 									<TableRow key={row?.id}>
 										<TableCell>{index + 1}</TableCell>
-
 										<TableCell>{row?.type ?? "N/A"}</TableCell>
-
 										<TableCell>{row?.applicationId ?? "N/A"}</TableCell>
-
 										<TableCell>{row?.college ?? "N/A"}</TableCell>
-
 										<TableCell>{row?.currency ?? "N/A"}</TableCell>
-
 										<TableCell>{row?.amount ?? "N/A"}</TableCell>
-
 										<TableCell>{row?.status ?? "N/A"}</TableCell>
-
 										<TableCell>
 											{format(new Date(row?.updatedAt), "PPp")}
 										</TableCell>

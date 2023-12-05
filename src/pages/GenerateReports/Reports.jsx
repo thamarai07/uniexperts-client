@@ -11,7 +11,7 @@ import {
 	TableRow,
 } from "@mui/material";
 import { getReportList } from "apis/report";
-import CustomTextField from "components/CustomTextField";
+import { DateFilter } from "components/DateFilter";
 import { format } from "date-fns/esm";
 import { useEffect, useState } from "react";
 import { _getToken } from "utils/token";
@@ -19,30 +19,31 @@ import { _getToken } from "utils/token";
 const headCells = ["", "Report", "Action"];
 
 const Reports = () => {
-	const [filter, setFilter] = useState({
-		startDate: new Date(),
-		endDate: new Date(),
-	});
+	const [filter, setFilter] = useState([null, null]);
 	const [data, setData] = useState([]);
 
 	useEffect(() => {
-		getReportList().then((data = {}) => setData(Object.values(data)));
+		getReportList().then((data = []) => setData(Object.entries(data)));
 	}, []);
 
-	const handleOnChange = ({ target: { name, value } = {} }) => {
-		setFilter({
-			...filter,
-			[name]: value,
-		});
-	};
 
 	const onDownload = type => {
+		let requestParams = { type };
+		const [startDate, endDate] = filter || [];
+
+		if (startDate) {
+			requestParams.startDate = format(startDate, "yyyy-MM-dd");
+		}
+
+		if (endDate) {
+			requestParams.endDate = format(endDate, "yyyy-MM-dd");
+		}
+
 		fetch(
 			// eslint-disable-next-line no-undef
-			`${process.env.REACT_APP_BASE_URL}/report?startDate=${format(
-				filter?.startDate,
-				"yyyy-MM-dd"
-			)}&endDate=${format(filter?.endDate, "yyyy-MM-dd")}&type=${type}`,
+			`${process.env.REACT_APP_BASE_URL}/report?${new URLSearchParams(
+				requestParams
+			).toString()}`,
 			{
 				method: "GET",
 				mode: "cors",
@@ -61,7 +62,7 @@ const Reports = () => {
 			})
 			.then(res => {
 				var file = window.URL.createObjectURL(res);
-				window.location.assign(file);
+				window.open(file, "_blank");
 			});
 	};
 
@@ -78,29 +79,7 @@ const Reports = () => {
 				justifyContent='flex-end'
 				gap='1rem'
 				pb='1rem'>
-				<CustomTextField
-					disableFuture
-					type='date'
-					name='startDate'
-					placeholder='Start Date'
-					value={filter?.startDate}
-					onChange={handleOnChange}
-					sx={{
-						width: { xs: "100%", sm: "15rem" },
-					}}
-				/>
-
-				<CustomTextField
-					disableFuture
-					type='date'
-					name='endDate'
-					placeholder='End Date'
-					value={filter?.endDate}
-					onChange={handleOnChange}
-					sx={{
-						width: { xs: "100%", sm: "15rem" },
-					}}
-				/>
+				<DateFilter setDateRange={setFilter} dateRange={filter} />
 			</Box>
 
 			<TableContainer component={Paper}>
@@ -117,16 +96,20 @@ const Reports = () => {
 
 					<TableBody>
 						{data?.length ? (
-							data.map((item, index) => (
-								<TableRow key={item}>
+							data.map(([label, value], index) => (
+								<TableRow key={label}>
 									<TableCell>{index + 1}</TableCell>
 
-									<TableCell>{item}</TableCell>
+									<TableCell>{label}</TableCell>
 
 									<TableCell>
-										<IconButton sx={{ p: 0 }} onClick={() => onDownload(item)}>
-											<DownloadIcon />
-										</IconButton>
+										<Box display={"flex"} gap={4}>
+											<IconButton
+												sx={{ p: 0 }}
+												onClick={() => onDownload(label)}>
+												<DownloadIcon />
+											</IconButton>
+										</Box>
 									</TableCell>
 								</TableRow>
 							))

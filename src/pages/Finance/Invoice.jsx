@@ -1,7 +1,5 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import {
-	Button,
-	Grid,
 	IconButton,
 	Paper,
 	Table,
@@ -11,13 +9,11 @@ import {
 	TableFooter,
 	TableHead,
 	TablePagination,
-	TableRow,
-	Typography,
+	TableRow
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { DateRangePicker } from "@mui/x-date-pickers-pro";
 import { getInvoices } from "apis/invoice";
-import CustomTextField from "components/CustomTextField";
+import { DateFilter } from "components/DateFilter";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -47,7 +43,7 @@ const Invoice = () => {
 
 	useEffect(() => {
 		_fetchData();
-	}, [page, rowsPerPage]);
+	}, [page, rowsPerPage, dateRange]);
 
 	const _fetchData = () => {
 		let requestParams = {
@@ -69,8 +65,8 @@ const Invoice = () => {
 
 		getInvoices(requestParams)
 			.then(response => {
-				setData(response?.data);
-				setTotal(response?.meta?.total);
+				setData(response?.data ?? []);
+				setTotal(response?.meta?.total ?? 0);
 			})
 			.finally(() => dispatch(setLoader(false)));
 	};
@@ -85,53 +81,8 @@ const Invoice = () => {
 	};
 
 	return (
-		<Box sx={{ bgcolor: "#fff", borderRadius: "0.625rem", p: "1rem 1.25rem" }}>
-			<Grid container spacing={2}>
-				<Grid item sm={10} xs={12}>
-					<DateRangePicker
-						inputFormat='dd/MM/yyyy'
-						calendars={2}
-						value={dateRange}
-						onChange={setDateRange}
-						renderInput={(startProps, endProps) => (
-							<>
-								<CustomTextField
-									disabled={startProps?.disabled}
-									placeholder={startProps?.label}
-									inputProps={{
-										...startProps.inputProps,
-									}}
-								/>
-
-								<Box sx={{ mx: 2 }}>
-									<Typography fontSize='0.825rem'>to</Typography>{" "}
-								</Box>
-
-								<CustomTextField
-									disabled={endProps?.disabled}
-									placeholder={endProps?.label}
-									inputProps={{
-										...endProps.inputProps,
-									}}
-								/>
-							</>
-						)}
-					/>
-				</Grid>
-
-				<Grid item sm={2} xs={12}>
-					<Button
-						variant='contained'
-						onClick={_fetchData}
-						size='small'
-						sx={{
-							bgcolor: "#f37b21 !important",
-							textTransform: "none",
-						}}>
-						Apply Filters
-					</Button>
-				</Grid>
-			</Grid>
+		<Box sx={{ p: "1rem 0" }}>
+			<DateFilter dateRange={dateRange} setDateRange={setDateRange} />
 
 			<TableContainer component={Paper} sx={{ mt: "1rem" }}>
 				<Table sx={{ minWidth: 700 }}>
