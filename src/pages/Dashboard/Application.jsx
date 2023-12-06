@@ -41,6 +41,7 @@ const Application = ({ data = [] }) => {
 		history.push(RouteNames.application?.replace(":id", applicationId));
 	};
 
+
 	return (
 		<Box
 			bgcolor='#fff'
@@ -94,7 +95,7 @@ const Application = ({ data = [] }) => {
 					</TableHead>
 
 					<TableBody>
-						{!!modules?.includes(ModuleKeys.Applications) && data?.length ? (
+						{data?.length>0 ? (
 							data.map((application, index) => (
 								<TableRow
 									key={application?.id}

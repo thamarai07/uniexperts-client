@@ -45,35 +45,35 @@ const Dashboard = () => {
 			//getDashboardBanners(),
 			//getDashboardCount(),
 			getAccountManager(),
-			//getApplications(),
+			getApplications(),
 			getCurrencies(),
-			//getTopSchools(),
+			getTopSchools(),
 			getPrograms(),
-			//getInterviews(),
-			//getIntakes(),
+			getInterviews(),
+			getIntakes(),
 		])
 			.then(
 				([
 					//banner,
 					//count,
 					accountManager,
-					//applications,
+					applications,
 					currencies,
-					//topSchools,
+					topSchools,
 					programs,
-					//interviews,
-					//intakes,
+					interviews,
+					intakes,
 				]) => {
 					setData({
 						//banner,
 						//count,
 						accountManager,
-						//applications: applications?.data,
+						applications: applications?.data,
 						currencies,
-						//topSchools,
+						topSchools,
 						programs,
-						//interviews,
-						//intakes,
+						interviews,
+						intakes,
 					});
 				}
 			)
