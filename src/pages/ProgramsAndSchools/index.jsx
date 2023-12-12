@@ -13,6 +13,7 @@ import { setLoader } from "store";
 import Filters from "./Filters";
 import Programs from "./Programs";
 import Schools from "./Schools";
+import { toast} from "react-toastify"
 
 const tabList = ["Programs", "Schools"];
 
@@ -112,6 +113,11 @@ const ProgramsAndSchools = () => {
 			...filters?.globalSearch,
 			sortBy: filters.sortBy,
 		};
+
+		if(!reqParams?.country){
+			toast.error("Please select a country");
+			return;
+		}
 
 		dispatch(setLoader(true));
 		getProgramsV2(reqParams)
