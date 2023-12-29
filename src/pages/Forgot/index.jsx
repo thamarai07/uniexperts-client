@@ -15,6 +15,7 @@ import { setLoader } from "store";
 import { forgotValidation } from "utils/validations";
 import style from "./style.module.scss";
 import Loader from "components/Loader";
+import { AuthLayout } from "pages/Layouts/AuthLayout";
 
 const Forgot = () => {
 	const history = useHistory();
@@ -41,18 +42,16 @@ const Forgot = () => {
 
 	useEffect(() => {
 		setOtp("");
-
 	}, [step]);
 
 	const initialValues = { email: email || "" };
 
-
 	const sendOtp = values => {
 		verifyEmail(values.email)
-			.then((res) => {
+			.then(res => {
 				if (res === true) {
 					setIsEmailVerified(true);
-					setIsLoading(true)
+					setIsLoading(true);
 					setEmail(values.email);
 					setStep(2);
 					forgotPassword(values).then(() => {
@@ -64,194 +63,212 @@ const Forgot = () => {
 					setIsEmailVerified(false);
 				}
 			})
-			.catch((error) => {
+			.catch(error => {
 				// Handle any error that may occur during the request
 				console.error(error);
 			});
 
-		setIsLoading(false)
+		setIsLoading(false);
 	};
 
 	const resendOtp = () => {
-		setIsLoading(true)
+		setIsLoading(true);
 		forgotPassword({ email }).then(() => {
 			toast.success("OTP Send Successfully");
 			setResendCounter(59);
 		});
-		setIsLoading(false)
+		setIsLoading(false);
 	};
 
 	const submitOtp = () => {
-		setIsLoading(true)
+		setIsLoading(true);
 		const data = { email, otp };
 		dispatch(setLoader(true));
 
 		verifyOTP(data)
-			.then((res) => {
-				if (res.statusCode == 200) { history.push({ pathname: RouteNames.reset, state: data.email }) } else {
-					setIsEmailVerified("OTP_NOT_VALID")
+			.then(res => {
+				if (res.statusCode == 200) {
+					history.push({ pathname: RouteNames.reset, state: data.email });
+				} else {
+					setIsEmailVerified("OTP_NOT_VALID");
 				}
 			})
 			.finally(() => {
-				dispatch(setLoader(false))
-				setIsLoading(false)
+				dispatch(setLoader(false));
+				setIsLoading(false);
 			});
-
 	};
 
 	if (isLoading) {
-		<Loader />
+		<Loader />;
 	}
 
 	return (
-		<Box
-			// bgcolor='#fff'
-			minHeight='30vh'
-			display='flex'
-			alignItems={{ xs: "unset", sm: "center" }}
-			justifyContent='center'>
+		<AuthLayout>
 			<Box
-				// bgcolor='#fff'
-				p='1rem 1.25rem'
-				// borderRadius='0.625rem'
-				flexGrow={{ xs: 1, sm: "unset" }}
-				// 
-				// display='flex'
-				// flexDirection='column'
-				gap='2rem'>
-				<Box alignItems='center' justifyContent='space-between'>
-					<img src={uniexperts_logo} alt='' />
-					<Typography fontSize='36px' fontWeight={700} marginTop={6}>
-						Forgot Password ?
-					</Typography>
-					{step === 1 && <Typography fontSize='14px' fontWeight={400} color="#48464C">
-						Set password for your account
-					</Typography>}
-					{/* <p style={{ marginTop: "12px" }}>Set password for your account</p> */}
-				</Box>
+				minHeight='calc(100vh - 72px)'
+				display='flex'
+				alignItems={"start"}
+				justifyContent={"center"}
+				maxWidth={"100vw"}
+				marginInline='auto'
+				bgcolor={"#F0F1F5"}>
+				<Box p='3.75rem' gap='2rem'>
+					<Box alignItems='center' justifyContent='space-between'>
+						<Typography fontSize='24px' fontWeight={600}>
+							Forgot Password ?
+						</Typography>
+						{step === 1 && (
+							<Typography fontSize='16px' fontWeight={500} color='#48464C'>
+								Enter your registered email address
+							</Typography>
+						)}
+						{/* <p style={{ marginTop: "12px" }}>Set password for your account</p> */}
+					</Box>
 
-				{step === 1 ? (
-					<div style={{ minWidth: '30vw' }} >
-						<Formik
-							initialValues={initialValues}
-							validationSchema={forgotValidation}
-							onSubmit={sendOtp}>
-							<Form>
-								<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='10px' marginTop={"3rem"}>
-									<FieldInput
-										name='email'
-										label='Email'
-										placeholder='Enter your email here'
-									/>
-									{isEmailVerified !== null && !isEmailVerified && <p style={{ fontSize: "12px", fontWeight: "400", color: "#DC362E", marginLeft: "4px", marginTop: "4px" }} >Sorry this email does not exist</p>}
+					{step === 1 ? (
+						<div style={{ minWidth: "50vw" }}>
+							<Formik
+								initialValues={initialValues}
+								validationSchema={forgotValidation}
+								onSubmit={sendOtp}>
+								<Form>
+									<Box
+										bgcolor='#FBFBFB'
+										p='2.5rem'
+										borderRadius='10px'
+										marginTop={"2.75rem"}>
+										<FieldInput
+											name='email'
+											label='Email'
+											placeholder='Email'
+											size='large'
+										/>
+										{isEmailVerified !== null && !isEmailVerified && (
+											<p
+												style={{
+													fontSize: "12px",
+													fontWeight: "400",
+													color: "#DC362E",
+													marginLeft: "4px",
+													marginTop: "4px",
+												}}>
+												Sorry this email does not exist
+											</p>
+										)}
+									</Box>
 
-								</Box>
+									<Box display='flex' justifyContent='right' mt='2rem'>
+										<Button
+											variant='contained'
+											size='small'
+											type='submit'
+											sx={{
+												textTransform: "none",
+												bgcolor: "#f37b21 !important",
+												padding: "14px 24px",
+											}}>
+											Send OTP
+										</Button>
+									</Box>
+								</Form>
+							</Formik>
+						</div>
+					) : null}
 
-								<Box display='flex' justifyContent='right' mt='2rem'>
-									<Button
-										variant='contained'
-										size='small'
-										type='submit'
-										sx={{
-											textTransform: "none",
-											bgcolor: "#f37b21 !important",
-											height: "40px",
-											width: "140px",
-											borderRadius: "32px",
-											float: "right",
-										}}>
-										Send OTP
-									</Button>
-								</Box>
-							</Form>
-						</Formik>
-					</div>
-				) : null}
-
-				{step === 2 ? (
-					<Box minWidth="30vw" >
-						<Typography fontSize='0.75rem'>Sending OTP to  <span style={{ color: "#4F47A6" }} >{email}</span> </Typography>
-
-						<Box display='flex' columnGap='0.5rem' alignItems='center'>
-							<Typography fontSize='0.825rem'>Not your email?</Typography>
-
-							<Button
-								variant='text'
-								size='small'
-								endIcon={<EditIcon />}
-								onClick={() => setStep(1)}
-								sx={{ textTransform: "none", color: "#f37b21 !important" }}>
-								Change
-							</Button>
-						</Box>
-
-						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='10px' marginTop={"2rem"}>
-							<Typography fontSize='16px' color={"#707070"}>
-								Enter OTP
+					{step === 2 ? (
+						<Box minWidth='50vw'>
+							<Typography fontSize='1rem' fontWeight={500}>
+								OTP sent to <span style={{ color: "#4F47A6" }}>{email}</span>{" "}
+								<Button
+									variant='text'
+									size='small'
+									onClick={() => setStep(1)}
+									sx={{ textTransform: "none", color: "#000 !important" }}>
+									Change
+								</Button>
 							</Typography>
 
-							<OtpInput
-								name='otp'
-								value={otp}
-								onChange={setOtp}
-								containerStyle={style["otp-input"]}
-								inputStyle={style.otp}
-								numInputs={4}
-								isInputNum
-							/>
+							<Box
+								bgcolor='#FBFBFB'
+								p='2.5rem'
+								borderRadius='10px'
+								marginTop={"2rem"}>
+								<Typography fontSize='16px' fontWeight={500}>
+									Enter OTP
+								</Typography>
 
-						</Box>
-						{isEmailVerified === "OTP_NOT_VALID" && <p style={{ fontSize: "12px", fontWeight: "400", color: "#DC362E", marginLeft: "4px", marginTop: "4px" }} >You have entered a wrong OTP, please retry</p>}
+								<OtpInput
+									name='otp'
+									value={otp}
+									onChange={setOtp}
+									containerStyle={style["otp-input"]}
+									inputStyle={style.otp}
+									numInputs={4}
+									isInputNum
+								/>
+							</Box>
+							{isEmailVerified === "OTP_NOT_VALID" && (
+								<p
+									style={{
+										fontSize: "12px",
+										fontWeight: "400",
+										color: "#DC362E",
+										marginLeft: "4px",
+										marginTop: "4px",
+									}}>
+									You have entered a wrong OTP, please retry
+								</p>
+							)}
 
-						<Box
-							display='flex'
-							flexDirection='row'
-							alignItems='center'
-							justifyContent='center'
-							gap='1rem'
-							mt='2rem'>
-							<Button
-								variant='text'
-								size='small'
-								sx={{
-									textTransform: "none",
-									color: "#f37b21 !important",
-									"&:disabled": {
-										color: "rgba(0, 0, 0, 0.26) !important",
-									},
-									borderRadius: "23px",
-									height: "30px",
-									width: "140px",
-									border: "1px solid rgb(138, 138, 138)",
-								}}
-								disabled={resendCounter > 0}
-								onClick={resendOtp}>
-								{`Resend OTP ${resendCounter > 0 ? `in ${resendCounter}s` : ""
-									}`}
-							</Button>
-							<Button
-								variant='contained'
-								size='small'
-								type='submit'
-								disabled={!(otp.length === 4)}
-								sx={{
-									textTransform: "none",
-									bgcolor: "#f37b21 !important",
-									"&:disabled": {
-										bgcolor: "rgba(0, 0, 0, 0.12) !important",
-									},
-									borderRadius: "23px",
-									height: "30px",
-									width: "100px",
-								}}
-								onClick={submitOtp}>
-								Confirm
-							</Button>
+							<Box
+								display='flex'
+								flexDirection='row'
+								alignItems='center'
+								justifyContent='space-between'
+								gap='1rem'
+								mt='2rem'>
+								<Button
+									variant='text'
+									size='small'
+									sx={{
+										textTransform: "none",
+										color: "#000 !important",
+										"&:disabled": {
+											color: "rgba(0, 0, 0, 0.26) !important",
+										},
+									}}
+									disabled={resendCounter > 0}
+									onClick={resendOtp}>
+									{resendCounter > 0
+										? `Resend OTP ${
+												resendCounter > 0 ? `in ${resendCounter}s` : ""
+										  }`
+										: `Didn’t receive OTP? Resend`}
+								</Button>
+								<Button
+									variant='contained'
+									size='small'
+									type='submit'
+									disabled={!(otp.length === 4)}
+									sx={{
+										textTransform: "none",
+										bgcolor: "#f37b21 !important",
+										"&:disabled": {
+											bgcolor: "rgba(0, 0, 0, 0.12) !important",
+										},
+										padding: "14px 24px",
+										fontWeight: 600,
+									}}
+									onClick={submitOtp}>
+									Confirm
+								</Button>
+							</Box>
 						</Box>
-					</Box>
-				) : null}
+					) : null}
+				</Box>
 			</Box>
-		</Box>
+		</AuthLayout>
 	);
 };
 

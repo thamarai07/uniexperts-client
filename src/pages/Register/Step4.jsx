@@ -1,159 +1,243 @@
-import React, { useEffect, useState } from "react";
-import Checkbox from '@mui/material/Checkbox';
-import { useHistory } from "react-router-dom";
+import {
+	Box,
+	Button,
+	FormControlLabel,
+	Switch,
+	Typography,
+} from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import { tnc } from "apis/auth";
-import CircularProgress from '@mui/material/CircularProgress';
-import { Box, Typography } from "@mui/material";
-import { setLoader } from "store";
-import { useDispatch } from "react-redux";
-import JsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import Loader from "components/Loader";
-import styles from './style.module.scss'
-import agreementFile from "../../assets/agreement.pdf"
-import gif from "../../assets/loader.gif"
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import agreementFile from "../../assets/agreement.pdf";
+import gif from "../../assets/loader.gif";
+import styles from "./style.module.scss";
 
 const Step4 = ({ data = {}, setData, nextStep }) => {
-    const history = useHistory()
-    const [isChecked, setIsChecked] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [tncData, setTncData] = useState("");
-    const [ip, setIp] = useState("")
-    // const dispatch = useDispatch();
-    useEffect(() => {
-        tnc().then((response) => {
-            setTncData(`${response?.records[0]?.Term_Condition__c}`);
-        })
-        getIpAddress()
-    }, [])
+	const history = useHistory();
+	const [isChecked, setIsChecked] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [tncData, setTncData] = useState("");
+	const [ip, setIp] = useState("");
+	// const dispatch = useDispatch();
+	useEffect(() => {
+		tnc().then(response => {
+			setTncData(`${response?.records[0]?.Term_Condition__c}`);
+		});
+		getIpAddress();
+	}, []);
 
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLongitude] = useState(null);
+	const [latitude, setLatitude] = useState(null);
+	const [longitude, setLongitude] = useState(null);
 
-    useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
-            }, (error) => {
-                console.error(error);
-            });
-        } else {
-            console.error('Geolocation is not supported by your browser');
-        }
-    }, []);
+	useEffect(() => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				position => {
+					setLatitude(position.coords.latitude);
+					setLongitude(position.coords.longitude);
+				},
+				error => {
+					console.error(error);
+				}
+			);
+		} else {
+			console.error("Geolocation is not supported by your browser");
+		}
+	}, []);
 
+	async function getIpAddress() {
+		await fetch("https://api.ipify.org/?format=json")
+			.then(response => response.json())
+			.then(data => {
+				setIp(data.ip);
+			})
+			.catch(error => {
+				console.error("Error fetching data:", error);
+			});
+	}
 
-    async function getIpAddress() {
-        await fetch('https://api.ipify.org/?format=json')
-            .then((response) => response.json())
-            .then((data) => {
-                setIp(data.ip)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-            });
-    }
+	const handleSignUp = () => {
+		setIsLoading(true);
 
-    const handleSignUp = () => {
-        setIsLoading(true)
+		setTimeout(() => {
+			history.push("/dashboard");
+			setIsLoading(false);
+		}, 5000);
+	};
 
-        setTimeout(() => {
-            history.push("/dashboard")
-            setIsLoading(false)
-        }, 5000);
-    }
+	function getCurrentTime() {
+		const now = new Date();
+		const hours = now.getHours();
+		const minutes = now.getMinutes();
+		const seconds = now.getSeconds();
 
-    function getCurrentTime() {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
+		const formattedTime = `${hours}:${minutes}:${seconds}`;
 
-        const formattedTime = `${hours}:${minutes}:${seconds}`;
+		return formattedTime;
+	}
 
-        return formattedTime;
-    }
+	const printDocument = async () => {
+		const fileURL = agreementFile;
+		const a = document.createElement("a");
+		a.href = fileURL;
+		a.download = agreementFile; // The name for the downloaded file
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	};
 
-    const printDocument = async () => {
-        const fileURL = agreementFile;
-        const a = document.createElement('a');
-        a.href = fileURL;
-        a.download = agreementFile; // The name for the downloaded file
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+	// const location = window.navigator && window.navigator.geolocation
 
-    }
+	if (isLoading)
+		return (
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					marginTop: "16%",
+				}}>
+				<img
+					src={gif}
+					alt=''
+					style={{
+						height: "23%",
+						width: "23%",
+						objectFit: "contain",
+						objectPosition: "center",
+					}}
+				/>
+			</div>
+		);
 
-    // const location = window.navigator && window.navigator.geolocation
+	return (
+		<Box display={"flex"} flexDirection={"column"} width={"100%"}>
+			<Box alignItems='center' justifyContent='space-between'>
+				<Typography fontSize='1.9rem' fontWeight={700}>
+					Sign up as an Agent
+				</Typography>
+				<Typography
+					fontWeight={500}
+					marginBottom={4}
+					color='rgba(0, 0, 0, 0.6)'>
+					Agreement
+				</Typography>
+			</Box>
+			<Box paddingBottom={"60px"}>
+				{tncData ? (
+					<>
+						<div
+							id='tnc'
+							style={{
+								borderRadius: "10px",
+								alignItems: "center",
+								display: "flex",
+								marginTop: "12px",
+								padding: "40px",
+								background: "#FFFFFF",
+							}}>
+							{tncData && (
+								<div
+									className={styles.scrollView}
+									dangerouslySetInnerHTML={{
+										__html: tncData,
+									}}
+								/>
+							)}
+						</div>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-between",
+								marginTop: "20px",
+							}}>
+							<div style={{ display: "flex" }}>
+								<FormControlLabel
+									control={
+										<Switch
+											onChange={(event, checked) => setIsChecked(checked)}
+										/>
+									}
+									label='I agree to T&C, Privacy and Cookies Policy'
+								/>
+							</div>
 
-    if (isLoading) return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "16%" }} >
-        <img
-            src={gif}
-            alt=''
-            style={{
-                height: "23%",
-                width: "23%",
-                objectFit: "contain",
-                objectPosition: "center",
-            }}
-        />
-    </div>
+							<div style={{ display: "flex", columnGap: "10px" }}>
+								<Button
+									variant='contained'
+									size='small'
+									type='submit'
+									sx={{
+										textTransform: "none",
+										bgcolor: "#fff !important",
+										padding: "14px 24px",
+										color: "#000",
+									}}
+									onClick={() => {}}>
+									Go Back
+								</Button>
+								<Button
+									variant='contained'
+									size='small'
+									type='submit'
+									sx={{
+										textTransform: "none",
+										bgcolor: "#f37b21 !important",
+										padding: "14px 24px",
+										color: "white",
+									}}
+									onClick={() => {
+										//console.log("clicked");
+										isChecked && handleSignUp();
+										isChecked && printDocument();
+										isChecked && localStorage.setItem("docUploaded", true);
+										// dispatch(setLoader(true));
+										// setTimeout(() =>{
+										//     dispatch(setLoader(false));
+										//     history.push("/auth/login")
+										// },1000)
+									}}>
+									Save & Continue
+								</Button>
+							</div>
+						</div>
 
-    return (
-        <div>
-            {tncData ? <>  <Box >
-                <Typography fontSize='1.9rem' fontWeight={700}>
-                    Agreement
-                </Typography>
-                <Typography fontSize='0.8rem' fontWeight={300} marginTop={2}>
-                    Read terms and conditions
-                </Typography>
-            </Box>
-                <div id="tnc" style={{ width: "922px", borderRadius: "10px", alignItems: "center", display: "flex", marginTop: "12px", padding: "15px", background: "#F5F5F5", }} >
-                    {tncData && <div className={styles.scrollView} dangerouslySetInnerHTML={{
-                        __html: tncData
-                    }} />}
-                </div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "20px" }}>
-
-                    <div style={{ display: "flex" }} >
-                        <Checkbox onChange={() => setIsChecked(!isChecked)} />
-                        <p style={{ marginTop: "12px" }}>I have read and agree to the  <span style={{ color: "#2424ff" }}>Terms and Condition and the privacy and cookie policy*</span></p>
-                    </div>
-
-                    <div style={{ display: "flex", columnGap: "10px" }} >
-                        <button
-                            // disabled={isChecked}
-                            size='small'
-                            style={{ backgroundColor: "#F37B21", border: "0px", textTransform: "none", borderRadius: "99px", width: "100px", color: isChecked ? "#FFF" : "gray", paddingBlock: "8px", cursor: "pointer" }}
-                            onClick={() => {
-                                //console.log("clicked");
-                                isChecked && handleSignUp()
-                                isChecked && printDocument();
-                                isChecked && localStorage.setItem("docUploaded", true);
-                                // dispatch(setLoader(true));
-                                // setTimeout(() =>{
-                                //     dispatch(setLoader(false));
-                                //     history.push("/auth/login")
-                                // },1000)
-                            }}
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </div>
-
-                {isChecked && <p style={{ fontSize: '12px', color: "#727272", marginTop: '6px', fontWeight: "400", marginLeft: '20px' }}>This agreement has been signed on {getCurrentTime()} at IP:  {ip}, Logitude: {longitude} , Latitude: {latitude}</p>}
-            </> : <div style={{ width: "922px", display: "flex", justifyContent: "center", alignItems: "center", }}> <CircularProgress /></div>}
-
-        </div>
-    );
+						{isChecked && (
+							<p
+								style={{
+									fontSize: "12px",
+									color: "#727272",
+									marginTop: "6px",
+									fontWeight: "400",
+								}}>
+								This agreement has been signed on {getCurrentTime()} at IP: {ip}
+								{longitude
+									? `
+								, Logtitude: ${longitude}`
+									: ""}
+								{latitude ? ` ,Logtitude: ${latitude}` : ""}.
+							</p>
+						)}
+					</>
+				) : (
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+						}}>
+						{" "}
+						<CircularProgress />
+					</div>
+				)}
+			</Box>
+		</Box>
+	);
 };
 
 export default Step4;
-
 
 const tncff = ` This Contractual Agreement is enacted with the primary objective of formalizing a collaborative partnership between Uniexperts and the Service Provider. The Service Provider shall function as an intermediary service facilitator, establishing a bridge between Uniexperts and Prospective Students across the global spectrum. The overarching purpose of this partnership is to enable Uniexperts to extend its outreach and establish connections with an extensive array of universities and educational institutions. It is to be noted that the Service Provider does not possess direct contractual affiliations with educational institutions on a global scale. By harnessing the intermediary capabilities of the Service Provider, Uniexperts aspires to amplify the scope and quality of its offerings. The ultimate goal is to enhance educational accessibility and opportunities on an international scale, thereby fostering mutually beneficial outcomes for the students, partner universities, the Service Provider, and Uniexperts.
 ARTICLE 1. SCOPE OF SERVICES

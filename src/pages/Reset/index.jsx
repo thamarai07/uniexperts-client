@@ -1,9 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
 import { resetPassword } from "apis/auth";
-import uniexperts_logo from "assets/uniexperts_logo.svg";
 import FieldInput from "components/FieldInput";
 import Loader from "components/Loader";
 import { Form, Formik } from "formik";
+import { AuthLayout } from "pages/Layouts/AuthLayout";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -30,85 +30,97 @@ const Reset = ({ location = {}, history }) => {
 	}, []);
 
 	const onSubmit = values => {
-		setIsLoading(true)
-		resetPassword({ email, password: values?.password }).then(userDetails => {
-			toast.success("Password reset Successful");
-			dispatch(setUser(userDetails));
-			history.push(RouteNames.dashboard);
-		}).finally(() => setIsLoading(false));
+		setIsLoading(true);
+		resetPassword({ email, password: values?.password })
+			.then(userDetails => {
+				toast.success("Password reset Successful");
+				dispatch(setUser(userDetails));
+				history.push(RouteNames.dashboard);
+			})
+			.finally(() => setIsLoading(false));
 	};
 
-
-	if (isLoading) return <Loader />
+	if (isLoading) return <Loader />;
 
 	return (
-		<Box
-			bgcolor='#fff'
-			minHeight='100vh'
-			display='flex'
-			alignItems={{ xs: "unset", sm: "center" }}
-			justifyContent='center'>
+		<AuthLayout>
 			<Box
-				bgcolor='#fbfbfb'
-				p='1rem 1.25rem'
-				borderRadius='0.625rem'
-				flexGrow={{ xs: 1, sm: "unset" }}
-				minWidth='40vw'
+				minHeight='calc(100vh - 72px)'
 				display='flex'
-				flexDirection='column'
-				gap='2rem'>
-				<Box display='flex' alignItems='center' justifyContent='space-between'>
-					<Typography fontSize='1.2rem' fontWeight={500} color='#f37b21'>
-						Reset Password
-					</Typography>
-
-					<img src={uniexperts_logo} alt='' />
-				</Box>
-
-				<Formik
-					initialValues={initialValues}
-					validationSchema={resetValidation}
-					onSubmit={onSubmit}>
-					<Form>
-						<Box display='flex' flexDirection='column' gap='1rem'>
-							<FieldInput
-								name='password'
-								type='password'
-								placeholder='Enter your password here'
-							/>
-
-							<FieldInput
-								name='confirmPassword'
-								type='password'
-								placeholder='Re-enter your password here'
-							/>
-
-							<Typography
-								fontSize='0.75rem'
-								sx={{ opacity: "0.6", maxWidth: "35rem" }}>
-								Passwords must contain 8 characters, including an uppercase
-								letter, a lowercase letter, a number, and a special case
-								character
+				alignItems={"start"}
+				justifyContent={"center"}
+				maxWidth={"100vw"}
+				marginInline='auto'
+				bgcolor={"#F0F1F5"}>
+				<Box p='3.75rem'>
+					<Box
+						borderRadius='0.625rem'
+						minWidth='50vw'
+						display='flex'
+						flexDirection='column'
+						height={"100%"}>
+						<Box
+							display='flex'
+							alignItems='center'
+							justifyContent='space-between'>
+							<Typography fontSize='1.75rem' fontWeight={500}>
+								Reset Password
 							</Typography>
-
-							<Box display='flex' justifyContent='end' mt='1rem' >
-								<Button
-									variant='contained'
-									size='small'
-									type='submit'
-									sx={{
-										textTransform: "none",
-										bgcolor: "#f37b21 !important",
-										borderRadius: 99
-									}}>
-									Save
-								</Button>
-							</Box>
 						</Box>
-					</Form>
-				</Formik>
+
+						<Formik
+							initialValues={initialValues}
+							validationSchema={resetValidation}
+							onSubmit={onSubmit}>
+							<Form>
+								<Box
+									bgcolor='#fbfbfb'
+									p='2.5rem'
+									borderRadius='10px'
+									marginTop={"2.75rem"}>
+									<Box display='flex' flexDirection='column' gap='1rem'>
+										<FieldInput
+											name='password'
+											type='password'
+											placeholder='Enter Password'
+											size='large'
+										/>
+
+										<FieldInput
+											name='confirmPassword'
+											type='password'
+											placeholder='Confirm Password'
+											size='large'
+										/>
+
+										<Typography
+											fontSize='0.75rem'
+											sx={{ opacity: "0.6", maxWidth: "35rem" }}>
+											Passwords must contain 8 characters, including an
+											uppercase letter, a lowercase letter, a number, and a
+											special case character
+										</Typography>
+									</Box>
+								</Box>
+								<Box display='flex' justifyContent='end' mt='2.75rem'>
+									<Button
+										variant='contained'
+										size='small'
+										type='submit'
+										sx={{
+											textTransform: "none",
+											bgcolor: "#f37b21 !important",
+											padding: "14px 24px",
+										}}>
+										Reset Password
+									</Button>
+								</Box>
+							</Form>
+						</Formik>
+					</Box>
+				</Box>
 			</Box>
-		</Box>
+		</AuthLayout>
 	);
 };
 
