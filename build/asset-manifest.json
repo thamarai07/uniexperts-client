@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.4b0230ea.css",
-    "main.js": "/static/js/main.c5979efd.js",
-    "static/js/703.c44d63d3.chunk.js": "/static/js/703.c44d63d3.chunk.js",
-    "static/js/513.159840bb.chunk.js": "/static/js/513.159840bb.chunk.js",
+    "main.css": "/static/css/main.d468aaf2.css",
+    "main.js": "/static/js/main.556794d8.js",
     "static/media/loader.gif": "/static/media/loader.1e6617e85829c24ca65d.gif",
     "static/media/agreement.pdf": "/static/media/agreement.124c7186ebfd415dd09f.pdf",
     "static/media/uniexperts_logo.svg": "/static/media/uniexperts_logo.516e4be10f167c32a62fbf30dd5e0dc8.svg",
     "static/media/student.svg": "/static/media/student.49c3a6c7cda262d8dec6a18ed1465b95.svg",
+    "static/media/question.svg": "/static/media/question.513fc17915809dc114f181dc29e84201.svg",
+    "static/media/uniexperts-small.svg": "/static/media/uniexperts-small.065eead3727c7cc9850b8f6cf62d69b7.svg",
     "static/media/home.svg": "/static/media/home.27e4fe646f0e0b5552e9943d67f1b9df.svg",
     "static/media/school.svg": "/static/media/school.494e27f8a75df3d8cf50b63c390a2d25.svg",
     "static/media/interview.svg": "/static/media/interview.22fc9ed1b64f70e1023c52febf397b78.svg",
@@ -16,13 +16,11 @@
     "index.html": "/index.html",
     "static/media/application.svg": "/static/media/application.4bb11d122aef24b4c6724ef86a4a230c.svg",
     "static/media/report.svg": "/static/media/report.2624bfbd7183fb86a588ae285cb8e730.svg",
-    "main.4b0230ea.css.map": "/static/css/main.4b0230ea.css.map",
-    "main.c5979efd.js.map": "/static/js/main.c5979efd.js.map",
-    "703.c44d63d3.chunk.js.map": "/static/js/703.c44d63d3.chunk.js.map",
-    "513.159840bb.chunk.js.map": "/static/js/513.159840bb.chunk.js.map"
+    "main.d468aaf2.css.map": "/static/css/main.d468aaf2.css.map",
+    "main.556794d8.js.map": "/static/js/main.556794d8.js.map"
   },
   "entrypoints": [
-    "static/css/main.4b0230ea.css",
-    "static/js/main.c5979efd.js"
+    "static/css/main.d468aaf2.css",
+    "static/js/main.556794d8.js"
   ]
 }
