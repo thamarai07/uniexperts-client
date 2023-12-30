@@ -1,25 +1,37 @@
-import { Button, Grid, MenuItem, Typography, Select, InputLabel, FormControl, Checkbox } from "@mui/material";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+	Button,
+	Checkbox,
+	FormControl,
+	Grid,
+	InputLabel,
+	MenuItem,
+	Select,
+	Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
-import { config, signup, verifyEmail } from "apis/auth";
+import { config, signup } from "apis/auth";
+import axios from "axios";
 import FieldInput from "components/FieldInput";
 import { Field, Form, Formik } from "formik";
 import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { allTimezones, useTimezoneSelect } from "react-timezone-select";
 import { phoneRegExp } from "utils/validations";
-import TimezoneSelect, { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import * as Yup from "yup";
-import { setLoader } from "store";
-import { useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import style from "./style.module.scss"
+import style from "./style.module.scss";
 
-import countryCodes from 'country-codes-list';
 import Loader from "components/Loader";
-const codesObject = countryCodes.customList('countryCode', '+{countryCallingCode}')
+import countryCodes from "country-codes-list";
+const codesObject = countryCodes.customList(
+	"countryCode",
+	"+{countryCallingCode}"
+);
 
-const myCountryCodesObject = Object.keys(codesObject).map((code) => codesObject[code]);
+const myCountryCodesObject = Object.keys(codesObject).map(
+	code => codesObject[code]
+);
 
 const countryCodesArr = removeDuplicates(myCountryCodesObject);
 
@@ -40,20 +52,25 @@ const useStyles = makeStyles({
 });
 
 const Step1 = ({ data, setData, nextStep }) => {
-
 	// http://52.66.213.63:4433/api/auth/config?country=India
 	const classes = useStyles();
 	const { app: { countries = [], timezone = [] } = {} } = useSelector(
 		state => state
 	);
 	const dispatch = useDispatch();
-	const labelStyle = 'original'
+	const labelStyle = "original";
 	const timezones = {
 		...allTimezones,
 		"America/Lima": "Pittsburgh",
-		"Europe/Berlin": "Frankfurt"
-	}
-	const enityTypeOption = ["Private", "Partnership", "Trust", "Proprietor", "Individual"];
+		"Europe/Berlin": "Frankfurt",
+	};
+	const enityTypeOption = [
+		"Private",
+		"Partnership",
+		"Trust",
+		"Proprietor",
+		"Individual",
+	];
 	const countryList = [
 		"Afghanistan",
 		"Albania",
@@ -249,66 +266,244 @@ const Step1 = ({ data, setData, nextStep }) => {
 		"Vietnam",
 		"Yemen",
 		"Zambia",
-		"Zimbabwe"
+		"Zimbabwe",
 	];
 	const countryDialingCodes = [
-		"+93", "+355", "+213", "+376", "+244", "+1", "+54", "+374", "+61", "+43",
-		"+994", "+1", "+973", "+880", "+1", "+375", "+32", "+501", "+229", "+975",
-		"+591", "+387", "+267", "+55", "+673", "+359", "+226", "+257", "+225",
-		"+238", "+855", "+237", "+1", "+236", "+235", "+56", "+86", "+57", "+269",
-		"+242", "+506", "+385", "+53", "+357", "+420", "+243", "+45", "+253", "+1",
-		"+1", "+593", "+20", "+503", "+240", "+291", "+372", "+268", "+251", "+679",
-		"+358", "+33", "+241", "+220", "+995", "+49", "+233", "+30", "+1", "+502",
-		"+224", "+245", "+592", "+509", "+379", "+504", "+36", "+354", "+91", "+62",
-		"+98", "+964", "+353", "+972", "+39", "+1", "+81", "+962", "+7", "+254",
-		"+686", "+965", "+996", "+856", "+371", "+961", "+266", "+231", "+218",
-		"+423", "+370", "+352", "+261", "+265", "+60", "+960", "+223", "+356",
-		"+692", "+222", "+230", "+52", "+691", "+373", "+377", "+976", "+382",
-		"+212", "+258", "+95", "+264", "+674", "+977", "+31", "+64", "+505", "+227",
-		"+234", "+850", "+389", "+47", "+968", "+92", "+680", "+970", "+507", "+675",
-		"+595", "+51", "+63", "+48", "+351", "+974", "+40", "+7", "+250", "+1", "+1",
-		"+1", "+685", "+378", "+239", "+966", "+221", "+381", "+248", "+232", "+65",
-		"+421", "+386", "+677", "+252", "+27", "+82", "+211", "+34", "+94", "+249",
-		"+597", "+268", "+46", "+41", "+963", "+992", "+255", "+66", "+670", "+228",
-		"+676", "+1", "+216", "+90", "+993", "+688", "+256", "+380", "+971", "+44",
-		"+1", "+598", "+998", "+678", "+58", "+84", "+967", "+260", "+263"
+		"+93",
+		"+355",
+		"+213",
+		"+376",
+		"+244",
+		"+1",
+		"+54",
+		"+374",
+		"+61",
+		"+43",
+		"+994",
+		"+1",
+		"+973",
+		"+880",
+		"+1",
+		"+375",
+		"+32",
+		"+501",
+		"+229",
+		"+975",
+		"+591",
+		"+387",
+		"+267",
+		"+55",
+		"+673",
+		"+359",
+		"+226",
+		"+257",
+		"+225",
+		"+238",
+		"+855",
+		"+237",
+		"+1",
+		"+236",
+		"+235",
+		"+56",
+		"+86",
+		"+57",
+		"+269",
+		"+242",
+		"+506",
+		"+385",
+		"+53",
+		"+357",
+		"+420",
+		"+243",
+		"+45",
+		"+253",
+		"+1",
+		"+1",
+		"+593",
+		"+20",
+		"+503",
+		"+240",
+		"+291",
+		"+372",
+		"+268",
+		"+251",
+		"+679",
+		"+358",
+		"+33",
+		"+241",
+		"+220",
+		"+995",
+		"+49",
+		"+233",
+		"+30",
+		"+1",
+		"+502",
+		"+224",
+		"+245",
+		"+592",
+		"+509",
+		"+379",
+		"+504",
+		"+36",
+		"+354",
+		"+91",
+		"+62",
+		"+98",
+		"+964",
+		"+353",
+		"+972",
+		"+39",
+		"+1",
+		"+81",
+		"+962",
+		"+7",
+		"+254",
+		"+686",
+		"+965",
+		"+996",
+		"+856",
+		"+371",
+		"+961",
+		"+266",
+		"+231",
+		"+218",
+		"+423",
+		"+370",
+		"+352",
+		"+261",
+		"+265",
+		"+60",
+		"+960",
+		"+223",
+		"+356",
+		"+692",
+		"+222",
+		"+230",
+		"+52",
+		"+691",
+		"+373",
+		"+377",
+		"+976",
+		"+382",
+		"+212",
+		"+258",
+		"+95",
+		"+264",
+		"+674",
+		"+977",
+		"+31",
+		"+64",
+		"+505",
+		"+227",
+		"+234",
+		"+850",
+		"+389",
+		"+47",
+		"+968",
+		"+92",
+		"+680",
+		"+970",
+		"+507",
+		"+675",
+		"+595",
+		"+51",
+		"+63",
+		"+48",
+		"+351",
+		"+974",
+		"+40",
+		"+7",
+		"+250",
+		"+1",
+		"+1",
+		"+1",
+		"+685",
+		"+378",
+		"+239",
+		"+966",
+		"+221",
+		"+381",
+		"+248",
+		"+232",
+		"+65",
+		"+421",
+		"+386",
+		"+677",
+		"+252",
+		"+27",
+		"+82",
+		"+211",
+		"+34",
+		"+94",
+		"+249",
+		"+597",
+		"+268",
+		"+46",
+		"+41",
+		"+963",
+		"+992",
+		"+255",
+		"+66",
+		"+670",
+		"+228",
+		"+676",
+		"+1",
+		"+216",
+		"+90",
+		"+993",
+		"+688",
+		"+256",
+		"+380",
+		"+971",
+		"+44",
+		"+1",
+		"+598",
+		"+998",
+		"+678",
+		"+58",
+		"+84",
+		"+967",
+		"+260",
+		"+263",
 	];
 
-
-	const { options, parseTimezone } = useTimezoneSelect({ labelStyle, timezones })
+	const { options, parseTimezone } = useTimezoneSelect({
+		labelStyle,
+		timezones,
+	});
 
 	const [bankField, setBankField] = useState({});
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [entityTypeValue, setEntityTypeValue] = useState("");
 	const [country, setCountry] = useState("");
 	const [countryDialingCode, setCountryDialingCode] = useState("");
-	const [selectedTimezone, setSelectedTimezone] = useState("")
+	const [selectedTimezone, setSelectedTimezone] = useState("");
 
-	const [email, setEmail] = useState('');
-	const [firstName, setFirstName] = useState('');
-	const [jobTitle, setJobTitle] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [phone, setPhone] = useState('');
+	const [email, setEmail] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [jobTitle, setJobTitle] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [phone, setPhone] = useState("");
 
 	// Separate state variables for the second set of fields
-	const [companyName, setCompanyName] = useState('');
-	const [employeeCount, setEmployeeCount] = useState('');
-	const [entityRegistrationNumber, setEntityRegistrationNumber] = useState('');
-	const [entityType, setEntityType] = useState('');
-	const [studentPerYear, setStudentPerYear] = useState('');
-	const [taxNumber, setTaxNumber] = useState('');
-	const [yearFounded, setYearFounded] = useState('');
-	const [accountNumber, setAccountNumber] = useState('');
-	const [bankName, setBankName] = useState('');
-	const [confirmNumber, setConfirmNumber] = useState('');
-	const [extraFieldValue, setExtraFieldValue] = useState('');
-	const [name, setName] = useState('');
-	const [swiftCode, setSwiftCode] = useState('');
-	const [address, setAddress] = useState('');
-	const [city, setCity] = useState('');
-	const [state, setState] = useState('');
-	const [zipCode, setZipCode] = useState('');
-	const [adddressCountry, setAddressCountry] = useState('');
+	const [companyName, setCompanyName] = useState("");
+	const [employeeCount, setEmployeeCount] = useState("");
+	const [entityRegistrationNumber, setEntityRegistrationNumber] = useState("");
+	const [entityType, setEntityType] = useState("");
+	const [studentPerYear, setStudentPerYear] = useState("");
+	const [taxNumber, setTaxNumber] = useState("");
+	const [yearFounded, setYearFounded] = useState("");
+	const [accountNumber, setAccountNumber] = useState("");
+	const [bankName, setBankName] = useState("");
+	const [confirmNumber, setConfirmNumber] = useState("");
+	const [extraFieldValue, setExtraFieldValue] = useState("");
+	const [name, setName] = useState("");
+	const [swiftCode, setSwiftCode] = useState("");
+	const [address, setAddress] = useState("");
+	const [city, setCity] = useState("");
+	const [state, setState] = useState("");
+	const [zipCode, setZipCode] = useState("");
+	const [adddressCountry, setAddressCountry] = useState("");
 	const [bankFields, setBankFields] = useState();
 
 	const [showLoader, setShowLoader] = useState(false);
@@ -325,8 +520,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 	const [password, setPassword] = useState();
 	const [confPassword, setConfPassword] = useState();
 
-
-	const calculateConditions = (password) => {
+	const calculateConditions = password => {
 		setConditions({
 			condition1: password.length >= 12,
 			condition2: /[!@#$%^&*]/.test(password),
@@ -335,27 +529,32 @@ const Step1 = ({ data, setData, nextStep }) => {
 		});
 	};
 
-
-	const validatePassword = (password) => {
-		return password.length >= 12 && /[!@#$%^&*]/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])/.test(password) && /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password);
+	const validatePassword = password => {
+		return (
+			password.length >= 12 &&
+			/[!@#$%^&*]/.test(password) &&
+			/^(?=.*[a-z])(?=.*[A-Z])/.test(password) &&
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password)
+		);
 	};
-
 
 	useEffect(() => {
 		if (country) {
 			loadField();
 		}
-	}, [country])
+	}, [country]);
 
 	const loadField = async () => {
 		try {
-			const response = await axios.get(`http://52.66.213.63:4433/api/auth/config?country=${country}`)
+			const response = await axios.get(
+				`http://52.66.213.63:4433/api/auth/config?country=${country}`
+			);
 			setBankField(response.data.data.bankFields);
-			console.log("Res: ", response)
+			console.log("Res: ", response);
 		} catch (err) {
-			console.error(err)
+			console.error(err);
 		}
-	}
+	};
 
 	const [errors, setErrors] = useState();
 
@@ -430,7 +629,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 		}),
 	});
 
-
 	const initialValues = {
 		personalDetails: {
 			firstName: "",
@@ -439,7 +637,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			countryCode: countryDialingCode,
 			phone: "",
 			jobTitle: "",
-			timezone: ""
+			timezone: "",
 		},
 
 		company: {
@@ -450,7 +648,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			entityType: entityTypeValue,
 			taxNumber: "",
 			country: country,
-			entityRegistrationNumber: ""
+			entityRegistrationNumber: "",
 		},
 
 		address: {
@@ -467,34 +665,34 @@ const Step1 = ({ data, setData, nextStep }) => {
 			accountNumber: "",
 			confirmNumber: "",
 			swiftCode: "",
-			extraFieldValue: ""
+			extraFieldValue: "",
 		},
 	};
-	const validateForm = (values) => {
+	const validateForm = values => {
 		const errors = {};
 		// Check if all fields are required
 		//values.address.country == 'India' ? delete values.bank.swiftCode : delete values.bank.extraFieldValue
-		const pd = { ...values.personalDetails }
+		const pd = { ...values.personalDetails };
 
-		Object.keys(pd).forEach((key) => {
+		Object.keys(pd).forEach(key => {
 			if (!pd[key]) {
 				errors[key] = `${_.startCase(key)} is required`;
 			}
 		});
 
-		Object.keys(values.company).forEach((key) => {
+		Object.keys(values.company).forEach(key => {
 			if (!values.company[key]) {
 				errors[key] = `${_.startCase(key)} is required`;
 			}
 		});
 
-		Object.keys(values.address).forEach((key) => {
+		Object.keys(values.address).forEach(key => {
 			if (!values.address[key]) {
 				errors[key] = `${_.startCase(key)} is required`;
 			}
 		});
 
-		Object.keys(values.bank).forEach((key) => {
+		Object.keys(values.bank).forEach(key => {
 			if (!values.bank[key]) {
 				errors[key] = `${_.startCase(key)} is required`;
 			}
@@ -502,7 +700,11 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 		// Check if email is valid
 		if (values.personalDetails.email) {
-			if (!/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(values.personalDetails.email)) {
+			if (
+				!/^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+					values.personalDetails.email
+				)
+			) {
 				errors.email = "Please enter a valid email address";
 			}
 		}
@@ -532,7 +734,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 		}
 		// check if bank account number matches
 		if (values.bank.accountNumber !== values.bank.confirmNumber) {
-			errors.confirmNumber = "Account number and confirm number must be similar";
+			errors.confirmNumber =
+				"Account number and confirm number must be similar";
 		}
 		// check if zip code matches
 		if (values.address.zipCode) {
@@ -549,7 +752,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 			setConfirmpasswordError("Password and confirm password are not same");
 			errors.confPassword = `Password and confirm password are not same`;
 		}
-	
+
 		if (password && !validatePassword(password)) {
 			errors.password = `Password must have a mix of capital small, numeric and special characters`;
 		}
@@ -563,7 +766,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 	// 		setExtraFieldValue("HDFC0000128");
 	// 	}
 	// }, [adddressCountry])
-
 
 	// useEffect(()=> {
 	// 	if(email){
@@ -612,7 +814,6 @@ const Step1 = ({ data, setData, nextStep }) => {
 	// },[email])
 
 	const onSubmit = values => {
-
 		const countryCode = values?.personalDetails?.countryCode
 			?.split("(")[1]
 			?.split(")")[0];
@@ -625,7 +826,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				countryCode: countryDialingCode,
 				phone,
 				jobTitle,
-				timezone
+				timezone,
 			},
 
 			company: {
@@ -636,7 +837,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 				entityType: entityTypeValue,
 				taxNumber,
 				country: country,
-				entityRegistrationNumber
+				entityRegistrationNumber,
 			},
 
 			address: {
@@ -653,11 +854,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 				accountNumber,
 				confirmNumber,
 				swiftCode,
-				extraFieldValue
+				extraFieldValue,
 			},
-			password
+			password,
 		};
-
 
 		if (_.isEmpty(validateForm(dataValues))) {
 			setShowLoader(true);
@@ -670,7 +870,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 					timezone: {
 						time_zone: "sunt",
 						utc_offset: "est ea Lorem",
-						name: "ut"
+						name: "ut",
 					},
 				},
 				bank: {
@@ -678,34 +878,35 @@ const Step1 = ({ data, setData, nextStep }) => {
 					bankName: dataValues?.bank?.bankName,
 					accountNumber: dataValues?.bank?.accountNumber,
 					confirmNumber: dataValues?.bank?.confirmNumber,
-				}
+				},
 			};
 			let extraField = {
-				"key": bankField.key,
-				"value": bankField.value,
-				"data": extraFieldValue
-			}
+				key: bankField.key,
+				value: bankField.value,
+				data: extraFieldValue,
+			};
 			let swiftCode = dataValues?.bank?.swiftCode;
 			//dataValues?.address?.country == "India" ? requestData.bank.extraField = extraField :
-			requestData.bank.swiftCode = swiftCode
+			requestData.bank.swiftCode = swiftCode;
 			setData(requestData);
 
 			const reqData = { ...data, password: values.password };
-			signup(requestData).then(res => {
-				nextStep();
-				setShowLoader(false);
-				localStorage.setItem("docUploaded", false);
-
-			}).catch(()=> setShowLoader(false))
+			signup(requestData)
+				.then(res => {
+					nextStep();
+					setShowLoader(false);
+					localStorage.setItem("docUploaded", false);
+				})
+				.catch(() => setShowLoader(false));
 		}
 	};
 
 	if (showLoader) {
-		return <Loader />
+		return <Loader />;
 	}
 
 	return (
-		<Box width={{ xs: "unset", sm: "60vw", overflowY: "auto", }} maxHeight='80vh' >
+		<Box marginBottom={"60px"}>
 			<Formik
 				enableReinitialize
 				initialValues={initialValues}
@@ -714,36 +915,45 @@ const Step1 = ({ data, setData, nextStep }) => {
 				innerRef={form}>
 				<Form>
 					<Box display='flex' flexDirection='column' gap='1rem'>
-						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
-							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
+						<Box bgcolor='#FBFBFB' p='2.5rem' pb='4rem' borderRadius='0.625rem'>
+							<Typography fontSize='1.2rem' fontWeight={600} color='#2A2A2A'>
 								Personal Details
 							</Typography>
+							<Typography
+								fontSize='14px'
+								fontWeight={400}
+								color='rgba(0, 0, 0, 0.6)'>
+								Details of the individual
+							</Typography>
 
-							<Grid container spacing={1} mt={0}>
+							<Grid container spacing={2} rowGap={"24px"} mt={"6px"}>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='personalDetails.firstName'
 										label='First Name'
 										error={Boolean(errors?.firstName)}
 										helperText={errors?.firstName}
 										value={firstName}
-										onChange={(e) => setFirstName(e.target.value)}
+										onChange={e => setFirstName(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='personalDetails.lastName'
 										label='Last Name'
 										error={Boolean(errors?.lastName)}
 										helperText={errors?.lastName}
 										value={lastName}
-										onChange={(e) => setLastName(e.target.value)}
+										onChange={e => setLastName(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='personalDetails.email'
 										label='Work Email'
 										type='email'
@@ -771,43 +981,65 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
-
 									<Field name='personalDetails.countryCode'>
 										{props => {
 											const { field, meta } = props || {};
 											return (
-												<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-													<FormControl sx={{ width: "90px", marginBottom: Boolean(errors?.phone) ? "24px" : 0 }}>
-														<InputLabel sx={{ mt: countryDialingCode ? 0.45 : -1, bgcolor: "#f5f5f5", paddingInline: "2px", fontSize: "0.825rem" }} id="entity-label">Country Code</InputLabel>
+												<Box
+													style={{
+														display: "flex",
+														justifyContent: "center",
+														alignItems: "center",
+														gap: "8px",
+													}}>
+													<FormControl
+														sx={{
+															width: "150px",
+															height: "52px",
+															marginBottom: !errors?.phone ? "0" : "24px",
+														}}>
+														<InputLabel
+															sx={{
+																paddingInline: "2px",
+																fontSize: "0.825rem",
+															}}
+															id='entity-label'>
+															Country
+														</InputLabel>
 														<Select
-															sx={{ width: "90px", height: "36px", fontSize: "0.825rem" }}
+															sx={{
+																height: "52px",
+																fontSize: "0.825rem",
+															}}
 															name='company.countryCode'
-															labelId="entity-label"
-															label="Code"
+															labelId='entity-label'
+															label='Code'
 															error={Boolean(errors?.countryCode)}
 															helperText={errors?.countryCode}
-															size="small"
+															size='large'
 															value={countryDialingCode ?? null}
-															onChange={(e) => setCountryDialingCode(e.target.value)}
-														>
-															{countryCodesArr.map(code =>
-																<MenuItem value={code} >{code}</MenuItem>
-															)}
+															onChange={e =>
+																setCountryDialingCode(e.target.value)
+															}>
+															{countryCodesArr.map((code, index) => (
+																<MenuItem value={code} key={index}>
+																	{code}
+																</MenuItem>
+															))}
 														</Select>
 													</FormControl>
 
-
 													<FieldInput
+														size='large'
 														name='personalDetails.phone'
 														label='Contact Number'
 														type='number'
 														error={Boolean(errors?.phone)}
-														style={{ marginLeft: "23px" }}
 														helperText={errors?.phone}
 														value={phone}
-														onChange={(e) => setPhone(e.target.value)}
+														onChange={e => setPhone(e.target.value)}
 													/>
-												</div>
+												</Box>
 											);
 										}}
 									</Field>
@@ -815,110 +1047,137 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='personalDetails.jobTitle'
 										label='Job Title'
 										error={Boolean(errors?.jobTitle)}
 										helperText={errors?.jobTitle}
 										value={jobTitle}
-										onChange={(e) => setJobTitle(e.target.value)}
+										onChange={e => setJobTitle(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: selectedTimezone ? 0.45 : -0.9, fontSize: "14px", bgcolor: "#FBFBFB", paddingInline: "6px" }} id="entity-label">Time Zone</InputLabel>
+										<InputLabel
+											sx={{
+												fontSize: "14px",
+												paddingInline: "6px",
+											}}
+											id='entity-label'>
+											Time Zone
+										</InputLabel>
 										<Select
-											size="small"
-											sx={{ height: "36px", fontSize: "0.825rem" }}
+											size='small'
+											sx={{ height: "52px", fontSize: "0.825rem" }}
 											onChange={e => setSelectedTimezone(e.target.value)}
 											value={selectedTimezone ?? null}
 											error={Boolean(errors?.timezone)}
-											helperText={errors?.timezone}
-										>
-											{options.map(option => (
-												<MenuItem value={option.value}>{option.label}</MenuItem>
+											helperText={errors?.timezone}>
+											{options.map((option, index) => (
+												<MenuItem value={option.value} key={index}>
+													{option.label}
+												</MenuItem>
 											))}
 										</Select>
 									</FormControl>
-
 								</Grid>
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
-							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
+						<Box bgcolor='#FBFBFB' p='2.5rem' pb='4rem' borderRadius='0.625rem'>
+							<Typography fontSize='1.2rem' fontWeight={600} color='#2A2A2A'>
 								Company Details
 							</Typography>
+							<Typography
+								fontSize='14px'
+								fontWeight={400}
+								color='rgba(0, 0, 0, 0.6)'>
+								Details of the registered company
+							</Typography>
 
-							<Grid container spacing={1} mt={0}>
+							<Grid container spacing={2} rowGap={"24px"} mt={"6px"}>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='company.companyName'
 										label='Company Name'
 										error={Boolean(errors?.companyName)}
 										helperText={errors?.companyName}
 										value={companyName}
-										onChange={(e) => setCompanyName(e.target.value)}
+										onChange={e => setCompanyName(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										type='number'
 										name='company.yearFounded'
 										label='Year Founded'
 										error={Boolean(errors?.yearFounded)}
 										helperText={errors?.yearFounded}
 										value={yearFounded}
-										onChange={(e) => setYearFounded(e.target.value)}
+										onChange={e => setYearFounded(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										type='number'
 										name='company.employeeCount'
 										label='Employee Count'
 										error={Boolean(errors?.employeeCount)}
 										helperText={errors?.employeeCount}
 										value={employeeCount}
-										onChange={(e) => setEmployeeCount(e.target.value)}
+										onChange={e => setEmployeeCount(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										type='number'
 										name='company.studentPerYear'
 										label='Students per Year'
 										error={Boolean(errors?.studentPerYear)}
 										helperText={errors?.studentPerYear}
 										value={studentPerYear}
-										onChange={(e) => setStudentPerYear(e.target.value)}
+										onChange={e => setStudentPerYear(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: entityTypeValue ? 0.45 : -1, bgcolor: "#FBFBFB", paddingInline: "2px", fontSize: "14px" }} id="entity-label">Entity Type</InputLabel>
+										<InputLabel
+											sx={{
+												paddingInline: "2px",
+												fontSize: "14px",
+											}}
+											id='entity-label'>
+											Entity Type
+										</InputLabel>
 										<Select
-											sx={{ height: "36px", fontSize: "0.825rem" }}
+											sx={{ height: "52px", fontSize: "0.825rem" }}
 											name='company.entityType'
-											labelId="entity-label"
-											label="Entity Type"
+											labelId='entity-label'
+											label='Entity Type'
 											error={Boolean(errors?.entityType)}
 											helperText={errors?.entityType}
 											fullWidth
-											size="small"
+											size='small'
 											value={entityTypeValue ?? null}
-											onChange={(e) => setEntityTypeValue(e.target.value)}
-										>
-											{enityTypeOption.map(entityType =>
-												<MenuItem value={entityType} >{entityType}</MenuItem>
-											)}
+											onChange={e => setEntityTypeValue(e.target.value)}>
+											{enityTypeOption.map((entityType, index) => (
+												<MenuItem value={entityType} key={index}>
+													{entityType}
+												</MenuItem>
+											))}
 										</Select>
 									</FormControl>
 									{/* <FieldInput
+									size='large'
 										type='text'
 										name='company.entityType'
 										label='Entity Type'
@@ -929,6 +1188,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='company.taxNumber'
 										label='GST/ VAT/ Tax Number'
 										error={Boolean(errors?.taxNumber)}
@@ -936,7 +1196,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										value={taxNumber}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
-											setTaxNumber(value)
+											setTaxNumber(value);
 											setFieldValue("company.taxNumber", value?.toUpperCase());
 										}}
 									/>
@@ -944,6 +1204,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='company.entityRegistrationNumber'
 										label='Entity Registration Number'
 										error={Boolean(errors?.entityRegistrationNumber)}
@@ -952,55 +1213,68 @@ const Step1 = ({ data, setData, nextStep }) => {
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
 											setEntityRegistrationNumber(value);
-											setFieldValue("company.entityRegistrationNumber", value?.toUpperCase());
+											setFieldValue(
+												"company.entityRegistrationNumber",
+												value?.toUpperCase()
+											);
 										}}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: country ? 0.45 : -1, fontSize: "14px" }} id="entity-label">Registered Country</InputLabel>
+										<InputLabel sx={{ fontSize: "14px" }} id='entity-label'>
+											Registered Country
+										</InputLabel>
 										<Select
-											sx={{ height: "36px", fontSize: "0.825rem" }}
-											labelId="entity-label"
+											sx={{ height: "52px", fontSize: "0.825rem" }}
+											labelId='entity-label'
 											name='company.country'
 											label='Registered Country'
 											error={Boolean(errors?.country)}
 											helperText={errors?.country}
 											fullWidth
-											size="small"
+											size='small'
 											value={country ?? null}
-											onChange={(e) => setCountry(e.target.value)}
-										>
-											{countryList.map(country =>
-												<MenuItem value={country} >{country}</MenuItem>
-											)}
+											onChange={e => setCountry(e.target.value)}>
+											{countryList.map((country, index) => (
+												<MenuItem value={country} key={index}>
+													{country}
+												</MenuItem>
+											))}
 										</Select>
 									</FormControl>
-
 								</Grid>
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
-							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
+						<Box bgcolor='#FBFBFB' p='2.5rem' pb='4rem' borderRadius='0.625rem'>
+							<Typography fontSize='1.2rem' fontWeight={600} color='#2A2A2A'>
 								Address
 							</Typography>
+							<Typography
+								fontSize='14px'
+								fontWeight={400}
+								color='rgba(0, 0, 0, 0.6)'>
+								Details where company registered in
+							</Typography>
 
-							<Grid container spacing={1} mt={0}>
+							<Grid container spacing={2} rowGap={"24px"} mt={"6px"}>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='address.address'
 										label='Address'
 										error={Boolean(errors?.address)}
 										helperText={errors?.address}
 										value={address}
-										onChange={(e) => setAddress(e.target.value)}
+										onChange={e => setAddress(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										type='text'
 										name='address.zipCode'
 										error={Boolean(errors?.zipCode)}
@@ -1009,7 +1283,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										value={zipCode}
 										onChange={({ target: { value } }) => {
 											const { current: { setFieldValue } = {} } = form || {};
-											setZipCode(value)
+											setZipCode(value);
 											setFieldValue("address.zipCode", value);
 
 											if (!value) return;
@@ -1019,103 +1293,124 @@ const Step1 = ({ data, setData, nextStep }) => {
 
 								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='address.city'
 										label='City'
 										error={Boolean(errors?.city)}
 										helperText={errors?.city}
 										value={city}
-										onChange={(e) => setCity(e.target.value)}
+										onChange={e => setCity(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='address.state'
 										label='State'
 										error={Boolean(errors?.state)}
 										helperText={errors?.state}
 										value={state}
-										onChange={(e) => setState(e.target.value)}
+										onChange={e => setState(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={4} sm={4} xs={12} className={classes.gridItem}>
 									<FormControl fullWidth>
-										<InputLabel sx={{ mt: adddressCountry ? 0.45 : -1, bgcolor: "#FBFBFB", paddingInline: "2px", fontSize: "14px" }} id="entity-label"> Country</InputLabel>
+										<InputLabel
+											sx={{
+												bgcolor: "#FBFBFB",
+												paddingInline: "2px",
+												fontSize: "14px",
+											}}
+											id='entity-label'>
+											{" "}
+											Country
+										</InputLabel>
 										<Select
-											sx={{ height: "36px", fontSize: "0.825rem" }}
-											labelId="entity-label"
+											sx={{ height: "52px", fontSize: "0.825rem" }}
+											labelId='entity-label'
 											name='address.addressCountry'
 											label='Country'
 											error={Boolean(errors?.country)}
 											helperText={errors?.country}
 											fullWidth
-											size="small"
+											size='small'
 											value={adddressCountry ?? null}
-											onChange={(e) => setAddressCountry(e.target.value)}
-										>
-											{countryList.map(country =>
-												<MenuItem value={country} >{country}</MenuItem>
-											)}
+											onChange={e => setAddressCountry(e.target.value)}>
+											{countryList.map((country, index) => (
+												<MenuItem value={country} key={index}>
+													{country}
+												</MenuItem>
+											))}
 										</Select>
 									</FormControl>
 								</Grid>
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
-							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
+						<Box bgcolor='#FBFBFB' p='2.5rem' pb='4rem' borderRadius='0.625rem'>
+							<Typography fontSize='1.2rem' fontWeight={600} color='#2A2A2A'>
 								Bank Details
 							</Typography>
+							<Typography
+								fontSize='14px'
+								fontWeight={400}
+								color='rgba(0, 0, 0, 0.6)'>
+								To receive your money in
+							</Typography>
 
-							<Grid container spacing={1} mt={0}>
+							<Grid container spacing={2} rowGap={"24px"} mt={"6px"}>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='bank.name'
 										label='Account Holder Name'
 										error={Boolean(errors?.name)}
 										helperText={errors?.name}
 										value={name}
-										onChange={(e) => setName(e.target.value)}
+										onChange={e => setName(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='bank.bankName'
 										label='Bank Name'
 										error={Boolean(errors?.bankName)}
 										helperText={errors?.bankName}
 										value={bankName}
-										onChange={(e) => setBankName(e.target.value)}
+										onChange={e => setBankName(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='bank.accountNumber'
 										label='Account Number'
 										error={Boolean(errors?.accountNumber)}
 										helperText={errors?.accountNumber}
 										value={accountNumber}
-										onChange={(e) => setAccountNumber(e.target.value)}
+										onChange={e => setAccountNumber(e.target.value)}
 									/>
 								</Grid>
 
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='bank.confirmNumber'
 										label='Confirm Account Number'
 										error={Boolean(errors?.confirmNumber)}
 										helperText={errors?.confirmNumber}
 										value={confirmNumber}
-										onChange={(e) => setConfirmNumber(e.target.value)}
+										onChange={e => setConfirmNumber(e.target.value)}
 									/>
 								</Grid>
-
-
-								{<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										name='bank.swiftCode'
 										label='Swift Code'
 										error={Boolean(errors?.swiftCode)}
@@ -1127,30 +1422,36 @@ const Step1 = ({ data, setData, nextStep }) => {
 											setFieldValue("bank.swiftCode", value?.toUpperCase());
 										}}
 									/>
-								</Grid>}
-								{country && bankField && <Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
-									<FieldInput
-										name={bankField.key}
-										label={bankField.value}
-										error={Boolean(errors?.extraFieldValue)}
-										helperText={errors?.extraFieldValue}
-										value={extraFieldValue}
-										onChange={(e) => {
-											const { current: { setFieldValue } = {} } = form || {};
-											setExtraFieldValue(e.target.value)
-											setFieldValue("bank." + bankField.key, e.target.value?.toUpperCase());
-										}}
-									/>
-								</Grid>}
+								</Grid>
+								{country && bankField && (
+									<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
+										<FieldInput
+											size='large'
+											name={bankField.key}
+											label={bankField.value}
+											error={Boolean(errors?.extraFieldValue)}
+											helperText={errors?.extraFieldValue}
+											value={extraFieldValue}
+											onChange={e => {
+												const { current: { setFieldValue } = {} } = form || {};
+												setExtraFieldValue(e.target.value);
+												setFieldValue(
+													"bank." + bankField.key,
+													e.target.value?.toUpperCase()
+												);
+											}}
+										/>
+									</Grid>
+								)}
 							</Grid>
 						</Box>
 
-						<Box bgcolor='#FBFBFB' p='1rem 1.25rem' borderRadius='0.625rem'>
-							<Typography fontSize='1rem' fontWeight={500} color='#f37b21'>
+						<Box bgcolor='#FBFBFB' p='2.5rem' pb='4rem' borderRadius='0.625rem'>
+							<Typography fontSize='1.2rem' fontWeight={600} color='#2A2A2A'>
 								Set Password
 							</Typography>
-							<Grid container spacing={1} mt={0}>
 
+							<Grid container spacing={2} rowGap={"24px"} mt={"6px"}>
 								<Box>
 									<Box display='flex' gap='0.5rem'>
 										<Checkbox
@@ -1163,8 +1464,8 @@ const Step1 = ({ data, setData, nextStep }) => {
 											}}
 										/>
 										<Typography variant='body2' sx={{ marginTop: "10px" }}>
-											At least 12 characters (required for your Muhlenberg password) -
-											the more characters, the better.
+											At least 12 characters (required for your Muhlenberg
+											password) - the more characters, the better.
 										</Typography>
 									</Box>
 
@@ -1212,17 +1513,17 @@ const Step1 = ({ data, setData, nextStep }) => {
 											A mixture of letters and numbers
 										</Typography>
 									</Box>
-
 								</Box>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										value={password}
 										type='password'
 										name='password'
 										placeholder='Enter your password here'
-										onChange={(e) => {
+										onChange={e => {
 											const { current: { setFieldValue } = {} } = form || {};
-											setPassword(e.target.value)
+											setPassword(e.target.value);
 											setFieldValue("password", e.target.value);
 											calculateConditions(e.target.value);
 										}}
@@ -1232,6 +1533,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 								</Grid>
 								<Grid item md={6} sm={6} xs={12} className={classes.gridItem}>
 									<FieldInput
+										size='large'
 										type='password'
 										name='confirmPassword'
 										placeholder='Re-enter your password here'
@@ -1239,7 +1541,7 @@ const Step1 = ({ data, setData, nextStep }) => {
 										helperText={confPasswordError}
 										value={confPassword}
 										onChange={e => {
-											setConfPassword(e.target.value)
+											setConfPassword(e.target.value);
 										}}
 									/>
 								</Grid>
@@ -1254,12 +1556,10 @@ const Step1 = ({ data, setData, nextStep }) => {
 								sx={{
 									textTransform: "none",
 									bgcolor: "#f37b21 !important",
-									borderRadius: "32px",
-									width: "140px",
-									height: "40px",
-									color: "white"
+									padding: "14px 24px",
+									color: "white",
 								}}>
-								Save and Next
+								Save & Continue
 							</Button>
 						</Box>
 					</Box>

@@ -1,16 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { Box, Typography, Stepper, Step, StepLabel } from "@mui/material";
-import uniexperts_logo from "assets/uniexperts_logo.svg";
+import {
+	Box,
+	Button,
+	Grid,
+	Step,
+	StepConnector,
+	StepLabel,
+	Stepper,
+	Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { _getToken } from "utils/token";
 import Step1 from "./Step1";
-import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
-import { _getToken } from "utils/token";
-import { setLoader } from "store";
-import { useDispatch } from "react-redux";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import { EditIcon } from "components/Icons/EditIcon";
+import { PictureIcon } from "components/Icons/PictureIcon";
+import { QuestionIcon } from "components/Icons/QuestionIcon";
+import { TrueIcon } from "components/Icons/TrueIcon";
+import { UserEditIcon } from "components/Icons/UserEditIcon";
+import { AuthLayout } from "pages/Layouts/AuthLayout";
 
 const Register = () => {
 	const [step, setStep] = useState(0);
@@ -26,56 +37,65 @@ const Register = () => {
 
 	// console.log("step :- ", step)
 
-
 	useEffect(() => {
 		if (_getToken()) {
 			setStep(1);
 		}
-	}, [])
+	}, []);
 
-
-
-	const ActiveStepIcon = (props) => {
+	const ActiveStepIcon = props => {
 		const { active, completed, icon } = props;
 
 		const iconSrc = [
-			"https://cdn-images-1.medium.com/max/1600/1*3rf1Va8nYaNWZ-DykgFWEQ.png",
-			active ? "https://cdn-images-1.medium.com/max/1600/1*v4B06BsNROv2SA8xNnofCg.png" : "https://cdn-images-1.medium.com/max/1600/1*GrySgLo1B2bT2LVp8hrlqg.png",
-			active ? "https://cdn-images-1.medium.com/v2/resize:fit:1600/1*75wxTubX2U74Y-1aABgFIQ.png" : "https://cdn-images-1.medium.com/max/1600/1*HM41RpSWpDhYrTbwBXO8Ig.png"
-		]
+			<UserEditIcon key={1} strokeColor={active ? "#9038FF" : "#2A2A2A"} />,
+			<PictureIcon key={2} strokeColor={active ? "#9038FF" : "#2A2A2A"} />,
+			<EditIcon key={3} strokeColor={active ? "#9038FF" : "#2A2A2A"} />,
+		];
 
 		return (
-
-			<img src={completed ? "https://cdn-images-1.medium.com/max/1600/1*XN4yTJcyi4G2mED3ysJBtg.png" : iconSrc[icon - 1]} alt="alt" style={
-				{
-					width: "44px",
-					height: "44px",
-					backgroundColor: completed || active ? "#F37B21" : "#fff",
-					border: completed || active ? "0px" : "2px solid #6A6A6A",
-					padding: "8px",
-					borderRadius: "99px",
-					marginTop: "-8px",
-				}
-			} />
-
-		)
-	}
+			<Box
+				height={"44px"}
+				width={"44px"}
+				display={"flex"}
+				alignItems={"center"}
+				justifyContent={"center"}
+				sx={{
+					backgroundColor: completed
+						? "#53B483"
+						: active
+						? "#f4ebff"
+						: "#ffffff",
+					border: completed
+						? "2px solid #53B483"
+						: active
+						? "2px solid #9038FF"
+						: "2px solid #E5E7EA",
+					borderRadius: "100%",
+					padding: "12px",
+				}}>
+				{completed ? <TrueIcon /> : iconSrc[icon - 1]}
+			</Box>
+		);
+	};
 
 	const renderStepContent = () => {
 		switch (step) {
 			case 0:
 				return (
-					<div>
+					<Box overflow={"auto"} height={"100%"}>
 						<Box alignItems='center' justifyContent='space-between'>
 							<Typography fontSize='1.9rem' fontWeight={700}>
-								Register as an Agent
+								Sign up as an Agent
 							</Typography>
-							<Typography fontSize='0.8rem' fontWeight={300} marginBottom={4}>
-								Fill up the form to register as an agent
+							<Typography
+								fontWeight={500}
+								marginBottom={4}
+								color='rgba(0, 0, 0, 0.6)'>
+								Registration Details
 							</Typography>
 						</Box>
 						<Step1 data={data} setData={setData} nextStep={nextStep} />
-					</div>
+					</Box>
 				);
 			// case 1:
 			// 	return (
@@ -93,7 +113,7 @@ const Register = () => {
 			// 	);
 			case 1:
 				return (
-					<div>
+					<Box width={"100%"}>
 						<Box alignItems='center' justifyContent='space-between'>
 							<Typography fontSize='1.9rem' fontWeight={700}>
 								Upload Documents
@@ -103,14 +123,10 @@ const Register = () => {
 							</Typography>
 						</Box>
 						<Step3 data={data} setData={setData} nextStep={nextStep} />
-					</div>
+					</Box>
 				);
 			case 2:
-				return (
-					<div>
-						<Step4 data={data} />
-					</div >
-				);
+				return <Step4 data={data} />;
 			default:
 				return null;
 		}
@@ -123,6 +139,9 @@ const Register = () => {
 					primary: {
 						main: "#f37b21", // Set the primary color to orange
 					},
+				},
+				typography: {
+					fontFamily: "Inter, sans-serif",
 				},
 				overrides: {
 					MuiStepIcon: {
@@ -139,37 +158,103 @@ const Register = () => {
 					},
 				},
 			})}>
-			<Box
-				minHeight='100vh'
-				display='flex'
-				//alignItems={{ xs: "unset", sm: "center" }}
-				justifyContent='center'>
+			<AuthLayout>
 				<Box
-					p='1rem 1.25rem'
-					borderRadius='0.625rem'
-					flexGrow={{ xs: 1, sm: "unset" }}
+					height='calc(100vh - 72px)'
 					display='flex'
-					flexDirection='column'
-					alignItems={"center"}
-					minWidth='40vw'
-					gap='2rem'>
-					<img src={uniexperts_logo} alt='' style={{ width: "170px", marginBottom: "30px", alignSelf: "flex-start", marginLeft: "12.4%" }} />
+					maxWidth={"100vw"}
+					marginInline='auto'
+					bgcolor={"#F0F1F5"}
+					sx={{
+						fontFamily: "Inter, sans-serif !important",
+					}}>
+					<Grid container height={"100%"}>
+						<Grid item md={3} bgcolor={"#fff"}>
+							<Box
+								padding={"3.75rem"}
+								display={"flex"}
+								flexDirection={"column"}
+								justifyContent={"space-between"}
+								height={"100%"}>
+								<Stepper
+									activeStep={step}
+									orientation='vertical'
+									connector={<StepConnector sx={{ marginLeft: "22px" }} />}>
+									{steps.map((item, index) => (
+										<Step key={index}>
+											<StepLabel
+												StepIconComponent={ActiveStepIcon}
+												optional={
+													<Typography variant='caption'>
+														{item.description}
+													</Typography>
+												}>
+												<Typography
+													sx={{
+														fontWeight: 600,
+														lineHeight: "24px",
+													}}>
+													{item.label}
+												</Typography>
+											</StepLabel>
+										</Step>
+									))}
+								</Stepper>
 
-					<Box minWidth='80vw' >
-						<Stepper activeStep={step} alternativeLabel >
-							{steps.map((item, index) => (
-								<Step key={index} >
-									<StepLabel StepIconComponent={ActiveStepIcon}   >{item.label}</StepLabel>
-								</Step>
-							))}
-						</Stepper>
-					</Box>
-
-
-					{renderStepContent()}
-
+								<Box
+									sx={{
+										display: "flex",
+										flexDirection: "column",
+										alignItems: "start",
+									}}>
+									<QuestionIcon />
+									<Typography
+										sx={{
+											marginTop: "8px",
+											fontWeight: "500",
+										}}>
+										Having trouble?
+									</Typography>
+									<Typography
+										sx={{
+											marginTop: "8px",
+											fontWeight: "400",
+										}}>
+										Feel free to contact us and we will always help you through
+										the process.
+									</Typography>
+									<Button
+										sx={{
+											marginTop: "12px",
+											background:
+												"linear-gradient(0deg, #e5e7ea, #e5e7ea), linear-gradient(0deg, #ffffff, #ffffff)",
+											border: "1px solid #e5e7ea",
+											textTransform: "none",
+											padding: "8px 16px",
+											color: "#2a2a2a",
+										}}>
+										Contact us
+									</Button>
+								</Box>
+							</Box>
+						</Grid>
+						<Grid item md={9}>
+							<Box
+								sx={{
+									height: "calc(100vh - 72px)",
+									display: "flex",
+									width: "75%",
+									margin: "auto",
+									paddingTop: "60px",
+									paddingX: "30px",
+									overflow: "auto",
+								}}>
+								{renderStepContent()}
+							</Box>
+						</Grid>
+					</Grid>
 				</Box>
-			</Box>
+			</AuthLayout>
 		</ThemeProvider>
 	);
 };
@@ -178,19 +263,17 @@ export default Register;
 
 // const steps = ["Registration", "", ""];
 
-
-
-
 const steps = [
 	{
 		label: "Registration",
+		description: "Fill up the form to register as an agent",
 	},
 	{
 		label: "File Upload",
-
+		description: "Provide us with your identification",
 	},
 	{
 		label: "Terms & conditions",
-
-	}
-]
+		description: "Provide us with your identification",
+	},
+];

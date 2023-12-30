@@ -1,0 +1,47 @@
+@import "styles";
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 72px;
+	padding: 0 60px;
+
+	.flexContainer {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+
+		.logo {
+			height: 24px;
+		}
+
+		.title {
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 30px;
+			letter-spacing: 0em;
+			text-align: center;
+		}
+
+		.dontExists {
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 20px;
+			letter-spacing: 0em;
+			text-align: left;
+			padding-right: 8px;
+			color: #2a2a2a;
+		}
+
+		.button {
+			background: #ffffff;
+			border: 1px solid #e5e7ea;
+			font-size: 16px;
+			text-transform: none;
+			padding: 8px 16px;
+			color: #2a2a2a;
+			border-radius: 4px;
+		}
+	}
+}

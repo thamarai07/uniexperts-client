@@ -36,9 +36,7 @@ input[type="file"]::file-selector-button:active {
 .scrollView {
 	// z-index: 99;
 	scroll-behavior: smooth;
-	overflow-y: scroll;
-	max-height: 100vh;
-	padding-right: 20px;
+	overflow-y: auto;
 
 	-ms-overflow-style: initial !important;
 	scrollbar-width: 15px !important;
