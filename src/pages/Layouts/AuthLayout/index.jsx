@@ -25,7 +25,7 @@ export const AuthLayout = ({ children }) => {
 					<Typography className={styles.dontExists}>
 						Don’t have an account?
 					</Typography>
-					<Button className={styles.button}>Sign up</Button>
+					<Button onClick={()=> history.push(RouteNames.register)} className={styles.button}>Sign up</Button>
 				</Box>
 			</Box>
 			{children}

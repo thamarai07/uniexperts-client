@@ -144,6 +144,7 @@ const Login = () => {
 												<Box display={"flex"} alignItems={"center"} gap={1}>
 													<Typography>Don’t have an account?</Typography>
 													<Typography
+														onClick={()=> history.push(RouteNames.register)}
 														fontWeight={500}
 														sx={{ cursor: "pointer" }}>
 														Sign up
