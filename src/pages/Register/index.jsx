@@ -63,13 +63,13 @@ const Register = () => {
 					backgroundColor: completed
 						? "#53B483"
 						: active
-						? "#f4ebff"
-						: "#ffffff",
+							? "#f4ebff"
+							: "#ffffff",
 					border: completed
 						? "2px solid #53B483"
 						: active
-						? "2px solid #9038FF"
-						: "2px solid #E5E7EA",
+							? "2px solid #9038FF"
+							: "2px solid #E5E7EA",
 					borderRadius: "100%",
 					padding: "12px",
 				}}>
@@ -201,41 +201,7 @@ const Register = () => {
 									))}
 								</Stepper>
 
-								<Box
-									sx={{
-										display: "flex",
-										flexDirection: "column",
-										alignItems: "start",
-									}}>
-									<QuestionIcon />
-									<Typography
-										sx={{
-											marginTop: "8px",
-											fontWeight: "500",
-										}}>
-										Having trouble?
-									</Typography>
-									<Typography
-										sx={{
-											marginTop: "8px",
-											fontWeight: "400",
-										}}>
-										Feel free to contact us and we will always help you through
-										the process.
-									</Typography>
-									<Button
-										sx={{
-											marginTop: "12px",
-											background:
-												"linear-gradient(0deg, #e5e7ea, #e5e7ea), linear-gradient(0deg, #ffffff, #ffffff)",
-											border: "1px solid #e5e7ea",
-											textTransform: "none",
-											padding: "8px 16px",
-											color: "#2a2a2a",
-										}}>
-										Contact us
-									</Button>
-								</Box>
+
 							</Box>
 						</Grid>
 						<Grid item md={9}>
