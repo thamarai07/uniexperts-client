@@ -116,10 +116,10 @@ const Register = () => {
 					<Box width={"100%"}>
 						<Box alignItems='center' justifyContent='space-between'>
 							<Typography fontSize='1.9rem' fontWeight={700}>
-								Upload Documents
+								Sign up as an Agent
 							</Typography>
 							<Typography fontSize='0.8rem' fontWeight={300}>
-								Fill up the form to register as an agent
+								Upload Documents
 							</Typography>
 						</Box>
 						<Step3 data={data} setData={setData} nextStep={nextStep} />

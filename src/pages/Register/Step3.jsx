@@ -9,7 +9,9 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 	const [selectedFile, setSelectedFile] = useState({});
 	const [files, setFiles] = useState({});
 	const [filesUploading, setFilesUploading] = useState({});
-
+	const [isEnteredFileName, setisEnteredFileName] = useState(false);
+	const [FileName, setFileName] = useState();
+	const [FileSize, setFileSize] = useState()
 	const dispatch = useDispatch();
 
 	const handleFileChange = event => {
@@ -67,6 +69,15 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 	const handleFileUpload = async event => {
 		const file = event.target.files[0];
 		const fileName = file.name;
+		const Name = event.target.files[0].name
+		const size = event.target.files[0].size
+
+
+
+		setFileSize((size / 1024).toFixed(2)); // toFixed(2) ensures two decimal places
+
+		setFileName({ ...FileName, [event.target.name]: Name })
+
 		setFilesUploading({ ...filesUploading, [event.target.name]: true });
 
 		const params = {
@@ -95,6 +106,13 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 		}
 	};
 
+	const handlefileEndtered = () => {
+		setisEnteredFileName(true)
+	}
+	const handlefileLeave = () => {
+		setisEnteredFileName(false)
+	}
+	console.log(FileSize)
 	return (
 		<Box
 			borderRadius='0.625rem'
@@ -113,21 +131,49 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 				<Typography fontSize='14px' fontWeight={400} color='rgba(0, 0, 0, 0.6)'>
 					Upload or personal identification document
 				</Typography>
-				<input
-					name='personal_identification'
-					type='file'
-					onChange={handleFileUpload}
-					style={{
-						border: "2px solid gray",
-						borderRadius: "5px",
-						marginTop: "14px",
-						fontFamily: "Inter, sans-serif !important",
-					}}
-				/>
+
+				<Box border={"dashed"} marginTop={2} padding={2} paddingLeft={4} paddingRight={4} borderColor={"#CED2D6"} borderRadius={2} position={"relative"} height={"105px"}>
+					<Box display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+						<Box>
+							<Typography fontSize='14px' style={{
+								cursor: "pointer"
+							}} fontWeight={400} color='rgba(0, 0, 0, 0.6)'>
+								Drop files here to upload, or click <span style={{
+									textDecoration: isEnteredFileName == true ? "underline" : "",
+									textUnderlineOffset: "3px"
+								}}>Upload</span>
+							</Typography>
+
+							<Typography fontSize='10px' style={{
+								cursor: "pointer",
+								opacity: "1",
+							}} fontWeight={500} marginTop={1} color='#949494' >PNG, JPEG (max 1 Mb)</Typography>
+							<input
+								name='personal_identification'
+								type='file'
+								onChange={handleFileUpload}
+								style={{
+									opacity: "0",
+									width: "285px",
+									position: "absolute",
+									top: 0,
+									background: "red"
+								}}
+								onMouseEnter={handlefileEndtered}
+								onMouseLeave={handlefileLeave}
+							/>
+						</Box>
+						<Box>
+							<img src="/file.svg"></img>
+						</Box>
+					</Box>
+				</Box>
+
 				{filesUploading.personal_identification ? (
 					<CircularProgress sx={{ marginLeft: "32px" }} size={30} />
 				) : (
-					<Button
+					<>
+						{/* <Button
 						onClick={handleUpload}
 						sx={{
 							textTransform: "none",
@@ -139,7 +185,32 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 							padding: "8px 24px",
 						}}>
 						{files.personal_identification ? "Uploaded" : "Upload"}
-					</Button>
+					</Button> */}
+						{FileName &&
+							<>
+								<Box display={"flex"} alignContent={"center"} alignItems={"center"}>
+									<Box style={{
+										background: "#EDF5FF"
+									}} borderRadius={"40px"} padding={"6px"} marginTop={2} width={"90%"} gap={"2"}>
+										<Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+											<Box display={"flex"} alignItems={"center"} gap={1}>
+												<img src="/updatedfile.svg" width={"35px"}></img>
+												<Typography fontSize={15}>{FileName.personal_identification}</Typography>
+											</Box>
+											<Typography fontSize={11} fontWeight={600} marginRight={1}
+												color={"#d3d3d3"}
+											>{FileSize}kb</Typography>
+										</Box>
+									</Box>
+									<Box width={"10%"}>
+										<img src="/delete.svg" width={"45dpx"} style={{
+											marginTop: "20px"
+										}}></img>
+									</Box>
+								</Box>
+							</>
+						}
+					</>
 				)}
 			</Box>
 
@@ -300,7 +371,7 @@ const Step3 = ({ data = {}, setData, nextStep }) => {
 					Save & Continue
 				</Button>
 			</Box>
-		</Box>
+		</Box >
 	);
 };
 
